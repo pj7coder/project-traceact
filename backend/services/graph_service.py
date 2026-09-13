@@ -1,0 +1,191 @@
+import math
+import logging
+from decimal import Decimal
+from typing import List, Dict, Tuple, Any
+
+from backend.schemas.wallet import (
+    GraphData,
+    GraphNode,
+    GraphNodeData,
+    GraphEdge,
+    GraphEdgeData,
+    ConnectedWallet,
+    NormalizedTransaction,
+    WalletOverview,
+)
+from backend.services.entity_service import entity_service
+
+logger = logging.getLogger("graph_service")
+
+
+class GraphService:
+    """
+    Generates structured 1-hop transaction graphs with radial coordinates,
+    aggregated directed edges, volume metrics, and visual metadata for React Flow.
+    """
+
+    @staticmethod
+    def _format_short_address(address: str) -> str:
+        if not address:
+            return ""
+        if len(address) <= 12:
+            return address
+        return f"{address[:6]}...{address[-4:]}"
+
+    @staticmethod
+    def _wei_to_eth_str(wei_val: int | str | Decimal) -> str:
+        try:
+            val = Decimal(str(wei_val))
+            eth = val / Decimal("1000000000000000000")
+            formatted = f"{eth:.6f}".rstrip("0").rstrip(".")
+            return formatted if formatted else "0"
+        except Exception:
+            return "0"
+
+    def build_one_hop_graph(
+        self,
+        investigated_wallet: WalletOverview,
+        connected_wallets: List[ConnectedWallet],
+        transactions: List[NormalizedTransaction],
+    ) -> GraphData:
+        """
+        Constructs a 1-hop graph with investigated node at center and connected nodes placed radially.
+        Aggregates multiple transactions between pairs into unified directed edges.
+        """
+        center_addr = investigated_wallet.address.lower()
+        nodes: List[GraphNode] = []
+        edges: List[GraphEdge] = []
+
+        # 1. Add Central Investigated Node
+        center_color = "#06b6d4"  # Cyan for investigated root
+        center_node = GraphNode(
+            id=center_addr,
+            type="investigatedWalletNode",
+            data=GraphNodeData(
+                label=self._format_short_address(center_addr),
+                fullAddress=center_addr,
+                nodeType="investigated",
+                role="investigated",
+                txCount=investigated_wallet.transactionCount,
+                totalVolume=None,
+                balance=investigated_wallet.balance,
+                asset=investigated_wallet.asset,
+                riskScore=investigated_wallet.riskScore or 0,
+                riskLevel=investigated_wallet.riskLevel or "LOW",
+                nodeColor=center_color,
+                tags=investigated_wallet.tags or ["Target Wallet"],
+                globalSearchCount=investigated_wallet.globalSearchCount or 1,
+            ),
+            position={"x": 400.0, "y": 300.0},
+        )
+        nodes.append(center_node)
+
+        # 2. Place Connected Nodes in a Radial Layout
+        max_graph_nodes = 30
+        display_wallets = connected_wallets[:max_graph_nodes]
+        num_display = len(display_wallets)
+
+        radius = max(260.0, min(420.0, 160.0 + num_display * 8.0))
+
+        for idx, wallet in enumerate(display_wallets):
+            angle = (2 * math.pi * idx) / max(num_display, 1)
+            angle += -math.pi / 2
+
+            pos_x = 400.0 + radius * math.cos(angle)
+            pos_y = 300.0 + radius * math.sin(angle)
+
+            # Node color & entity lookup
+            ent = entity_service.get_entity(wallet.address)
+            node_color = "#10b981"  # Emerald green default
+            tags = list(wallet.tags or [])
+            if ent:
+                if ent.is_vasp():
+                    node_color = "#f59e0b"  # Gold for VASP
+                    tags.append(f"VASP: {ent.entity_name}")
+                elif ent.entity_type in ("mixer", "sanctioned"):
+                    node_color = "#ef4444"  # Red for high threat
+                    tags.append("High Risk Entity")
+                elif ent.entity_type == "bridge":
+                    node_color = "#8b5cf6"  # Purple for bridge
+                    tags.append("DeFi Bridge")
+
+            connected_node = GraphNode(
+                id=wallet.address,
+                type="connectedWalletNode",
+                data=GraphNodeData(
+                    label=self._format_short_address(wallet.address),
+                    fullAddress=wallet.address,
+                    nodeType="known_entity" if ent else "connected",
+                    role=wallet.direction.value,
+                    txCount=wallet.transactionCount,
+                    totalVolume=wallet.totalAmount,
+                    balance=None,
+                    asset=wallet.asset,
+                    entityName=ent.entity_name if ent else None,
+                    entityType=ent.entity_type if ent else None,
+                    riskScore=wallet.riskScore or 0,
+                    riskLevel=wallet.riskLevel or "LOW",
+                    nodeColor=node_color,
+                    tags=tags,
+                ),
+                position={"x": round(pos_x, 1), "y": round(pos_y, 1)},
+            )
+            nodes.append(connected_node)
+
+        # 3. Aggregate Transactions into Directed Edges
+        edge_aggregates: Dict[Tuple[str, str], Dict[str, Any]] = {}
+
+        for tx in transactions:
+            from_addr = (tx.fromAddress or "").lower()
+            to_addr = (tx.toAddress or "").lower()
+
+            if not from_addr or not to_addr or from_addr == to_addr:
+                continue
+
+            pair = (from_addr, to_addr)
+            if pair not in edge_aggregates:
+                edge_aggregates[pair] = {
+                    "count": 0,
+                    "totalWei": Decimal("0"),
+                    "asset": tx.asset,
+                }
+
+            try:
+                tx_wei = Decimal(str(tx.valueRaw or tx.value or "0"))
+            except Exception:
+                tx_wei = Decimal("0")
+
+            edge_aggregates[pair]["count"] += 1
+            edge_aggregates[pair]["totalWei"] += tx_wei
+
+        # Build GraphEdge objects
+        for (src, tgt), data in edge_aggregates.items():
+            existing_node_ids = {n.id for n in nodes}
+            if src not in existing_node_ids or tgt not in existing_node_ids:
+                continue
+
+            asset_sym = data.get("asset", "ETH")
+            total_str = self._wei_to_eth_str(data["totalWei"]) if asset_sym == "ETH" else str(data["totalWei"])
+            tx_count = data["count"]
+            label = f"{tx_count} tx ({total_str} {asset_sym})" if total_str != "0" else f"{tx_count} tx"
+
+            edge_id = f"e_{src[:8]}_{tgt[:8]}"
+            edges.append(
+                GraphEdge(
+                    id=edge_id,
+                    source=src,
+                    target=tgt,
+                    label=label,
+                    data=GraphEdgeData(
+                        transactionCount=tx_count,
+                        totalTransferred=total_str,
+                        asset=asset_sym,
+                    ),
+                    animated=True,
+                )
+            )
+
+        return GraphData(nodes=nodes, edges=edges)
+
+
+graph_service = GraphService()

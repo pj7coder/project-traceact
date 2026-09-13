@@ -1,0 +1,472 @@
+[
+  {
+    "address": "0x28c6c06298d514db089934071355e5743bf21d60",
+    "entityName": "Binance 14",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x28c6c06298d514db089934071355e5743bf21d60",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+    "entityName": "Binance 15",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
+    "entityName": "Binance 16",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+    "entityName": "Binance Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x3f5ce5fbfe3e9af3971dd833d26ba9b5c936f0be",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xf977814e90da44bfa03b6295a0616a897441acec",
+    "entityName": "Binance 8",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xf977814e90da44bfa03b6295a0616a897441acec",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503",
+    "entityName": "Binance Deposit Intermediary",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x47ac0fb4f2d84898e4d9e7b4dab3c24507a6d503",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x503828976d22510aad0201ac7ec88293211d23da",
+    "entityName": "Coinbase 1",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x503828976d22510aad0201ac7ec88293211d23da",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xddfabcdc4d8ffc6d5beaf154f18b778f892a0740",
+    "entityName": "Coinbase 2",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xddfabcdc4d8ffc6d5beaf154f18b778f892a0740",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x71660c4005ba85c37ccec55d0c4493e66fe775d3",
+    "entityName": "Coinbase 3",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x71660c4005ba85c37ccec55d0c4493e66fe775d3",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xa090e606e30bd747d4e6245a1517ebe430f0057e",
+    "entityName": "Coinbase 4",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xa090e606e30bd747d4e6245a1517ebe430f0057e",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x2910543af39aba0cd09dbb2d50200b3e800a63d2",
+    "entityName": "Kraken 1",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x2910543af39aba0cd09dbb2d50200b3e800a63d2",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x0a869d79a7052c7f1b55a8ebabeea3420c0d1e49",
+    "entityName": "Kraken 2",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x0a869d79a7052c7f1b55a8ebabeea3420c0d1e49",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x6cc5f688a315f3dc28a7781717a9a798a59fda7b",
+    "entityName": "OKX Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x6cc5f688a315f3dc28a7781717a9a798a59fda7b",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xa7efae728d2936e78bda97dc267687568dd593f3",
+    "entityName": "OKX 2",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xa7efae728d2936e78bda97dc267687568dd593f3",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x876eabf441b2ee5b5b0554fd502a8e0600950cfa",
+    "entityName": "Bitfinex 1",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x876eabf441b2ee5b5b0554fd502a8e0600950cfa",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x742d35cc6634c0532925a3b844bc454e4438f44e",
+    "entityName": "Bitfinex 2",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x742d35cc6634c0532925a3b844bc454e4438f44e",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xd6216fc19db775df9774a6e33526131da7d19a2c",
+    "entityName": "KuCoin 6",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0xd6216fc19db775df9774a6e33526131da7d19a2c",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x5e57eb9764b88b0453876615bba142eaebc9c1ef",
+    "entityName": "WazirX Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Public Blockchain Intelligence Dataset",
+    "sourceUrl": "https://etherscan.io/address/0x5e57eb9764b88b0453876615bba142eaebc9c1ef",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x32be343b94f860124dc4fee278fdcbd38c102d88",
+    "entityName": "Poloniex 1",
+    "entityType": "centralized_exchange",
+    "source": "Public Etherscan Verified Tag",
+    "sourceUrl": "https://etherscan.io/address/0x32be343b94f860124dc4fee278fdcbd38c102d88",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x111111125421ca6dc452d289314280a0f8842a65",
+    "entityName": "1inch Aggregator V5",
+    "entityType": "DeFi_protocol",
+    "source": "Public Etherscan Verified Contract",
+    "sourceUrl": "https://etherscan.io/address/0x111111125421ca6dc452d289314280a0f8842a65",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
+    "entityName": "Uniswap V3 SwapRouter02",
+    "entityType": "DeFi_protocol",
+    "source": "Public Etherscan Verified Contract",
+    "sourceUrl": "https://etherscan.io/address/0x68b3465833fb72a70ecdf485e0e4c7bd8665fc45",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+    "entityName": "Uniswap V2 Router02",
+    "entityType": "DeFi_protocol",
+    "source": "Public Etherscan Verified Contract",
+    "sourceUrl": "https://etherscan.io/address/0x7a250d5630b4cf539739df2c5dacb4c659f2488d",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x8315177ab297ba92a06054ce80a67ed4dbd7ed3a",
+    "entityName": "Arbitrum One Bridge",
+    "entityType": "bridge",
+    "source": "Public Etherscan Verified Contract",
+    "sourceUrl": "https://etherscan.io/address/0x8315177ab297ba92a06054ce80a67ed4dbd7ed3a",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xbeb5fc579115071764c7423a4f12edde41f104ed",
+    "entityName": "Optimism Portal Bridge",
+    "entityType": "bridge",
+    "source": "Public Etherscan Verified Contract",
+    "sourceUrl": "https://etherscan.io/address/0xbeb5fc579115071764c7423a4f12edde41f104ed",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0xd90e2f925da726b50c4ed8d0fb90ad053324f31b",
+    "entityName": "Tornado Cash Router",
+    "entityType": "mixer",
+    "source": "Public OFAC / Etherscan Tag",
+    "sourceUrl": "https://etherscan.io/address/0xd90e2f925da726b50c4ed8d0fb90ad053324f31b",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-15T00:00:00Z"
+  },
+  {
+    "address": "0x429671ac868fa2f78ea23e2002e2c2bf12f20485",
+    "entityName": "WazirX India (Zanmai Labs)",
+    "entityType": "centralized_exchange",
+    "source": "FIU-IND Registered VASP / Etherscan Tag",
+    "sourceUrl": "https://wazirx.com",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "0x789b7b640cbbf14930d67617d91e843efebc7ba7",
+    "entityName": "CoinDCX India (Neblio Technologies)",
+    "entityType": "centralized_exchange",
+    "source": "FIU-IND Registered VASP / Public Label",
+    "sourceUrl": "https://coindcx.com",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "0x323a65239e0eb6ce2a2a07525d8868994a5e3f53",
+    "entityName": "CoinSwitch Kuber (Bitcipher Labs)",
+    "entityType": "centralized_exchange",
+    "source": "FIU-IND Registered VASP / Public Label",
+    "sourceUrl": "https://coinswitch.co",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "0x9a7dd73a466107d39ef4fb1e6d4ff10aa1852654",
+    "entityName": "ZebPay India (Awlencan Innovations)",
+    "entityType": "centralized_exchange",
+    "source": "FIU-IND Registered VASP / Public Label",
+    "sourceUrl": "https://zebpay.com",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "0x098b716b8aaf21512996dc57eb0615e2383e2f96",
+    "entityName": "Ronin Bridge Exploiter (Lazarus Group)",
+    "entityType": "sanctioned",
+    "source": "OFAC SDN Sanctions List / FBI Cyber Advisory",
+    "sourceUrl": "https://home.treasury.gov",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "0xa160cdab225685da1d56aa342ad8841c3b53f291",
+    "entityName": "Tornado Cash 100 ETH Pool",
+    "entityType": "mixer",
+    "source": "OFAC Sanctions List / Public Contract",
+    "sourceUrl": "https://etherscan.io",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "1ndyjtntjmwk5xpnjhgamu4hdhigtobu1s",
+    "entityName": "Binance Bitcoin Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Label",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tnuc9qb1rrps5cbwlmnmxk1ubinance11",
+    "entityName": "Binance Tron TRC-20 Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "TronGrid Public Label",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tmvew1g4wrmbhp7w5w6rgzf4eztg9mzj7z",
+    "entityName": "Binance Cold Storage (Tron)",
+    "entityType": "centralized_exchange",
+    "source": "TronScan Verified Label",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tpy9jtgz41gja9a1vyjzkq5lbinance99",
+    "entityName": "Binance Tron Intermediary / Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "TronScan Public Label",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tezfayl8tewpcee9kswcbzrue65gmmdtbql",
+    "entityName": "Kraken Tron TRC-20 Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "TronScan Verified Tag",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tndfbhx6d5e1e3kx3psm3s8wwn1ejgw8wy",
+    "entityName": "OKX Tron Exchange Wallet",
+    "entityType": "centralized_exchange",
+    "source": "TronScan Public Label",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tt8m2qxatdhavzszppdsmmdsdswx9zthy1",
+    "entityName": "Bitfinex Tron Custody",
+    "entityType": "centralized_exchange",
+    "source": "TronScan Public Label",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "tr7nhqjekqxgtci8q8zyp4l8otszgjlj6t",
+    "entityName": "Tether USD (USDT-TRC20 Contract)",
+    "entityType": "smart_contract",
+    "source": "TronScan Official Contract",
+    "sourceUrl": "https://tronscan.org",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "2aqdphj2jpcegpiatuxjqxa8qmanjzjaggrnanspvnpr",
+    "entityName": "Coinbase Solana Custody Reserve",
+    "entityType": "centralized_exchange",
+    "source": "Solscan Verified Entity Tag",
+    "sourceUrl": "https://solscan.io",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "34xp4vrocgjym3xr7ycvpfhocnxv4twseo",
+    "entityName": "Binance Cold Storage BTC",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Tag",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "bc1qm34lsc65zpw79lxes69zkqmk6ee3ewf0j77s3h",
+    "entityName": "Binance BTC Deposit Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Tag",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "1p5zedwtktfgxqjzphgwpqupe554wkdfhq",
+    "entityName": "Coinbase Cold Storage BTC",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Tag",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "3fhnblobjgt1yrvaek6xvhgjpdtbbpnjjb",
+    "entityName": "Kraken Bitcoin Custody",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Tag",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "bc1qgdjqv0av3q56jvd82tkdjpy7gdp9ut8tlqmgrpmv24sq90ecnvqqjwvw97",
+    "entityName": "Bitfinex BTC Cold Storage",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Ledger Tag",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "3j98t1wpez73cnmqviecrnyiwrnqrhwnly",
+    "entityName": "Bitcoin Intermediary Cluster",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Attribution",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  },
+  {
+    "address": "1ndyjtntjmwk5xpnhjgamu4hdhigtobu1s",
+    "entityName": "Binance BTC Hot Wallet",
+    "entityType": "centralized_exchange",
+    "source": "Bitcoin Public Attribution",
+    "sourceUrl": "https://blockstream.info",
+    "confidence": "HIGH",
+    "verified": true,
+    "lastVerified": "2026-08-20T00:00:00Z"
+  }
+]
