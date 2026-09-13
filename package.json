@@ -1,0 +1,9 @@
+{
+  "name": "project-traceact",
+  "version": "2.0.0",
+  "private": true,
+  "description": "TraceACT - Automated Cryptocurrency Wallet Attribution & Forensic Tracing Platform",
+  "scripts": {
+    "build": "cd frontend && npm install && npm run build"
+  }
+}
