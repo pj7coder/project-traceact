@@ -121,7 +121,7 @@ export function App() {
 
     try {
       // 1. Fetch wallet baseline overview
-      const analyzeRes = await analyzeWallet(chain, address);
+      const analyzeRes = await analyzeWallet(chain, address, searchHops);
       setAnalysisData(analyzeRes);
 
       let finalNodes = analyzeRes.graph?.nodes || [];
