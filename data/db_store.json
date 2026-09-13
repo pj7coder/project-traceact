@@ -18714,16 +18714,16 @@
       "_id": "ethereum:0x1111111111111111111111111111111111111111",
       "address": "0x1111111111111111111111111111111111111111",
       "chain": "ethereum",
-      "globalSearchCount": 18,
+      "globalSearchCount": 21,
       "investigators": [
         "LEA-I4C-4092"
       ],
       "firstSearchedAt": "2026-09-13T06:45:55.826188+00:00",
-      "lastSearchedAt": "2026-09-13T19:06:51.410813+00:00",
-      "appearanceCountInGraphs": 67,
+      "lastSearchedAt": "2026-09-13T19:48:26.900201+00:00",
+      "appearanceCountInGraphs": 78,
       "associatedCaseIds": [],
       "tags": [
-        "Searched 17 times before",
+        "Searched 20 times before",
         "High Risk"
       ],
       "balance": "5.717180557992809825",
@@ -18736,7 +18736,7 @@
       "riskScore": 66,
       "riskLevel": "HIGH",
       "firstSeen": "2026-04-18T15:34:59+00:00",
-      "lastSeen": "2026-09-13T19:07:28.458788+00:00",
+      "lastSeen": "2026-09-13T19:49:05.589797+00:00",
       "transactions": [
         {
           "txHash": "0xeb5b078685d55e5ea7cbc9b63a7903b0e4fab082f8f5919919b9feaf87e0a729",
@@ -20033,7 +20033,7 @@
           "tags": []
         }
       ],
-      "lastAnalyzedAt": "2026-09-13T19:06:51.651175+00:00",
+      "lastAnalyzedAt": "2026-09-13T19:48:27.056528+00:00",
       "attribution": {
         "nearestVasp": null,
         "vaspCandidates": [],
@@ -20047,7 +20047,7 @@
         },
         "pathsCount": 1,
         "nodesCount": 2,
-        "lastAttributedAt": "2026-09-13T19:06:51.808017+00:00"
+        "lastAttributedAt": "2026-09-13T19:48:27.204923+00:00"
       },
       "nearestVaspName": null,
       "nearestVaspAddress": null,
@@ -20057,127 +20057,32 @@
       "_id": "ethereum:0x28c6c06298d514db089934071355e5743bf21d60",
       "address": "0x28c6c06298d514db089934071355e5743bf21d60",
       "chain": "ethereum",
-      "globalSearchCount": 106,
+      "globalSearchCount": 109,
       "investigators": [
         "LEA-I4C-4092"
       ],
       "firstSearchedAt": "2026-09-13T06:46:09.111090+00:00",
-      "lastSearchedAt": "2026-09-13T19:08:41.276367+00:00",
-      "appearanceCountInGraphs": 68,
+      "lastSearchedAt": "2026-09-13T19:48:58.357324+00:00",
+      "appearanceCountInGraphs": 70,
       "associatedCaseIds": [],
       "tags": [
-        "Regulated VASP",
-        "Searched 105 times before"
+        "Searched 108 times before",
+        "Regulated VASP"
       ],
-      "balance": "151130.279198636055790202",
-      "balanceRaw": "151130279198636055790202",
+      "balance": "152564.066137835478037843",
+      "balanceRaw": "152564066137835478037843",
       "asset": "ETH",
       "transactionCount": 50,
-      "incomingCount": 1,
-      "outgoingCount": 49,
-      "uniqueConnectedWallets": 16,
-      "riskScore": 68,
+      "incomingCount": 6,
+      "outgoingCount": 44,
+      "uniqueConnectedWallets": 21,
+      "riskScore": 81,
       "riskLevel": "HIGH",
-      "firstSeen": "2026-09-13T19:03:23+00:00",
-      "lastSeen": "2026-09-13T19:07:23+00:00",
+      "firstSeen": "2026-09-13T19:42:47+00:00",
+      "lastSeen": "2026-09-13T19:49:04.429834+00:00",
       "transactions": [
         {
-          "txHash": "0x7ba415356fdca1c1d385b1e873cbd7d8f5364688204df9ae63c71abb1e92e44e",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:23+00:00",
-          "blockNumber": 25970504,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000066752096995911",
-          "feeWei": "66752096995911",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x782db4c9c0cfc873be64accc1866a3243186be41c4edd2aa6d5ffecc2072cb18",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xea774f67652ae83d130755856b9645fd6374a634",
-          "value": "0.00493",
-          "valueWei": "4930000000000000",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:23+00:00",
-          "blockNumber": 25970504,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "21000",
-          "fee": "0.000022177127259",
-          "feeWei": "22177127259000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x90f76cb39ea7de8da1c707d414a13cdf8a8d11a89bde8ba7b0ae3dcf780c6047",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x18aaa7115705e8be94bffebde57af9bfc265b998",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:23+00:00",
-          "blockNumber": 25970504,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "58891",
-          "fee": "0.000062192057209989",
-          "feeWei": "62192057209989",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x675e9a20dd586367a67b1d8eb6a043c13132cbc57e53d5f4c12df9d0f33e8d10",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x9e7ab12cd76ae4ad23d204c08c047a9def18092a",
-          "value": "0.198731",
-          "valueWei": "198731000000000000",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:23+00:00",
-          "blockNumber": 25970504,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "21000",
-          "fee": "0.000022177127259",
-          "feeWei": "22177127259000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xbb02dda41b4287da7a7f32eb80640716fda0bb145b33c275462c8034a2b04f12",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x31c8eacbffdd875c74b94b077895bd78cf1e64a3",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:23+00:00",
-          "blockNumber": 25970504,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "39957",
-          "fee": "0.000042196736851803",
-          "feeWei": "42196736851803",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xa4a7ae009776ee9647f33e979fa904bc15127bebac61a8467e784de437e27696",
+          "txHash": "0x176e8abcebad212cba1c7dcf860a262524c00239d19b168c041a319bb521682d",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -20185,436 +20090,56 @@
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:11+00:00",
-          "blockNumber": 25970503,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96371",
-          "fee": "0.000101989158690232",
-          "feeWei": "101989158690232",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x143c914ae814aa36ea31bb5ce495313de0d598baf6c4c19b74b5fa974bb7c2ed",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:07:11+00:00",
-          "blockNumber": 25970503,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000066893907209128",
-          "feeWei": "66893907209128",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x8e2d01748299615c558701617f2aefd151344ba66180b5574d2a57d9b754d886",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:59+00:00",
-          "blockNumber": 25970502,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048695318316491",
-          "feeWei": "48695318316491",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x6eec4ce65661a39490941bd80e9e83259002914f8bf6300410faa7589541ef30",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:47+00:00",
-          "blockNumber": 25970501,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "79283",
-          "fee": "0.00008357999430494",
-          "feeWei": "83579994304940",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x08173b9b742f24978e9ce55b9e881be985426bad049cbb8069992a696332bce1",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x20cd9f64e2c57fdd0179021700b981f31a6a6e1e",
-          "value": "0.0028683",
-          "valueWei": "2868300000000000",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:47+00:00",
-          "blockNumber": 25970501,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "21000",
-          "fee": "0.00002213816178",
-          "feeWei": "22138161780000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x809f1d6fbe280c1ab93cbd97429976f56f5d4ecfce527b6f4ec689083b6b2a13",
-          "chain": "ethereum",
-          "fromAddress": "0x63f1b207116778e76de9562ab278cbb9bc9c3179",
-          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "value": "0.00001074871976688",
-          "valueWei": "10748719766880",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:35+00:00",
-          "blockNumber": 25970500,
-          "status": "ok",
-          "direction": "incoming",
-          "gasUsed": "21000",
-          "fee": "0.000002625",
-          "feeWei": "2625000000000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x56dc3efeb393722a168f0f12a0800a1b9d9a2b28fecb5ce2ba83a6662474ab3c",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:35+00:00",
-          "blockNumber": 25970500,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "79283",
-          "fee": "0.000083619885387824",
-          "feeWei": "83619885387824",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x19b593110d8b3192af514dbdbe5d5e9ab067a77ba37388d1f3a566690e0c8040",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:35+00:00",
-          "blockNumber": 25970500,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048631223532752",
-          "feeWei": "48631223532752",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xc3181c952efda3fc03f5ddac39fa974a0d14fec3a436be3b29bdc624b07bdcb1",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:23+00:00",
-          "blockNumber": 25970499,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "178764",
-          "fee": "0.00018856325345262",
-          "feeWei": "188563253452620",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xe8c1a799f53f9f0a2b731bf0aa265a49601063be6d6a87ad9aae5aacf95fcc7f",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:23+00:00",
-          "blockNumber": 25970499,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "34530",
-          "fee": "0.00003642282082365",
-          "feeWei": "36422820823650",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x50cc8d349c811c3331ddc4b7b9432ab07bef93fa7ce2487d7a37fb6036d25508",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:23+00:00",
-          "blockNumber": 25970499,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "34883",
-          "fee": "0.000036795171120515",
-          "feeWei": "36795171120515",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x3d64bbef0a5e07f4bfb3aa8a8a403f53ee457278f63cf047f347e42b5e0887a0",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:06:11+00:00",
-          "blockNumber": 25970498,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96383",
-          "fee": "0.000101739142583435",
-          "feeWei": "101739142583435",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xd3a511118609a3e7325e2ae4f1da58d4af345daab6a24996b277cfb61bd34d99",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:59+00:00",
-          "blockNumber": 25970497,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048623010966544",
-          "feeWei": "48623010966544",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x43317d68d7da43a8d4010621cc255976b482ff9d8f00592c002481684ec830f9",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:47+00:00",
-          "blockNumber": 25970496,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "130715",
-          "fee": "0.00013752909582815",
-          "feeWei": "137529095828150",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x8a4f54b5578d8e6ae3c7abd9fecc3f8fa6c76536228e705b8baf7559eea69682",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:47+00:00",
-          "blockNumber": 25970496,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.00006650404787669",
-          "feeWei": "66504047876690",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x3d5978f3f5f1c1fe3eb2e90a8b0183851145cb3298efa17a29dc67fa9b1efa63",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:35+00:00",
-          "blockNumber": 25970495,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048551697726637",
-          "feeWei": "48551697726637",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x5efce3b12ef3dc4fc58ead1c77d814d356759f48d230a37e5b8e31fe9cd211a6",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:23+00:00",
-          "blockNumber": 25970494,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048605174760401",
-          "feeWei": "48605174760401",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xbd9b13185e090bcdffe49e1fb9864657e32af70749a6e673657aff431609a8bf",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:23+00:00",
-          "blockNumber": 25970494,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96371",
-          "fee": "0.000101588177944319",
-          "feeWei": "101588177944319",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x544b3585b3325e92ea767ac7f27c8af39cd6e00831c5e9b82d404a954bd58da4",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:11+00:00",
-          "blockNumber": 25970493,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96383",
-          "fee": "0.000101218596891503",
-          "feeWei": "101218596891503",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x4b3c82f5e0a5ed6efd54c18ff6e0a0c142274ac92b72f40f52ad0f1dd035aae0",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:11+00:00",
-          "blockNumber": 25970493,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "51983",
-          "fee": "0.000054591020431103",
-          "feeWei": "54591020431103",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xab113eb54f6ab353448ed6d1c89ccc92dfa225b6aead1c649b7c69899955a480",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:11+00:00",
-          "blockNumber": 25970493,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96383",
-          "fee": "0.000101218596891503",
-          "feeWei": "101218596891503",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xc5d68ffbe4360ffaa126ff6e0a454c679eda687f6b6f7fe8b9c6af78d6d18238",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xab9112d4760afe7161597dcba4887c9fa743286a",
-          "value": "0.03193",
-          "valueWei": "31930000000000000",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:05:11+00:00",
-          "blockNumber": 25970493,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "21000",
-          "fee": "0.000022053583461",
-          "feeWei": "22053583461000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xfbaf3650b65c6c3cda9dfeb5680e1598788131146b86dd3f1804d925d4d593e5",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:59+00:00",
-          "blockNumber": 25970492,
+          "timestamp": "2026-09-13T19:48:11+00:00",
+          "blockNumber": 25970708,
           "status": "ok",
           "direction": "outgoing",
           "gasUsed": "79271",
-          "fee": "0.000083563629604804",
-          "feeWei": "83563629604804",
+          "fee": "0.000083541154215258",
+          "feeWei": "83541154215258",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x5cf737cc6667ea4701a2b03f334bff7d9baa53b2523018ada564c0d0da5ffc73",
+          "txHash": "0x5509c867f03249bed95b48181dffd43add533d89706d0b3b8dea01892912c1a2",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:48:11+00:00",
+          "blockNumber": 25970708,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.000066613929643782",
+          "feeWei": "66613929643782",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x844affdf1abee7647eae41821b6f79ceacd9f3d3e959cfa9358edb0875d157fc",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:47:59+00:00",
+          "blockNumber": 25970707,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.000066842060848595",
+          "feeWei": "66842060848595",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xd1c612cb04172cad0f2442a44f8196e5222f973b92406c120800d389d245945f",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -20622,132 +20147,75 @@
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:47+00:00",
-          "blockNumber": 25970491,
+          "timestamp": "2026-09-13T19:47:47+00:00",
+          "blockNumber": 25970706,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "113615",
+          "fee": "0.00012022877092272",
+          "feeWei": "120228770922720",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x4b5dd62e2e5d4dffef40b3745fef0e3949e43f1f316e8dd9419f227df3e42d6f",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:47:47+00:00",
+          "blockNumber": 25970706,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "46121",
+          "fee": "0.000048805801555488",
+          "feeWei": "48805801555488",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x8365e6a1bd370ae0c4b47ca2e43d43baab21c9205e594580b9df019478d5d039",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:47:47+00:00",
+          "blockNumber": 25970706,
           "status": "ok",
           "direction": "outgoing",
           "gasUsed": "96383",
-          "fee": "0.000101585673956578",
-          "feeWei": "101585673956578",
+          "fee": "0.000101993659533024",
+          "feeWei": "101993659533024",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0xc6a4554606e2b481c163ff9b2bf343c9548bf8edf12346c3e0a05f18659801d6",
+          "txHash": "0xe00bb21ee982e89e0ad7a6d202217eb6375a0ede7ed78160bf2de1ec4e0413e7",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x0fb8cf9af3f1a370e460f79a10a62ba932b7223e",
-          "value": "0.14993",
-          "valueWei": "149930000000000000",
+          "toAddress": "0xa7a5d8a10b0ac0f0ffdd52c6bd3d991db574df9d",
+          "value": "0.00243",
+          "valueWei": "2430000000000000",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:47+00:00",
-          "blockNumber": 25970491,
+          "timestamp": "2026-09-13T19:47:47+00:00",
+          "blockNumber": 25970706,
           "status": "ok",
           "direction": "outgoing",
           "gasUsed": "21000",
-          "fee": "0.000022133562486",
-          "feeWei": "22133562486000",
+          "fee": "0.000022222454688",
+          "feeWei": "22222454688000",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x79eb5397ce96c3e2d8c57b1ce77a82010afec5caf57ffc7a60c1746c7596e4ce",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:47+00:00",
-          "blockNumber": 25970491,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "51606",
-          "fee": "0.000054391648840596",
-          "feeWei": "54391648840596",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x88447a963fe93ab60fcbc2094ded11ce8834fecb1a1607ffe57e12f3d0307b28",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:47+00:00",
-          "blockNumber": 25970491,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000066620969103694",
-          "feeWei": "66620969103694",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xa859b77ed079654873799a93d2152e8dc552a9ae6a08c9eba6b7cd1cb03c6e16",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:35+00:00",
-          "blockNumber": 25970490,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46097",
-          "fee": "0.000048675266426816",
-          "feeWei": "48675266426816",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xfd4704e63b27521354207143318ef23438c299b43698f23c9436ad8504e6dc38",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:35+00:00",
-          "blockNumber": 25970490,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048687937602752",
-          "feeWei": "48687937602752",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x11c797a4671c66b3079bd751df8658e8418f03d92b49d65e981d22c078b093ce",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:35+00:00",
-          "blockNumber": 25970490,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000066744363311552",
-          "feeWei": "66744363311552",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xde8a789535dbc020e946681539b36a4f1c1294ff48bd837fdfecf9815f1dc9d9",
+          "txHash": "0x496eafb3a00b1f84c0dbb18c1df9840cbce74c3bc2c3777e8067855c22cb9f71",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -20755,75 +20223,56 @@
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:35+00:00",
-          "blockNumber": 25970490,
+          "timestamp": "2026-09-13T19:47:35+00:00",
+          "blockNumber": 25970705,
           "status": "ok",
           "direction": "outgoing",
-          "gasUsed": "96383",
-          "fee": "0.000101773829186624",
-          "feeWei": "101773829186624",
+          "gasUsed": "79283",
+          "fee": "0.000084085691961461",
+          "feeWei": "84085691961461",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x6ca247bcae09db5f6472f4a80cee08a8a9e93eee85454e30dded1b6aaf758224",
+          "txHash": "0x405d0368fdd58d7579d40bbf25d9a9bf34f5bcb32ead5138f257b034eb25226b",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xe7343f1507d28f838dd2c16e5e5c529ac4ea1aeb",
-          "value": "0.00239045",
-          "valueWei": "2390450000000000",
+          "toAddress": "0x3506424f91fd33084466f402d5d97f05f8e3b4af",
+          "value": "0",
+          "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:23+00:00",
-          "blockNumber": 25970489,
+          "timestamp": "2026-09-13T19:47:35+00:00",
+          "blockNumber": 25970705,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "54343",
+          "fee": "0.000057634912380481",
+          "feeWei": "57634912380481",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xe05f58239b8d26919cb9e98f85360ec8462f25ae4955466434d89f0339d63974",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xc53dc7fb4c1ccf108a21abfc2efb4c6011924d68",
+          "value": "0.02193",
+          "valueWei": "21930000000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:47:23+00:00",
+          "blockNumber": 25970704,
           "status": "ok",
           "direction": "outgoing",
           "gasUsed": "21000",
-          "fee": "0.000022222341015",
-          "feeWei": "22222341015000",
+          "fee": "0.000022295064015",
+          "feeWei": "22295064015000",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x3e6cce5293cab4016478e8b379db0eb99aa2e123e509b56226eb789fab992d9c",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:23+00:00",
-          "blockNumber": 25970489,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "34530",
-          "fee": "0.00003653987786895",
-          "feeWei": "36539877868950",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xc8d0e05aaaab19bf4c0922347afab600f20dbef111d109eaedbf74086655dac6",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x9be89d2a4cd102d8fecc6bf9da793be995c22541",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:11+00:00",
-          "blockNumber": 25970488,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "61691",
-          "fee": "0.000065241037281315",
-          "feeWei": "65241037281315",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x22a252e1cd979bff53330d935c9efb73c9101110b8823ae6ddce3f4a7aba6146",
+          "txHash": "0x994b6f1bddec8beec27430652f0f7d89a0adbf57e64e5d01bc077ef1f75b82cb",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -20831,170 +20280,18 @@
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:11+00:00",
-          "blockNumber": 25970488,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "96395",
-          "fee": "0.000101942095098675",
-          "feeWei": "101942095098675",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x2c93b9f7a449ab4e8671d26e22446987482c17e68f28214674737fdd9ef9866b",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:04:11+00:00",
-          "blockNumber": 25970488,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "46109",
-          "fee": "0.000048762363845685",
-          "feeWei": "48762363845685",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x2852cf02926bb5d3715733230793cc596b57ae37fd705667b938dac917c2cca0",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:59+00:00",
-          "blockNumber": 25970487,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000067217744930693",
-          "feeWei": "67217744930693",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xc628419d4158f4c42de550839e7b3e903f244f10766c93467c781d47524fa667",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:59+00:00",
-          "blockNumber": 25970487,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "79271",
-          "fee": "0.000084298404632267",
-          "feeWei": "84298404632267",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x505b085c83dbf718a963af8ee991127ba43b628a4314b248bdb07b68d27d75dc",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xa187a9818ed7e3f028c09ecd3f81d5016a4e7c71",
-          "value": "0.5952341",
-          "valueWei": "595234100000000000",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:59+00:00",
-          "blockNumber": 25970487,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "21000",
-          "fee": "0.000022331830017",
-          "feeWei": "22331830017000",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xe52951d0c63626ae08e609ab6bc22ad2fd1371e2f0b4d693aad43c63de3a2899",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:47+00:00",
-          "blockNumber": 25970486,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000067111080122447",
-          "feeWei": "67111080122447",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xdea3ecbaa84a60e50b0d6e3cb3ee48048a9fa4a97d0044bb2699b155fbf294c0",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:35+00:00",
-          "blockNumber": 25970485,
+          "timestamp": "2026-09-13T19:46:59+00:00",
+          "blockNumber": 25970702,
           "status": "ok",
           "direction": "outgoing",
           "gasUsed": "113603",
-          "fee": "0.000121184346531129",
-          "feeWei": "121184346531129",
+          "fee": "0.000120760386496897",
+          "feeWei": "120760386496897",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x4216c2332ae75c24a65639dd52d280a59d808a7a8296c800627bd991ab0505e9",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:23+00:00",
-          "blockNumber": 25970484,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "63209",
-          "fee": "0.000067024067940436",
-          "feeWei": "67024067940436",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0xd2e99379d1227c6fb83f73b756ca5517f14b0927073216dfe5e2a2491296b395",
-          "chain": "ethereum",
-          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x5283d291dbcf85356a21ba090e6db59121208b44",
-          "value": "0",
-          "valueWei": "0",
-          "valueRaw": "0",
-          "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:23+00:00",
-          "blockNumber": 25970484,
-          "status": "ok",
-          "direction": "outgoing",
-          "gasUsed": "55987",
-          "fee": "0.000059366173990748",
-          "feeWei": "59366173990748",
-          "feeRaw": "0",
-          "txType": "native_transfer"
-        },
-        {
-          "txHash": "0x6c53ab163e281f0bd373a33d1c42243a516857b31f2de8bc0f028589934bf6a9",
+          "txHash": "0x0467d609f170800571f8ff9f4f8694ef5e0d4e181cc9042355eac77aa22a5ea3",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -21002,70 +20299,925 @@
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:23+00:00",
-          "blockNumber": 25970484,
+          "timestamp": "2026-09-13T19:46:35+00:00",
+          "blockNumber": 25970700,
           "status": "ok",
           "direction": "outgoing",
-          "gasUsed": "130727",
-          "fee": "0.000138617211625708",
-          "feeWei": "138617211625708",
+          "gasUsed": "130703",
+          "fee": "0.000139567342288688",
+          "feeWei": "139567342288688",
           "feeRaw": "0",
           "txType": "native_transfer"
         },
         {
-          "txHash": "0x7ddd69cc0a6faf1ad797f7034db86c0be1cc82aba2f00ccdb6dcce2db42304cd",
+          "txHash": "0x826edce33271b83344f82959c921f6775df04cc54132aadd5ae09d9096820c4a",
           "chain": "ethereum",
           "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
-          "toAddress": "0x31c8eacbffdd875c74b94b077895bd78cf1e64a3",
+          "toAddress": "0x07ba2e9a289b6656444b085fd33e0226bafbbd5a",
+          "value": "0.00425645",
+          "valueWei": "4256450000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:46:35+00:00",
+          "blockNumber": 25970700,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "21000",
+          "fee": "0.000022424230416",
+          "feeWei": "22424230416000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x39c0d8fc59bf52a804091f481a6004d10088f8d35920db5f5669c31c31a14b7f",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "value": "0",
           "valueWei": "0",
           "valueRaw": "0",
           "asset": "ETH",
-          "timestamp": "2026-09-13T19:03:23+00:00",
-          "blockNumber": 25970484,
+          "timestamp": "2026-09-13T19:46:23+00:00",
+          "blockNumber": 25970699,
           "status": "ok",
           "direction": "outgoing",
-          "gasUsed": "39945",
-          "fee": "0.00004235593655778",
-          "feeWei": "42355936557780",
+          "gasUsed": "63209",
+          "fee": "0.000067279389760779",
+          "feeWei": "67279389760779",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x19c52d3f275bc4beacc5a2fe185ec385d5661c1887b744e97c0acf76fc40d0b3",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xec0f705f97d6086ad9d179edc49cb3d721159eb4",
+          "value": "0.07943209",
+          "valueWei": "79432090000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:46:23+00:00",
+          "blockNumber": 25970699,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "21000",
+          "fee": "0.000022352310351",
+          "feeWei": "22352310351000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xff175efd8e73d7099d0aced6598ca27d0448e7d67d05103b4087809bdf48dc4a",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:59+00:00",
+          "blockNumber": 25970697,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "46109",
+          "fee": "0.000049032976045088",
+          "feeWei": "49032976045088",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xc8ce243e71eac98808ed1fa2f6ad79c2e327d6ddee9eae2d170c5107bf059883",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:59+00:00",
+          "blockNumber": 25970697,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "96371",
+          "fee": "0.000102482312226272",
+          "feeWei": "102482312226272",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x7ceb4ae113b2feee90328ac7e915121dca7e1fcd78a78bf1a1cf4257982b7f23",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:47+00:00",
+          "blockNumber": 25970696,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "79283",
+          "fee": "0.0000838453560916",
+          "feeWei": "83845356091600",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xce920c1dc2a4d386422f4251f9008840010135c1c2dcc8e7dfc4e115eeb32b36",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:47+00:00",
+          "blockNumber": 25970696,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.0000668463745468",
+          "feeWei": "66846374546800",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xbe6e12faf52462bb3806755aea49a4cfd60757a4fa1389adc0e787ecf570a4a7",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:35+00:00",
+          "blockNumber": 25970695,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63197",
+          "fee": "0.00006660250495461",
+          "feeWei": "66602504954610",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x032a5d2d25a3562bbbfd7435a10ddd95940a21eccb8d173a8dca933e234ba0ac",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:35+00:00",
+          "blockNumber": 25970695,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "96383",
+          "fee": "0.00010157680325079",
+          "feeWei": "101576803250790",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xb7f1e9edf5de49d1406a684bcce6b16ddf635138b1345efe07b0e7ced38e748b",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:35+00:00",
+          "blockNumber": 25970695,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.00006661515160017",
+          "feeWei": "66615151600170",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x3873870bf4cc324c0be5b613ded237eb93e3a78989bdf07d522d0a78d67a38d6",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x7ef26bbab0a07cbcce2cac83f40678dba1ca7e89",
+          "value": "0.03179697",
+          "valueWei": "31796970000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:35+00:00",
+          "blockNumber": 25970695,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "21000",
+          "fee": "0.00002213162973",
+          "feeWei": "22131629730000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xbd2a0c6ff62767df151cd6e51fed2731ea5ca11134277ead6e851d422a2822b5",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:11+00:00",
+          "blockNumber": 25970693,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "46109",
+          "fee": "0.00004856611817806",
+          "feeWei": "48566118178060",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x4439f023454da6dac2ded1bf25b8ae89f46fa5deec6e8336c30766c2d53814d6",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:45:11+00:00",
+          "blockNumber": 25970693,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "91715",
+          "fee": "0.0000966024318181",
+          "feeWei": "96602431818100",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xeab59fc1c14a0de443abc271ea000d081f0c6d52e80287240370c89c68ea8fa8",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:47+00:00",
+          "blockNumber": 25970691,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "79259",
+          "fee": "0.000083823545307714",
+          "feeWei": "83823545307714",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x46d5aba113e903148297ccbeadc0f32c998b0dd9f8f8750a34bc0f99ec5fb380",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:47+00:00",
+          "blockNumber": 25970691,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "61396",
+          "fee": "0.000064931810743416",
+          "feeWei": "64931810743416",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xcb18ca61f6edf3e0d638000f4db941c4e93b7664b71431cc1027843476e6560b",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:47+00:00",
+          "blockNumber": 25970691,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.000066849221859414",
+          "feeWei": "66849221859414",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x64014c9883bd5cf35e7cf8c8c8ece1943087b128c90ac605b41324ff3914c208",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:35+00:00",
+          "blockNumber": 25970690,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "79283",
+          "fee": "0.000083948932909177",
+          "feeWei": "83948932909177",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x21103e87e41497ea222bb0ef2b116713b8945acad4861e23fb698df56c315eb9",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:23+00:00",
+          "blockNumber": 25970689,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "60474",
+          "fee": "0.000064195563368334",
+          "feeWei": "64195563368334",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x4850ccb91226d37e877550219076988176098e31a47cc237a53e46b013fbaf89",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:23+00:00",
+          "blockNumber": 25970689,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.000067098874970219",
+          "feeWei": "67098874970219",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xa29ac5e96d616cc488ef318c4db2b7d73ece5fea3ca18acdc9dc6256321fb86c",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:23+00:00",
+          "blockNumber": 25970689,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "130703",
+          "fee": "0.000138746448373373",
+          "feeWei": "138746448373373",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xc9ffa26ee3aff3d396ef9bea3c0aca856b789c25395abe6cdff5d0b77163d2af",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:44:11+00:00",
+          "blockNumber": 25970688,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "146195",
+          "fee": "0.00015469274577428",
+          "feeWei": "154692745774280",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xceb7d7476324296c62987dcc83b3f6700f7348a630af27726c62c7fcd2c1c389",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:47+00:00",
+          "blockNumber": 25970686,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "96395",
+          "fee": "0.0001022442987254",
+          "feeWei": "102244298725400",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x4fad517b94333c6272754a7898f52e87cca104fc5ce2409b46c2954f64ce4118",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:47+00:00",
+          "blockNumber": 25970686,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "46109",
+          "fee": "0.00004890691809668",
+          "feeWei": "48906918096680",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xb521748333055e59cefbcfa0187d7c0994f45b7e48480aa789a7d445e15ebd42",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:47+00:00",
+          "blockNumber": 25970686,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "34530",
+          "fee": "0.0000366252983556",
+          "feeWei": "36625298355600",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x7620957c0e9476336bd118924380299b417ad7ed115d9a259ce878f63657a7fd",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:23+00:00",
+          "blockNumber": 25970684,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "96371",
+          "fee": "0.000102409840945159",
+          "feeWei": "102409840945159",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xfa5d9a3857e8a7d3da2b95e29dbedb03ee2c6a5fd555ab69500aee4951b1f1a4",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xbd157af982bca24f3fd24cf416133c719c8654ab",
+          "value": "0.01538871",
+          "valueWei": "15388710000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:23+00:00",
+          "blockNumber": 25970684,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "21000",
+          "fee": "0.000022315911009",
+          "feeWei": "22315911009000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xd619d1a2d1b2a53f465ca8a5a34514785cbf5bbcd0b4c369fd325c3079835eac",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+          "value": "0.86814169",
+          "valueWei": "868141690000000000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:23+00:00",
+          "blockNumber": 25970684,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "21000",
+          "fee": "0.000022315911009",
+          "feeWei": "22315911009000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x9da53008609f1e8157e52e21b56aa6c2fd41abe8c293df09421ae157aa691b28",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:23+00:00",
+          "blockNumber": 25970684,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "96371",
+          "fee": "0.000102409840945159",
+          "feeWei": "102409840945159",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xb9acfa7a198996d56b5861e2bf6a2cae1d9729244ac0c0b2bdc5b024dc07e6f6",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:43:11+00:00",
+          "blockNumber": 25970683,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "63209",
+          "fee": "0.000067312665064276",
+          "feeWei": "67312665064276",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x4297e478ed2ac0eb14b2e533292233ca6abf16c9b747a6dfb502cfa332891d69",
+          "chain": "ethereum",
+          "fromAddress": "0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "0.812304180927662353",
+          "valueWei": "812304180927662353",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005535634083",
+          "feeWei": "5535634083000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x69e264ec4919321401103499d5c311c2e8daffc83221bf93a9e1dd7b85cbb609",
+          "chain": "ethereum",
+          "fromAddress": "0x882bc188efa23aee2a39f527189054d69722661f",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "0.638167851351121",
+          "valueWei": "638167851351121000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005535634083",
+          "feeWei": "5535634083000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xc47653e19ca5a5db457141da3cf8aaba5c9feaed9efc9ada2ab28140c211798d",
+          "chain": "ethereum",
+          "fromAddress": "0x487cab40f6d11a278fa7c442c6741eabe44eab5d",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "1.7457809212555627",
+          "valueWei": "1745780921255562700",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005535634083",
+          "feeWei": "5535634083000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xdb9a2b5ee632a0fcbc36a159975663eb06943a94eefc1de2c371376ca6d8b10d",
+          "chain": "ethereum",
+          "fromAddress": "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "0.514631563133536156",
+          "valueWei": "514631563133536156",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005535634083",
+          "feeWei": "5535634083000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xf4358d12609a37522278b5ab013f09c24bec5393989cb6d4469e422f723f94c2",
+          "chain": "ethereum",
+          "fromAddress": "0x53244a24fbc37f9834bf38955d35eef1f99a2239",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "0.166103277367128",
+          "valueWei": "166103277367128000",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005535634083",
+          "feeWei": "5535634083000",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0x35331e4906e53c9492f9b68ffcde03a02e613afb8e3f7043a70b880f656a8c9b",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x7dd9c5cba05e151c895fde1cf355c9a1d5da6429",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "34754",
+          "fee": "0.000036964410805742",
+          "feeWei": "36964410805742",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xfddb3e96922194b20954e9d729032a5c88274b4b3669f41929ced72317332d58",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0x2a79324c19ef2b89ea98b23bc669b7e7c9f8a517",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "42644",
+          "fee": "0.000045356227611212",
+          "feeWei": "45356227611212",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xce143d6255729c0b74b6f7c4818a827c0347789251688e8eb5b0f07f757c2c5c",
+          "chain": "ethereum",
+          "fromAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "toAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "value": "0",
+          "valueWei": "0",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:59+00:00",
+          "blockNumber": 25970682,
+          "status": "ok",
+          "direction": "outgoing",
+          "gasUsed": "46109",
+          "fee": "0.000049041607234907",
+          "feeWei": "49041607234907",
+          "feeRaw": "0",
+          "txType": "native_transfer"
+        },
+        {
+          "txHash": "0xb48eccd4895892886931283718288688ab9762891729badf0af5e2ea2893c1b7",
+          "chain": "ethereum",
+          "fromAddress": "0x7833341fff5bbbac5a0bd0ca28d6d9fa7d094601",
+          "toAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+          "value": "11.964616175771643594",
+          "valueWei": "11964616175771643594",
+          "valueRaw": "0",
+          "asset": "ETH",
+          "timestamp": "2026-09-13T19:42:47+00:00",
+          "blockNumber": 25970681,
+          "status": "ok",
+          "direction": "incoming",
+          "gasUsed": "21000",
+          "fee": "0.000005587441398",
+          "feeWei": "5587441398000",
           "feeRaw": "0",
           "txType": "native_transfer"
         }
       ],
       "connectedWallets": [
         {
-          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+          "address": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
           "direction": "outgoing",
-          "transactionCount": 16,
+          "transactionCount": 17,
           "totalAmount": "0",
           "totalAmountWei": "0",
           "totalAmountRaw": "0",
           "asset": "ETH",
           "incomingTxCount": 0,
-          "outgoingTxCount": 16,
+          "outgoingTxCount": 17,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:03:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:23+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:43:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:48:11+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
+          "address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
           "direction": "outgoing",
-          "transactionCount": 16,
+          "transactionCount": 14,
           "totalAmount": "0",
           "totalAmountWei": "0",
           "totalAmountRaw": "0",
           "asset": "ETH",
           "incomingTxCount": 0,
-          "outgoingTxCount": 16,
+          "outgoingTxCount": 14,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:03:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:11+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:48:11+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0xa7a5d8a10b0ac0f0ffdd52c6bd3d991db574df9d",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:47:47+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:47:47+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x3506424f91fd33084466f402d5d97f05f8e3b4af",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:47:35+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:47:35+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0xc53dc7fb4c1ccf108a21abfc2efb4c6011924d68",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:47:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:47:23+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x07ba2e9a289b6656444b085fd33e0226bafbbd5a",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:46:35+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:46:35+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0xec0f705f97d6086ad9d179edc49cb3d721159eb4",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:46:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:46:23+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x7ef26bbab0a07cbcce2cac83f40678dba1ca7e89",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:45:35+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:45:35+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:44:47+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:44:47+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+          "direction": "outgoing",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 0,
+          "outgoingTxCount": 1,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:44:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:44:23+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
@@ -21074,62 +21226,24 @@
         {
           "address": "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
           "direction": "outgoing",
-          "transactionCount": 3,
+          "transactionCount": 1,
           "totalAmount": "0",
           "totalAmountWei": "0",
           "totalAmountRaw": "0",
           "asset": "ETH",
           "incomingTxCount": 0,
-          "outgoingTxCount": 3,
+          "outgoingTxCount": 1,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:04:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:06:23+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:43:47+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:43:47+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0x31c8eacbffdd875c74b94b077895bd78cf1e64a3",
-          "direction": "outgoing",
-          "transactionCount": 2,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 2,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:03:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:23+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0x41e5560054824ea6b0732e656e3ad64e20e94e45",
-          "direction": "outgoing",
-          "transactionCount": 2,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 2,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:05:11+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:06:23+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0xea774f67652ae83d130755856b9645fd6374a634",
+          "address": "0xbd157af982bca24f3fd24cf416133c719c8654ab",
           "direction": "outgoing",
           "transactionCount": 1,
           "totalAmount": "0",
@@ -21140,15 +21254,15 @@
           "outgoingTxCount": 1,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:07:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:23+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:43:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:43:23+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0x18aaa7115705e8be94bffebde57af9bfc265b998",
+          "address": "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
           "direction": "outgoing",
           "transactionCount": 1,
           "totalAmount": "0",
@@ -21159,53 +21273,15 @@
           "outgoingTxCount": 1,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:07:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:23+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:43:23+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:43:23+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0x9e7ab12cd76ae4ad23d204c08c047a9def18092a",
-          "direction": "outgoing",
-          "transactionCount": 1,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:07:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:07:23+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0x20cd9f64e2c57fdd0179021700b981f31a6a6e1e",
-          "direction": "outgoing",
-          "transactionCount": 1,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:06:47+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:06:47+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0x63f1b207116778e76de9562ab278cbb9bc9c3179",
+          "address": "0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
           "direction": "incoming",
           "transactionCount": 1,
           "totalAmount": "0",
@@ -21216,15 +21292,91 @@
           "outgoingTxCount": 0,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:06:35+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:06:35+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0xab9112d4760afe7161597dcba4887c9fa743286a",
+          "address": "0x882bc188efa23aee2a39f527189054d69722661f",
+          "direction": "incoming",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 1,
+          "outgoingTxCount": 0,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x487cab40f6d11a278fa7c442c6741eabe44eab5d",
+          "direction": "incoming",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 1,
+          "outgoingTxCount": 0,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+          "direction": "incoming",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 1,
+          "outgoingTxCount": 0,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x53244a24fbc37f9834bf38955d35eef1f99a2239",
+          "direction": "incoming",
+          "transactionCount": 1,
+          "totalAmount": "0",
+          "totalAmountWei": "0",
+          "totalAmountRaw": "0",
+          "asset": "ETH",
+          "incomingTxCount": 1,
+          "outgoingTxCount": 0,
+          "totalSentToInvestigated": "0",
+          "totalReceivedFromInvestigated": "0",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "riskScore": 0,
+          "riskLevel": "LOW",
+          "nodeColor": null,
+          "tags": []
+        },
+        {
+          "address": "0x7dd9c5cba05e151c895fde1cf355c9a1d5da6429",
           "direction": "outgoing",
           "transactionCount": 1,
           "totalAmount": "0",
@@ -21235,15 +21387,15 @@
           "outgoingTxCount": 1,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:05:11+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:05:11+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0x0fb8cf9af3f1a370e460f79a10a62ba932b7223e",
+          "address": "0x2a79324c19ef2b89ea98b23bc669b7e7c9f8a517",
           "direction": "outgoing",
           "transactionCount": 1,
           "totalAmount": "0",
@@ -21254,91 +21406,34 @@
           "outgoingTxCount": 1,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:04:47+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:04:47+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:42:59+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:59+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         },
         {
-          "address": "0xe7343f1507d28f838dd2c16e5e5c529ac4ea1aeb",
-          "direction": "outgoing",
+          "address": "0x7833341fff5bbbac5a0bd0ca28d6d9fa7d094601",
+          "direction": "incoming",
           "transactionCount": 1,
           "totalAmount": "0",
           "totalAmountWei": "0",
           "totalAmountRaw": "0",
           "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
+          "incomingTxCount": 1,
+          "outgoingTxCount": 0,
           "totalSentToInvestigated": "0",
           "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:04:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:04:23+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0x9be89d2a4cd102d8fecc6bf9da793be995c22541",
-          "direction": "outgoing",
-          "transactionCount": 1,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:04:11+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:04:11+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0xa187a9818ed7e3f028c09ecd3f81d5016a4e7c71",
-          "direction": "outgoing",
-          "transactionCount": 1,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:03:59+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:03:59+00:00",
-          "riskScore": 0,
-          "riskLevel": "LOW",
-          "nodeColor": null,
-          "tags": []
-        },
-        {
-          "address": "0x5283d291dbcf85356a21ba090e6db59121208b44",
-          "direction": "outgoing",
-          "transactionCount": 1,
-          "totalAmount": "0",
-          "totalAmountWei": "0",
-          "totalAmountRaw": "0",
-          "asset": "ETH",
-          "incomingTxCount": 0,
-          "outgoingTxCount": 1,
-          "totalSentToInvestigated": "0",
-          "totalReceivedFromInvestigated": "0",
-          "firstInteractionTimestamp": "2026-09-13T19:03:23+00:00",
-          "lastInteractionTimestamp": "2026-09-13T19:03:23+00:00",
+          "firstInteractionTimestamp": "2026-09-13T19:42:47+00:00",
+          "lastInteractionTimestamp": "2026-09-13T19:42:47+00:00",
           "riskScore": 0,
           "riskLevel": "LOW",
           "nodeColor": null,
           "tags": []
         }
       ],
-      "lastAnalyzedAt": "2026-09-13T19:08:41.439337+00:00",
+      "lastAnalyzedAt": "2026-09-13T19:48:58.503356+00:00",
       "attribution": {
         "nearestVasp": {
           "name": "Binance 14",
@@ -21375,19 +21470,43 @@
             "verified": true,
             "firstSeen": null,
             "lastSeen": null
+          },
+          {
+            "entityName": "Binance 15",
+            "entityType": "centralized_exchange",
+            "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+            "hopDistance": 2,
+            "confidence": "HIGH",
+            "source": "Public Etherscan Verified Tag",
+            "sourceUrl": "https://etherscan.io/address/0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+            "totalObservedTransfer": "3.09593133",
+            "path": [
+              "0x28c6c06298d514db089934071355e5743bf21d60",
+              "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+              "0x21a31ee1afc51d94c2efccaa2092ad1028285549"
+            ],
+            "transactionHashes": [
+              "0xd619d1a2d1b2a53f465ca8a5a34514785cbf5bbcd0b4c369fd325c3079835eac",
+              "0x60c677c5ec53f38ec8f9b41149c36f2f76b81e05b381427c6083a01eebbde0c2"
+            ],
+            "isDirectDepositEndpoint": false,
+            "endpointClassification": "Multi-hop exchange-attributed address",
+            "verified": true,
+            "firstSeen": "2026-08-25T21:03:35+00:00",
+            "lastSeen": "2026-09-04T16:20:11+00:00"
           }
         ],
         "investigationSummary": "Investigated wallet 0x28c6...1d60 is directly identified as verified centralized_exchange infrastructure belonging to Binance 14 (Hop 0). No intermediary multi-hop tracing was required. Attribution is verified via Public Etherscan Verified Tag with HIGH confidence.",
         "traceSummary": {
-          "nodes": 17,
-          "transactions": 50,
-          "maxDepth": 1,
+          "nodes": 45,
+          "transactions": 142,
+          "maxDepth": 2,
           "direction": "both",
-          "executionTimeSeconds": 3.1
+          "executionTimeSeconds": 11.011
         },
-        "pathsCount": 16,
-        "nodesCount": 17,
-        "lastAttributedAt": "2026-09-13T19:08:41.591569+00:00"
+        "pathsCount": 29,
+        "nodesCount": 45,
+        "lastAttributedAt": "2026-09-13T19:48:58.643520+00:00"
       },
       "nearestVaspName": "Binance 14",
       "nearestVaspAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
@@ -21397,17 +21516,17 @@
       "_id": "ethereum:0x2222222222222222222222222222222222222222",
       "address": "0x2222222222222222222222222222222222222222",
       "chain": "ethereum",
-      "globalSearchCount": 6,
+      "globalSearchCount": 7,
       "investigators": [
         "LEA-I4C-4092"
       ],
       "firstSearchedAt": "2026-09-13T06:46:14.246199+00:00",
-      "lastSearchedAt": "2026-09-13T19:07:06.450350+00:00",
-      "appearanceCountInGraphs": 55,
+      "lastSearchedAt": "2026-09-13T19:48:43.951653+00:00",
+      "appearanceCountInGraphs": 64,
       "associatedCaseIds": [],
       "tags": [
-        "Searched 5 times before",
-        "High Risk"
+        "High Risk",
+        "Searched 6 times before"
       ],
       "balance": "0.618337620027187157",
       "balanceRaw": "618337620027187157",
@@ -21419,7 +21538,7 @@
       "riskScore": 66,
       "riskLevel": "HIGH",
       "firstSeen": "2024-07-19T13:15:11+00:00",
-      "lastSeen": "2026-09-13T19:07:28.458788+00:00",
+      "lastSeen": "2026-09-13T19:49:05.589797+00:00",
       "transactions": [
         {
           "txHash": "0xd7e59d3c178382ed01d7efea2de96fc88e493b106efd71cd4cb614d29c7cc74f",
@@ -22640,7 +22759,7 @@
           "tags": []
         }
       ],
-      "lastAnalyzedAt": "2026-09-13T19:07:06.689798+00:00"
+      "lastAnalyzedAt": "2026-09-13T19:48:44.107272+00:00"
     },
     "ethereum:0x290ca4da2c963dea5ae736469a5b8a53d64d4e6a": {
       "_id": "ethereum:0x290ca4da2c963dea5ae736469a5b8a53d64d4e6a",
@@ -22650,14 +22769,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:14.555252+00:00",
       "lastSearchedAt": "2026-09-13T06:46:14.555252+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:06.848300+00:00"
+      "lastSeen": "2026-09-13T19:48:44.269659+00:00"
     },
     "ethereum:0x5a7d9714778ade22b632d5a3c904ff5f3a745ae6": {
       "_id": "ethereum:0x5a7d9714778ade22b632d5a3c904ff5f3a745ae6",
@@ -22667,14 +22786,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:14.555252+00:00",
       "lastSearchedAt": "2026-09-13T06:46:14.555252+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:06.848300+00:00"
+      "lastSeen": "2026-09-13T19:48:44.269659+00:00"
     },
     "ethereum:0x3e709f86ca0c242e24d518c5b9722e1eebdc3bb2": {
       "_id": "ethereum:0x3e709f86ca0c242e24d518c5b9722e1eebdc3bb2",
@@ -22684,14 +22803,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:14.555252+00:00",
       "lastSearchedAt": "2026-09-13T06:46:14.555252+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:06.848300+00:00"
+      "lastSeen": "2026-09-13T19:48:44.269659+00:00"
     },
     "ethereum:0xb5534960b0832a19f165b8c88ebb33f969272f62": {
       "_id": "ethereum:0xb5534960b0832a19f165b8c88ebb33f969272f62",
@@ -22701,14 +22820,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:14.555252+00:00",
       "lastSearchedAt": "2026-09-13T06:46:14.555252+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:06.848300+00:00"
+      "lastSeen": "2026-09-13T19:48:44.269659+00:00"
     },
     "ethereum:0x29e90c48082b5cc84cfc47a3adf87e3f3f1d86e1": {
       "_id": "ethereum:0x29e90c48082b5cc84cfc47a3adf87e3f3f1d86e1",
@@ -22718,14 +22837,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:14.555252+00:00",
       "lastSearchedAt": "2026-09-13T06:46:14.555252+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:06.848300+00:00"
+      "lastSeen": "2026-09-13T19:48:44.269659+00:00"
     },
     "ethereum:0x595832f8fc6bf59c85c527fec3740a1b7a361269": {
       "_id": "ethereum:0x595832f8fc6bf59c85c527fec3740a1b7a361269",
@@ -22784,14 +22903,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 90,
+      "appearanceCountInGraphs": 91,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:22:34.315274+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055": {
       "_id": "ethereum:0xee7ae85f2fe2239e27d9c1e23fffe168d63b4055",
@@ -22801,14 +22920,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 60,
+      "appearanceCountInGraphs": 61,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:08:38.187987+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xbb0e17ef65f82ab018d8edd776e8dd940327b28b": {
       "_id": "ethereum:0xbb0e17ef65f82ab018d8edd776e8dd940327b28b",
@@ -23092,14 +23211,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 50,
+      "appearanceCountInGraphs": 51,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:08:38.187987+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x173f2039f0f2cf978076be92f2d6808e188fbdd6": {
       "_id": "ethereum:0x173f2039f0f2cf978076be92f2d6808e188fbdd6",
@@ -23565,14 +23684,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 27,
+      "appearanceCountInGraphs": 28,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:03:10.377994+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x8290333cef9e6d528dd5618fb97a76f268f3edd4": {
       "_id": "ethereum:0x8290333cef9e6d528dd5618fb97a76f268f3edd4",
@@ -23633,14 +23752,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 12,
+      "appearanceCountInGraphs": 13,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T16:47:22.274673+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xaea46a60368a7bd060eec7df8cba43b7ef41ad85": {
       "_id": "ethereum:0xaea46a60368a7bd060eec7df8cba43b7ef41ad85",
@@ -23667,14 +23786,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T12:38:21.978163+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x3506424f91fd33084466f402d5d97f05f8e3b4af": {
       "_id": "ethereum:0x3506424f91fd33084466f402d5d97f05f8e3b4af",
@@ -23684,14 +23803,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:46:26.102860+00:00",
       "lastSearchedAt": "2026-09-13T06:46:26.102860+00:00",
-      "appearanceCountInGraphs": 7,
+      "appearanceCountInGraphs": 8,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T13:49:09.029327+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x2345804130f13a04c95b3838f31564992aa1885d": {
       "_id": "ethereum:0x2345804130f13a04c95b3838f31564992aa1885d",
@@ -23733,14 +23852,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:18.492729+00:00",
       "lastSearchedAt": "2026-09-13T06:47:18.492729+00:00",
-      "appearanceCountInGraphs": 36,
+      "appearanceCountInGraphs": 42,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:27.606106+00:00"
+      "lastSeen": "2026-09-13T19:49:04.870190+00:00"
     },
     "ethereum:0x4444444444444444444444444444444444444444": {
       "_id": "ethereum:0x4444444444444444444444444444444444444444",
@@ -23750,14 +23869,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:18.847930+00:00",
       "lastSearchedAt": "2026-09-13T06:47:18.847930+00:00",
-      "appearanceCountInGraphs": 24,
+      "appearanceCountInGraphs": 28,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:28.152288+00:00"
+      "lastSeen": "2026-09-13T19:49:05.304894+00:00"
     },
     "ethereum:0x5555555555555555555555555555555555555555": {
       "_id": "ethereum:0x5555555555555555555555555555555555555555",
@@ -23767,14 +23886,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:19.370654+00:00",
       "lastSearchedAt": "2026-09-13T06:47:19.370654+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:22.547403+00:00"
+      "lastSeen": "2026-09-13T19:49:00.300583+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000001": {
       "_id": "ethereum:0x0000000000000000000000000000000000000001",
@@ -23784,14 +23903,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000002": {
       "_id": "ethereum:0x0000000000000000000000000000000000000002",
@@ -23801,14 +23920,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000003": {
       "_id": "ethereum:0x0000000000000000000000000000000000000003",
@@ -23818,14 +23937,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000004": {
       "_id": "ethereum:0x0000000000000000000000000000000000000004",
@@ -23835,14 +23954,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000005": {
       "_id": "ethereum:0x0000000000000000000000000000000000000005",
@@ -23852,14 +23971,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000006": {
       "_id": "ethereum:0x0000000000000000000000000000000000000006",
@@ -23869,14 +23988,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000007": {
       "_id": "ethereum:0x0000000000000000000000000000000000000007",
@@ -23886,14 +24005,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000008": {
       "_id": "ethereum:0x0000000000000000000000000000000000000008",
@@ -23903,14 +24022,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x0000000000000000000000000000000000000009": {
       "_id": "ethereum:0x0000000000000000000000000000000000000009",
@@ -23920,14 +24039,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x000000000000000000000000000000000000000a": {
       "_id": "ethereum:0x000000000000000000000000000000000000000a",
@@ -23937,14 +24056,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x000000000000000000000000000000000000000b": {
       "_id": "ethereum:0x000000000000000000000000000000000000000b",
@@ -23954,14 +24073,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x000000000000000000000000000000000000000c": {
       "_id": "ethereum:0x000000000000000000000000000000000000000c",
@@ -23971,14 +24090,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x000000000000000000000000000000000000000d": {
       "_id": "ethereum:0x000000000000000000000000000000000000000d",
@@ -23988,14 +24107,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "ethereum:0x000000000000000000000000000000000000000e": {
       "_id": "ethereum:0x000000000000000000000000000000000000000e",
@@ -24005,14 +24124,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T06:47:20.487775+00:00",
       "lastSearchedAt": "2026-09-13T06:47:20.487775+00:00",
-      "appearanceCountInGraphs": 6,
+      "appearanceCountInGraphs": 7,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:24.693420+00:00"
+      "lastSeen": "2026-09-13T19:49:02.304814+00:00"
     },
     "tron:twkyemegnjkhjkhidtjaozn8r3pzqd12ue": {
       "_id": "tron:twkyemegnjkhjkhidtjaozn8r3pzqd12ue",
@@ -30962,14 +31081,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T07:12:06.336754+00:00",
       "lastSearchedAt": "2026-09-13T07:12:06.336754+00:00",
-      "appearanceCountInGraphs": 44,
+      "appearanceCountInGraphs": 45,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:07:54.348418+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x5cd3b447282624c1c163fb67f7129d72bf26517e": {
       "_id": "ethereum:0x5cd3b447282624c1c163fb67f7129d72bf26517e",
@@ -31197,14 +31316,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T07:12:06.336754+00:00",
       "lastSearchedAt": "2026-09-13T07:12:06.336754+00:00",
-      "appearanceCountInGraphs": 10,
+      "appearanceCountInGraphs": 11,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:15:47.343031+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x4976a4a02f38326660d17bf34b431dc6e2eb2327": {
       "_id": "ethereum:0x4976a4a02f38326660d17bf34b431dc6e2eb2327",
@@ -31231,14 +31350,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T07:12:06.336754+00:00",
       "lastSearchedAt": "2026-09-13T07:12:06.336754+00:00",
-      "appearanceCountInGraphs": 5,
+      "appearanceCountInGraphs": 6,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:15:47.343031+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xab97925eb84fe0260779f58b7cb08d77dcb1ee2b": {
       "_id": "ethereum:0xab97925eb84fe0260779f58b7cb08d77dcb1ee2b",
@@ -31855,14 +31974,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T07:12:47.303253+00:00",
       "lastSearchedAt": "2026-09-13T07:12:47.303253+00:00",
-      "appearanceCountInGraphs": 45,
+      "appearanceCountInGraphs": 46,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:14.216087+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x21a31ee1afc51d94c2efccaa2092ad1028285549": {
       "_id": "ethereum:0x21a31ee1afc51d94c2efccaa2092ad1028285549",
@@ -31872,14 +31991,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T07:12:47.303253+00:00",
       "lastSearchedAt": "2026-09-13T07:12:47.303253+00:00",
-      "appearanceCountInGraphs": 47,
+      "appearanceCountInGraphs": 48,
       "associatedCaseIds": [],
       "entityName": "Binance 15",
       "entityType": "centralized_exchange",
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:07:14.216087+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xedb33bf0e5a0be58fe104e7ea7c8416f978983ad": {
       "_id": "ethereum:0xedb33bf0e5a0be58fe104e7ea7c8416f978983ad",
@@ -33705,14 +33824,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T12:01:56.087829+00:00",
       "lastSearchedAt": "2026-09-13T12:01:56.087829+00:00",
-      "appearanceCountInGraphs": 2,
+      "appearanceCountInGraphs": 3,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T12:02:07.408424+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x0cc1181806486b0c4b41ccf76f1bba0a7bba5914": {
       "_id": "ethereum:0x0cc1181806486b0c4b41ccf76f1bba0a7bba5914",
@@ -35014,14 +35133,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T12:34:48.142521+00:00",
       "lastSearchedAt": "2026-09-13T12:34:48.142521+00:00",
-      "appearanceCountInGraphs": 21,
+      "appearanceCountInGraphs": 22,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:22:34.315274+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x1f5cff5d0410c767af7d4656e89ca886d3fb0d03": {
       "_id": "ethereum:0x1f5cff5d0410c767af7d4656e89ca886d3fb0d03",
@@ -35099,14 +35218,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T12:34:48.142521+00:00",
       "lastSearchedAt": "2026-09-13T12:34:48.142521+00:00",
-      "appearanceCountInGraphs": 9,
+      "appearanceCountInGraphs": 10,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:08:38.187987+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xb9391e439f7f64622732f04bb82c8fa5017264e6": {
       "_id": "ethereum:0xb9391e439f7f64622732f04bb82c8fa5017264e6",
@@ -35898,14 +36017,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T12:34:48.142521+00:00",
       "lastSearchedAt": "2026-09-13T12:34:48.142521+00:00",
-      "appearanceCountInGraphs": 7,
+      "appearanceCountInGraphs": 8,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T14:04:27.142151+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xbd1931bd8e7a5561744d690c7d5d46ff41ab7108": {
       "_id": "ethereum:0xbd1931bd8e7a5561744d690c7d5d46ff41ab7108",
@@ -40439,14 +40558,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T13:42:39.047079+00:00",
       "lastSearchedAt": "2026-09-13T13:42:39.047079+00:00",
-      "appearanceCountInGraphs": 14,
+      "appearanceCountInGraphs": 15,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T13:47:14.846059+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xe238d92562f2e96e6d5bebcfa415f129f05fd990": {
       "_id": "ethereum:0xe238d92562f2e96e6d5bebcfa415f129f05fd990",
@@ -42411,14 +42530,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T14:04:16.959242+00:00",
       "lastSearchedAt": "2026-09-13T14:04:16.959242+00:00",
-      "appearanceCountInGraphs": 2,
+      "appearanceCountInGraphs": 3,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T14:04:27.142151+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xed9b240a5fceffa170bba44ca53b5e786449187c": {
       "_id": "ethereum:0xed9b240a5fceffa170bba44ca53b5e786449187c",
@@ -43057,14 +43176,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T14:13:59.186556+00:00",
       "lastSearchedAt": "2026-09-13T14:13:59.186556+00:00",
-      "appearanceCountInGraphs": 5,
+      "appearanceCountInGraphs": 6,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:04:49.444338+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x3bc99c01382a2b91e1b8c41f6ea69324b8ac297e": {
       "_id": "ethereum:0x3bc99c01382a2b91e1b8c41f6ea69324b8ac297e",
@@ -55315,14 +55434,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T18:45:55.276477+00:00",
       "lastSearchedAt": "2026-09-13T18:45:55.276477+00:00",
-      "appearanceCountInGraphs": 4,
+      "appearanceCountInGraphs": 5,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:47:52.593985+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x0334d71bc93f55e7dea0ae90b9e376f2a32060d7": {
       "_id": "ethereum:0x0334d71bc93f55e7dea0ae90b9e376f2a32060d7",
@@ -55553,14 +55672,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T18:45:55.276477+00:00",
       "lastSearchedAt": "2026-09-13T18:45:55.276477+00:00",
-      "appearanceCountInGraphs": 4,
+      "appearanceCountInGraphs": 5,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:47:52.593985+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0xf78278228ec485a8650597332630d1542a3a5d06": {
       "_id": "ethereum:0xf78278228ec485a8650597332630d1542a3a5d06",
@@ -55570,14 +55689,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T18:45:55.276477+00:00",
       "lastSearchedAt": "2026-09-13T18:45:55.276477+00:00",
-      "appearanceCountInGraphs": 4,
+      "appearanceCountInGraphs": 5,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T18:47:52.593985+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x264bd8291fae1d75db2c5f573b07faa6715997b5": {
       "_id": "ethereum:0x264bd8291fae1d75db2c5f573b07faa6715997b5",
@@ -57389,14 +57508,14 @@
       "investigators": [],
       "firstSearchedAt": "2026-09-13T19:08:08.623489+00:00",
       "lastSearchedAt": "2026-09-13T19:08:08.623489+00:00",
-      "appearanceCountInGraphs": 2,
+      "appearanceCountInGraphs": 3,
       "associatedCaseIds": [],
       "entityName": null,
       "entityType": null,
       "tags": [
         "Appeared in 1 past case"
       ],
-      "lastSeen": "2026-09-13T19:08:38.187987+00:00"
+      "lastSeen": "2026-09-13T19:48:51.795916+00:00"
     },
     "ethereum:0x20cd9f64e2c57fdd0179021700b981f31a6a6e1e": {
       "_id": "ethereum:0x20cd9f64e2c57fdd0179021700b981f31a6a6e1e",
@@ -57652,6 +57771,342 @@
         "Appeared in 1 past case"
       ],
       "lastSeen": "2026-09-13T19:22:34.315274+00:00"
+    },
+    "ethereum:0xa7a5d8a10b0ac0f0ffdd52c6bd3d991db574df9d": {
+      "_id": "ethereum:0xa7a5d8a10b0ac0f0ffdd52c6bd3d991db574df9d",
+      "address": "0xa7a5d8a10b0ac0f0ffdd52c6bd3d991db574df9d",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xc53dc7fb4c1ccf108a21abfc2efb4c6011924d68": {
+      "_id": "ethereum:0xc53dc7fb4c1ccf108a21abfc2efb4c6011924d68",
+      "address": "0xc53dc7fb4c1ccf108a21abfc2efb4c6011924d68",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x07ba2e9a289b6656444b085fd33e0226bafbbd5a": {
+      "_id": "ethereum:0x07ba2e9a289b6656444b085fd33e0226bafbbd5a",
+      "address": "0x07ba2e9a289b6656444b085fd33e0226bafbbd5a",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xec0f705f97d6086ad9d179edc49cb3d721159eb4": {
+      "_id": "ethereum:0xec0f705f97d6086ad9d179edc49cb3d721159eb4",
+      "address": "0xec0f705f97d6086ad9d179edc49cb3d721159eb4",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x7ef26bbab0a07cbcce2cac83f40678dba1ca7e89": {
+      "_id": "ethereum:0x7ef26bbab0a07cbcce2cac83f40678dba1ca7e89",
+      "address": "0x7ef26bbab0a07cbcce2cac83f40678dba1ca7e89",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xbd157af982bca24f3fd24cf416133c719c8654ab": {
+      "_id": "ethereum:0xbd157af982bca24f3fd24cf416133c719c8654ab",
+      "address": "0xbd157af982bca24f3fd24cf416133c719c8654ab",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x4fd35aa611164ce397cb93dbe7475f57e17ea689": {
+      "_id": "ethereum:0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+      "address": "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e": {
+      "_id": "ethereum:0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
+      "address": "0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x34c4f43caa09e09462a6631861bbdb67d6a93760": {
+      "_id": "ethereum:0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+      "address": "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x53244a24fbc37f9834bf38955d35eef1f99a2239": {
+      "_id": "ethereum:0x53244a24fbc37f9834bf38955d35eef1f99a2239",
+      "address": "0x53244a24fbc37f9834bf38955d35eef1f99a2239",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x031de51f3e8016514bd0963d0b2ab825a591db9a": {
+      "_id": "ethereum:0x031de51f3e8016514bd0963d0b2ab825a591db9a",
+      "address": "0x031de51f3e8016514bd0963d0b2ab825a591db9a",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xfc94323c8adca26b43ecd82976ff1a87d9414be1": {
+      "_id": "ethereum:0xfc94323c8adca26b43ecd82976ff1a87d9414be1",
+      "address": "0xfc94323c8adca26b43ecd82976ff1a87d9414be1",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x9345eddbe239ba3f5e36790e47d3bbd033e13a1a": {
+      "_id": "ethereum:0x9345eddbe239ba3f5e36790e47d3bbd033e13a1a",
+      "address": "0x9345eddbe239ba3f5e36790e47d3bbd033e13a1a",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x4858803549df78ad5f6d5f88628d178c0f7fdfaf": {
+      "_id": "ethereum:0x4858803549df78ad5f6d5f88628d178c0f7fdfaf",
+      "address": "0x4858803549df78ad5f6d5f88628d178c0f7fdfaf",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xd56ea982f5db31e880cf17f4bcf87487edfd3cc6": {
+      "_id": "ethereum:0xd56ea982f5db31e880cf17f4bcf87487edfd3cc6",
+      "address": "0xd56ea982f5db31e880cf17f4bcf87487edfd3cc6",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x624236fb30a746af64f5c328604639264b5edc9f": {
+      "_id": "ethereum:0x624236fb30a746af64f5c328604639264b5edc9f",
+      "address": "0x624236fb30a746af64f5c328604639264b5edc9f",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x624a0d8250f1a0d6c116fbccc30a92fb7670dc9f": {
+      "_id": "ethereum:0x624a0d8250f1a0d6c116fbccc30a92fb7670dc9f",
+      "address": "0x624a0d8250f1a0d6c116fbccc30a92fb7670dc9f",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x6242cbe72808bac33cb755523364fc57992bdc9f": {
+      "_id": "ethereum:0x6242cbe72808bac33cb755523364fc57992bdc9f",
+      "address": "0x6242cbe72808bac33cb755523364fc57992bdc9f",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xfd88a8413048b46568548de13ed77c666cd7d3be": {
+      "_id": "ethereum:0xfd88a8413048b46568548de13ed77c666cd7d3be",
+      "address": "0xfd88a8413048b46568548de13ed77c666cd7d3be",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0x83964898e276ca1f3a9e792a452118a85b7164a8": {
+      "_id": "ethereum:0x83964898e276ca1f3a9e792a452118a85b7164a8",
+      "address": "0x83964898e276ca1f3a9e792a452118a85b7164a8",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
+    },
+    "ethereum:0xddc1295fb6ff4487d48eca052e37da6d570eeafd": {
+      "_id": "ethereum:0xddc1295fb6ff4487d48eca052e37da6d570eeafd",
+      "address": "0xddc1295fb6ff4487d48eca052e37da6d570eeafd",
+      "chain": "ethereum",
+      "globalSearchCount": 0,
+      "investigators": [],
+      "firstSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "lastSearchedAt": "2026-09-13T19:48:51.795916+00:00",
+      "appearanceCountInGraphs": 1,
+      "associatedCaseIds": [],
+      "entityName": null,
+      "entityType": null,
+      "tags": [
+        "Appeared in 1 past case"
+      ]
     }
   },
   "investigations": {
@@ -61793,6 +62248,150 @@
       },
       "createdAt": "2026-09-13T19:22:44.580325+00:00",
       "_id": "doc_145"
+    },
+    "doc_146": {
+      "targetAddress": "0x1111111111111111111111111111111111111111",
+      "chain": "ethereum",
+      "nearestVasp": {
+        "name": "Binance 14",
+        "address": "0x28c6c06298d514db089934071355e5743bf21d60",
+        "type": "centralized_exchange",
+        "hopDistance": 1,
+        "confidence": "HIGH",
+        "source": "Public Etherscan Verified Tag",
+        "sourceUrl": "https://etherscan.io/address/0x28c6c06298d514db089934071355e5743bf21d60",
+        "path": [
+          "0x1111111111111111111111111111111111111111",
+          "0x28c6c06298d514db089934071355e5743bf21d60"
+        ],
+        "totalTransferred": "2.5",
+        "isDirectDepositEndpoint": true,
+        "endpointClassification": "Direct exchange counterparty address",
+        "transactionHashes": [
+          "0xabc123"
+        ]
+      },
+      "nodeCount": 2,
+      "edgeCount": 1,
+      "traceSummary": {
+        "nodes": 2,
+        "transactions": 1,
+        "maxDepth": 3,
+        "direction": "outgoing",
+        "executionTimeSeconds": 0.25
+      },
+      "createdAt": "2026-09-13T19:48:25.978439+00:00",
+      "_id": "doc_146"
+    },
+    "doc_147": {
+      "targetAddress": "0x1111111111111111111111111111111111111111",
+      "chain": "ethereum",
+      "nearestVasp": {
+        "name": "Kraken 1",
+        "address": "0x2910543af39aba0cd09dbb2d50200b3e800a63d2",
+        "type": "centralized_exchange",
+        "hopDistance": 1,
+        "confidence": "HIGH",
+        "source": "Public Etherscan Verified Tag",
+        "sourceUrl": "https://etherscan.io/address/0x2910543af39aba0cd09dbb2d50200b3e800a63d2",
+        "path": [
+          "0x1111111111111111111111111111111111111111",
+          "0x2910543af39aba0cd09dbb2d50200b3e800a63d2"
+        ],
+        "totalTransferred": "1.0",
+        "isDirectDepositEndpoint": true,
+        "endpointClassification": "Direct exchange counterparty address",
+        "transactionHashes": []
+      },
+      "nodeCount": 4,
+      "edgeCount": 0,
+      "traceSummary": {
+        "nodes": 4,
+        "transactions": 3,
+        "maxDepth": 3,
+        "direction": "outgoing",
+        "executionTimeSeconds": 0.4
+      },
+      "createdAt": "2026-09-13T19:48:26.588304+00:00",
+      "_id": "doc_147"
+    },
+    "doc_148": {
+      "targetAddress": "0x1111111111111111111111111111111111111111",
+      "chain": "ethereum",
+      "nearestVasp": null,
+      "nodeCount": 2,
+      "edgeCount": 0,
+      "traceSummary": {
+        "nodes": 2,
+        "transactions": 1,
+        "maxDepth": 3,
+        "direction": "outgoing",
+        "executionTimeSeconds": 0.1
+      },
+      "createdAt": "2026-09-13T19:48:27.204923+00:00",
+      "_id": "doc_148"
+    },
+    "doc_149": {
+      "targetAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "chain": "ethereum",
+      "nearestVasp": {
+        "name": "Binance 14",
+        "address": "0x28c6c06298d514db089934071355e5743bf21d60",
+        "type": "centralized_exchange",
+        "hopDistance": 0,
+        "confidence": "HIGH",
+        "source": "Public Etherscan Verified Tag",
+        "sourceUrl": "https://etherscan.io/address/0x28c6c06298d514db089934071355e5743bf21d60",
+        "path": [
+          "0x28c6c06298d514db089934071355e5743bf21d60"
+        ],
+        "totalTransferred": "0",
+        "isDirectDepositEndpoint": true,
+        "endpointClassification": "Target wallet is itself an identified centralized_exchange infrastructure endpoint",
+        "transactionHashes": []
+      },
+      "nodeCount": 1,
+      "edgeCount": 0,
+      "traceSummary": {
+        "nodes": 1,
+        "transactions": 0,
+        "maxDepth": 3,
+        "direction": "outgoing",
+        "executionTimeSeconds": 0.05
+      },
+      "createdAt": "2026-09-13T19:48:36.492569+00:00",
+      "_id": "doc_149"
+    },
+    "doc_150": {
+      "targetAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
+      "chain": "ethereum",
+      "nearestVasp": {
+        "name": "Binance 14",
+        "address": "0x28c6c06298d514db089934071355e5743bf21d60",
+        "type": "centralized_exchange",
+        "hopDistance": 0,
+        "confidence": "HIGH",
+        "source": "Public Etherscan Verified Tag",
+        "sourceUrl": "https://etherscan.io/address/0x28c6c06298d514db089934071355e5743bf21d60",
+        "path": [
+          "0x28c6c06298d514db089934071355e5743bf21d60"
+        ],
+        "totalTransferred": "0",
+        "isDirectDepositEndpoint": true,
+        "endpointClassification": "Target wallet is itself an identified centralized_exchange infrastructure endpoint",
+        "transactionHashes": []
+      },
+      "nodeCount": 45,
+      "edgeCount": 52,
+      "traceSummary": {
+        "nodes": 45,
+        "transactions": 142,
+        "maxDepth": 2,
+        "direction": "both",
+        "executionTimeSeconds": 11.011
+      },
+      "createdAt": "2026-09-13T19:48:58.643520+00:00",
+      "_id": "doc_150"
     }
   },
   "investigation_reports": {
@@ -61936,22 +62535,22 @@
       "caseId": "CASE-2026-I4C-TEST",
       "targetAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
       "chain": "ethereum",
-      "generatedAt": "2026-09-13T19:07:10.034929+00:00",
-      "suspicionScore": 73,
+      "generatedAt": "2026-09-13T19:48:46.951967+00:00",
+      "suspicionScore": 81,
       "riskLevel": "HIGH",
-      "sha256Checksum": "ba3cecb73ac0eb666374cf4bb191c7bc06777bc09e70ff30149cd0cb56a8a9f2",
+      "sha256Checksum": "e6ea11afa5baef0be8e033f61a322743e7bdf3828971c8201776a7f780de30e2",
       "nearestVasp": "Binance 14",
       "sections": {
         "section1_case_summary": {
           "caseId": "CASE-2026-I4C-TEST",
-          "investigationDateTime": "2026-09-13T19:07:10.034929+00:00",
+          "investigationDateTime": "2026-09-13T19:48:46.951967+00:00",
           "investigatingOfficer": "Cyber Forensics Officer (LEA-TEST-001)",
           "investigatingAgency": "Indian Cyber Crime Coordination Centre (I4C)",
           "inputWalletAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "detectedBlockchain": "ETHEREUM",
           "investigationScope": "2-Hop Multi-Chain Traversal",
           "transactionsAnalysed": 50,
-          "walletsAnalysed": 31,
+          "walletsAnalysed": 45,
           "maximumTraversalDepth": 2,
           "dataSourcesUsed": [
             "Public Blockchain Ledger",
@@ -61962,7 +62561,7 @@
           "investigationStatus": "COMPLETED"
         },
         "section2_executive_finding": {
-          "summary": "The investigated target wallet transmitted funds across 31 interconnected nodes and 21 distinct traversal paths. Approximately 0.0% of the tracked suspicious value (52.8769 ETH) was traced towards verified VASP endpoints, primarily attributed to Binance 14 (0 hops away). Additionally, 3 potential custodial service cluster(s) and 3 VASP destination candidate(s) were identified.",
+          "summary": "The investigated target wallet transmitted funds across 45 interconnected nodes and 29 distinct traversal paths. Approximately 0.0% of the tracked suspicious value (3.0959 ETH) was traced towards verified VASP endpoints, primarily attributed to Binance 14 (0 hops away). Additionally, 6 potential custodial service cluster(s) and 2 VASP destination candidate(s) were identified.",
           "primaryDestination": "Binance 14",
           "hopDistance": 0,
           "suspiciousCoveragePercentage": 0.0
@@ -61970,26 +62569,26 @@
         "section3_suspect_wallet_profile": {
           "address": "0x28c6c06298d514db089934071355e5743bf21d60",
           "chain": "ethereum",
-          "balance": "151130.486388230130820392 ETH",
+          "balance": "152564.066137835478037843 ETH",
           "transactionCount": 50,
-          "suspicionScore": 73,
+          "suspicionScore": 81,
           "riskLevel": "HIGH",
-          "behavioralClassification": "UNKNOWN_ENTITY",
-          "vaspBehaviorScore": 35,
+          "behavioralClassification": "PAYMENT_PROCESSOR",
+          "vaspBehaviorScore": 65,
           "tags": [
+            "Rapid Movement of Funds (Peeling Chains & Pass-Through)",
             "Suspicious Transaction Pattern (High Velocity Burst)",
-            "Receiving/Sending Large Amounts (High-Value Exposure)",
-            "Making Large Number of Transactions (High Frequency)"
+            "Receiving/Sending Large Amounts (High-Value Exposure)"
           ]
         },
         "section4_transaction_flow_summary": {
           "taintModel": "PROPORTIONAL_TAINT",
-          "originalSuspiciousValue": "151130.486388",
-          "tracedValue": "52.87685",
-          "attributedToKnownVasp": "52.87685",
+          "originalSuspiciousValue": "152564.066138",
+          "tracedValue": "3.095931",
+          "attributedToKnownVasp": "3.095931",
           "attributedToUnknownVasp": "0",
-          "unresolvedValue": "151077.599538",
-          "estimatedFees": "0.01",
+          "unresolvedValue": "152560.960379",
+          "estimatedFees": "0.009828",
           "caseCoveragePercentage": 0.0,
           "conservationWarning": null,
           "hasConsistencyAnomaly": false,
@@ -62001,63 +62600,63 @@
             "source": "0x28c6c06298d514db089934071355e5743bf21d60",
             "destination": "0x28c6c06298d514db089934071355e5743bf21d60",
             "hopCount": 2,
-            "volume": "31.97879",
+            "volume": "23.92923236",
             "path": [
               "0x28c6c06298d514db089934071355e5743bf21d60",
-              "0x3a4245a215a7af26438e42d97d21119b769842b3",
+              "0x7833341fff5bbbac5a0bd0ca28d6d9fa7d094601",
               "0x28c6c06298d514db089934071355e5743bf21d60"
             ],
             "transactionHashes": [
-              "0xe3e0ef4e3a586be5c0a50af9c96769b5b54c2a37966f18949e0cae6d45589227",
-              "0xe3e0ef4e3a586be5c0a50af9c96769b5b54c2a37966f18949e0cae6d45589227"
+              "0xb48eccd4895892886931283718288688ab9762891729badf0af5e2ea2893c1b7",
+              "0xb48eccd4895892886931283718288688ab9762891729badf0af5e2ea2893c1b7"
             ]
           },
           {
             "pathId": "PATH-002",
             "source": "0x28c6c06298d514db089934071355e5743bf21d60",
-            "destination": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
+            "destination": "0x28c6c06298d514db089934071355e5743bf21d60",
             "hopCount": 2,
-            "volume": "31.88299",
+            "volume": "10.22558156",
             "path": [
               "0x28c6c06298d514db089934071355e5743bf21d60",
-              "0x3a4245a215a7af26438e42d97d21119b769842b3",
-              "0xdfd5293d8e347dfe59e90efd55b2956a1343963d"
+              "0x882bc188efa23aee2a39f527189054d69722661f",
+              "0x28c6c06298d514db089934071355e5743bf21d60"
             ],
             "transactionHashes": [
-              "0xe3e0ef4e3a586be5c0a50af9c96769b5b54c2a37966f18949e0cae6d45589227",
-              "0xa24d6102dfcb1c3f19ac6e77a2761acd4fd91c4fa62adb6be3159e8dcff37e7c"
+              "0x69e264ec4919321401103499d5c311c2e8daffc83221bf93a9e1dd7b85cbb609",
+              "0x69e264ec4919321401103499d5c311c2e8daffc83221bf93a9e1dd7b85cbb609"
             ]
           },
           {
             "pathId": "PATH-003",
             "source": "0x28c6c06298d514db089934071355e5743bf21d60",
-            "destination": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+            "destination": "0x28c6c06298d514db089934071355e5743bf21d60",
             "hopCount": 2,
-            "volume": "20.99386",
+            "volume": "3.43519714",
             "path": [
               "0x28c6c06298d514db089934071355e5743bf21d60",
-              "0x3a4245a215a7af26438e42d97d21119b769842b3",
-              "0x21a31ee1afc51d94c2efccaa2092ad1028285549"
+              "0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
+              "0x28c6c06298d514db089934071355e5743bf21d60"
             ],
             "transactionHashes": [
-              "0xe3e0ef4e3a586be5c0a50af9c96769b5b54c2a37966f18949e0cae6d45589227",
-              "0x81984582db7c5ff17b3732257bde8747a5a85cc6f47ac212e4a9330629a30d9d"
+              "0x4297e478ed2ac0eb14b2e533292233ca6abf16c9b747a6dfb502cfa332891d69",
+              "0x4297e478ed2ac0eb14b2e533292233ca6abf16c9b747a6dfb502cfa332891d69"
             ]
           },
           {
             "pathId": "PATH-004",
             "source": "0x28c6c06298d514db089934071355e5743bf21d60",
-            "destination": "0x28c6c06298d514db089934071355e5743bf21d60",
+            "destination": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
             "hopCount": 2,
-            "volume": "1.6231982",
+            "volume": "3.09593133",
             "path": [
               "0x28c6c06298d514db089934071355e5743bf21d60",
-              "0xa187a9818ed7e3f028c09ecd3f81d5016a4e7c71",
-              "0x28c6c06298d514db089934071355e5743bf21d60"
+              "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+              "0x21a31ee1afc51d94c2efccaa2092ad1028285549"
             ],
             "transactionHashes": [
-              "0x505b085c83dbf718a963af8ee991127ba43b628a4314b248bdb07b68d27d75dc",
-              "0x505b085c83dbf718a963af8ee991127ba43b628a4314b248bdb07b68d27d75dc"
+              "0xd619d1a2d1b2a53f465ca8a5a34514785cbf5bbcd0b4c369fd325c3079835eac",
+              "0x60c677c5ec53f38ec8f9b41149c36f2f76b81e05b381427c6083a01eebbde0c2"
             ]
           },
           {
@@ -62065,53 +62664,32 @@
             "source": "0x28c6c06298d514db089934071355e5743bf21d60",
             "destination": "0x28c6c06298d514db089934071355e5743bf21d60",
             "hopCount": 2,
-            "volume": "0.29986",
+            "volume": "1.73628338",
             "path": [
               "0x28c6c06298d514db089934071355e5743bf21d60",
-              "0x0fb8cf9af3f1a370e460f79a10a62ba932b7223e",
+              "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
               "0x28c6c06298d514db089934071355e5743bf21d60"
             ],
             "transactionHashes": [
-              "0xc6a4554606e2b481c163ff9b2bf343c9548bf8edf12346c3e0a05f18659801d6",
-              "0xc6a4554606e2b481c163ff9b2bf343c9548bf8edf12346c3e0a05f18659801d6"
+              "0xd619d1a2d1b2a53f465ca8a5a34514785cbf5bbcd0b4c369fd325c3079835eac",
+              "0xd619d1a2d1b2a53f465ca8a5a34514785cbf5bbcd0b4c369fd325c3079835eac"
             ]
           }
         ],
         "section6_vasp_attribution_results": {
           "verifiedVasps": [
             {
-              "entityName": "Binance 16",
-              "address": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
-              "actionabilityScore": 86,
-              "priority": "CRITICAL",
-              "percentageOfCase": 0.0,
-              "amountExposure": "31.8830",
-              "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
-              "kycStatus": "MANDATORY_KYC",
-              "isFiuRegistered": true,
-              "reasons": [
-                "Substantial financial exposure: 31.8830 asset units",
-                "0.0% of tracked funds",
-                "High attribution confidence supported by confirmed ledger tags",
-                "Verified regulated VASP infrastructure",
-                "Mandatory user identity (Aadhaar / PAN / Passport) KYC enforced",
-                "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
-                "Hop distance: 2 transfers from suspect wallet"
-              ],
-              "recommendedContactOrder": 1
-            },
-            {
               "entityName": "Binance 15",
               "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
-              "actionabilityScore": 86,
-              "priority": "CRITICAL",
+              "actionabilityScore": 76,
+              "priority": "HIGH",
               "percentageOfCase": 0.0,
-              "amountExposure": "20.9939",
+              "amountExposure": "3.0959",
               "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
               "kycStatus": "MANDATORY_KYC",
               "isFiuRegistered": true,
               "reasons": [
-                "Substantial financial exposure: 20.9939 asset units",
+                "Significant financial exposure: 3.0959 asset units",
                 "0.0% of tracked funds",
                 "High attribution confidence supported by confirmed ledger tags",
                 "Verified regulated VASP infrastructure",
@@ -62119,7 +62697,7 @@
                 "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
                 "Hop distance: 2 transfers from suspect wallet"
               ],
-              "recommendedContactOrder": 1
+              "recommendedContactOrder": 2
             },
             {
               "entityName": "Binance 14",
@@ -62145,38 +62723,17 @@
           ],
           "vaspCandidates": [
             {
-              "entityName": "Binance 16",
-              "address": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
-              "actionabilityScore": 86,
-              "priority": "CRITICAL",
-              "percentageOfCase": 0.0,
-              "amountExposure": "31.8830",
-              "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
-              "kycStatus": "MANDATORY_KYC",
-              "isFiuRegistered": true,
-              "reasons": [
-                "Substantial financial exposure: 31.8830 asset units",
-                "0.0% of tracked funds",
-                "High attribution confidence supported by confirmed ledger tags",
-                "Verified regulated VASP infrastructure",
-                "Mandatory user identity (Aadhaar / PAN / Passport) KYC enforced",
-                "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
-                "Hop distance: 2 transfers from suspect wallet"
-              ],
-              "recommendedContactOrder": 1
-            },
-            {
               "entityName": "Binance 15",
               "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
-              "actionabilityScore": 86,
-              "priority": "CRITICAL",
+              "actionabilityScore": 76,
+              "priority": "HIGH",
               "percentageOfCase": 0.0,
-              "amountExposure": "20.9939",
+              "amountExposure": "3.0959",
               "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
               "kycStatus": "MANDATORY_KYC",
               "isFiuRegistered": true,
               "reasons": [
-                "Substantial financial exposure: 20.9939 asset units",
+                "Significant financial exposure: 3.0959 asset units",
                 "0.0% of tracked funds",
                 "High attribution confidence supported by confirmed ledger tags",
                 "Verified regulated VASP infrastructure",
@@ -62184,7 +62741,7 @@
                 "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
                 "Hop distance: 2 transfers from suspect wallet"
               ],
-              "recommendedContactOrder": 1
+              "recommendedContactOrder": 2
             },
             {
               "entityName": "Binance 14",
@@ -62222,7 +62779,7 @@
             },
             {
               "candidateId": "UVC-002",
-              "address": "0xe7343f1507d28f838dd2c16e5e5c529ac4ea1aeb",
+              "address": "0x28c6c06298d514db089934071355e5743bf21d60",
               "entityType": "custodial_service",
               "vaspBehaviorScore": 75,
               "classification": "Heuristic Custodial Service",
@@ -62231,7 +62788,7 @@
             },
             {
               "candidateId": "UVC-003",
-              "address": "0x3a4245a215a7af26438e42d97d21119b769842b3",
+              "address": "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
               "entityType": "custodial_service",
               "vaspBehaviorScore": 75,
               "classification": "Heuristic Custodial Service",
@@ -62245,13 +62802,149 @@
               "chain": "ethereum",
               "addresses": [
                 "0xdac17f958d2ee523a2206206994597c13d831ec7",
-                "0xe7343f1507d28f838dd2c16e5e5c529ac4ea1aeb",
-                "0x3a4245a215a7af26438e42d97d21119b769842b3",
+                "0x28c6c06298d514db089934071355e5743bf21d60",
+                "0x34c4f43caa09e09462a6631861bbdb67d6a93760"
+              ],
+              "addressCount": 3,
+              "centralWallets": [
+                "0xdac17f958d2ee523a2206206994597c13d831ec7"
+              ],
+              "transactionCount": 2,
+              "uniqueDepositors": 2,
+              "classification": "Probable Custodial Service",
+              "vaspBehaviorScore": 75,
+              "exactOrganization": "Unknown",
+              "verification": "UNVERIFIED",
+              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
+              "evidence": [
+                "Consolidation pattern: 2 feeder address(es) regularly route into central hub (0xdac17f95...)",
+                "Shared deposit infrastructure: Synchronized transfer topologies detected",
+                "Automated pooling behavior consistent with custodial deposit routing"
+              ]
+            },
+            {
+              "clusterId": "UC-2026-0002",
+              "chain": "ethereum",
+              "addresses": [
+                "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f",
+                "0x28c6c06298d514db089934071355e5743bf21d60",
+                "0x7833341fff5bbbac5a0bd0ca28d6d9fa7d094601"
+              ],
+              "addressCount": 3,
+              "centralWallets": [
+                "0x6033f7f88332b8db6ad452b7c6d5bb643990ae3f"
+              ],
+              "transactionCount": 2,
+              "uniqueDepositors": 2,
+              "classification": "Probable Custodial Service",
+              "vaspBehaviorScore": 75,
+              "exactOrganization": "Unknown",
+              "verification": "UNVERIFIED",
+              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
+              "evidence": [
+                "Consolidation pattern: 2 feeder address(es) regularly route into central hub (0x6033f7f8...)",
+                "Shared deposit infrastructure: Synchronized transfer topologies detected",
+                "Automated pooling behavior consistent with custodial deposit routing"
+              ]
+            },
+            {
+              "clusterId": "UC-2026-0003",
+              "chain": "ethereum",
+              "addresses": [
+                "0x4fd35aa611164ce397cb93dbe7475f57e17ea689",
+                "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
+                "0x624a0d8250f1a0d6c116fbccc30a92fb7670dc9f",
+                "0x9696f59e4d72e237be84ffd425dcad154bf96976",
+                "0x4858803549df78ad5f6d5f88628d178c0f7fdfaf",
+                "0x624236fb30a746af64f5c328604639264b5edc9f",
+                "0x28c6c06298d514db089934071355e5743bf21d60",
+                "0x6242cbe72808bac33cb755523364fc57992bdc9f",
+                "0xd56ea982f5db31e880cf17f4bcf87487edfd3cc6",
+                "0x9345eddbe239ba3f5e36790e47d3bbd033e13a1a"
+              ],
+              "addressCount": 10,
+              "centralWallets": [
+                "0x4fd35aa611164ce397cb93dbe7475f57e17ea689"
+              ],
+              "transactionCount": 10,
+              "uniqueDepositors": 9,
+              "classification": "Probable Custodial Service",
+              "vaspBehaviorScore": 75,
+              "exactOrganization": "Unknown",
+              "verification": "UNVERIFIED",
+              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
+              "evidence": [
+                "Consolidation pattern: 9 feeder address(es) regularly route into central hub (0x4fd35aa6...)",
+                "Shared deposit infrastructure: Synchronized transfer topologies detected",
+                "Automated pooling behavior consistent with custodial deposit routing"
+              ]
+            },
+            {
+              "clusterId": "UC-2026-0004",
+              "chain": "ethereum",
+              "addresses": [
+                "0x28c6c06298d514db089934071355e5743bf21d60",
+                "0x53244a24fbc37f9834bf38955d35eef1f99a2239",
+                "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+                "0x487cab40f6d11a278fa7c442c6741eabe44eab5d",
+                "0x882bc188efa23aee2a39f527189054d69722661f",
+                "0x7797e0dbdc88b49e4dfc54b23c49fea19fac927e",
+                "0x7833341fff5bbbac5a0bd0ca28d6d9fa7d094601"
+              ],
+              "addressCount": 7,
+              "centralWallets": [
                 "0x28c6c06298d514db089934071355e5743bf21d60"
+              ],
+              "transactionCount": 10,
+              "uniqueDepositors": 6,
+              "classification": "Probable Custodial Service",
+              "vaspBehaviorScore": 75,
+              "exactOrganization": "Unknown",
+              "verification": "UNVERIFIED",
+              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
+              "evidence": [
+                "Consolidation pattern: 6 feeder address(es) regularly route into central hub (0x28c6c062...)",
+                "Shared deposit infrastructure: Synchronized transfer topologies detected",
+                "Automated pooling behavior consistent with custodial deposit routing"
+              ]
+            },
+            {
+              "clusterId": "UC-2026-0005",
+              "chain": "ethereum",
+              "addresses": [
+                "0x882bc188efa23aee2a39f527189054d69722661f",
+                "0xf78278228ec485a8650597332630d1542a3a5d06",
+                "0x3327b00bf7fdfa55ca72256e801d633ca3798a9f"
+              ],
+              "addressCount": 3,
+              "centralWallets": [
+                "0x882bc188efa23aee2a39f527189054d69722661f"
+              ],
+              "transactionCount": 2,
+              "uniqueDepositors": 2,
+              "classification": "Probable Custodial Service",
+              "vaspBehaviorScore": 75,
+              "exactOrganization": "Unknown",
+              "verification": "UNVERIFIED",
+              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
+              "evidence": [
+                "Consolidation pattern: 2 feeder address(es) regularly route into central hub (0x882bc188...)",
+                "Shared deposit infrastructure: Synchronized transfer topologies detected",
+                "Automated pooling behavior consistent with custodial deposit routing"
+              ]
+            },
+            {
+              "clusterId": "UC-2026-0006",
+              "chain": "ethereum",
+              "addresses": [
+                "0x34c4f43caa09e09462a6631861bbdb67d6a93760",
+                "0x9430801ebaf509ad49202aabc5f5bc6fd8a3daf8",
+                "0x83964898e276ca1f3a9e792a452118a85b7164a8",
+                "0xddc1295fb6ff4487d48eca052e37da6d570eeafd"
               ],
               "addressCount": 4,
               "centralWallets": [
-                "0xdac17f958d2ee523a2206206994597c13d831ec7"
+                "0x34c4f43caa09e09462a6631861bbdb67d6a93760"
               ],
               "transactionCount": 3,
               "uniqueDepositors": 3,
@@ -62261,63 +62954,7 @@
               "verification": "UNVERIFIED",
               "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
               "evidence": [
-                "Consolidation pattern: 3 feeder address(es) regularly route into central hub (0xdac17f95...)",
-                "Shared deposit infrastructure: Synchronized transfer topologies detected",
-                "Automated pooling behavior consistent with custodial deposit routing"
-              ]
-            },
-            {
-              "clusterId": "UC-2026-0002",
-              "chain": "ethereum",
-              "addresses": [
-                "0xa187a9818ed7e3f028c09ecd3f81d5016a4e7c71",
-                "0x56eddb7aa87536c09ccc2793473599fd21a8b17f",
-                "0x28c6c06298d514db089934071355e5743bf21d60"
-              ],
-              "addressCount": 3,
-              "centralWallets": [
-                "0xa187a9818ed7e3f028c09ecd3f81d5016a4e7c71"
-              ],
-              "transactionCount": 3,
-              "uniqueDepositors": 2,
-              "classification": "Probable Custodial Service",
-              "vaspBehaviorScore": 75,
-              "exactOrganization": "Unknown",
-              "verification": "UNVERIFIED",
-              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
-              "evidence": [
-                "Consolidation pattern: 2 feeder address(es) regularly route into central hub (0xa187a981...)",
-                "Shared deposit infrastructure: Synchronized transfer topologies detected",
-                "Automated pooling behavior consistent with custodial deposit routing"
-              ]
-            },
-            {
-              "clusterId": "UC-2026-0003",
-              "chain": "ethereum",
-              "addresses": [
-                "0x323df350d40d13ea5b4ea16d0b8909a6c1324b4a",
-                "0x9696f59e4d72e237be84ffd425dcad154bf96976",
-                "0x4fb3f2ce7ad445fe25ea3f90011b22ee7e6cba52",
-                "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
-                "0x56eddb7aa87536c09ccc2793473599fd21a8b17f",
-                "0x28c6c06298d514db089934071355e5743bf21d60",
-                "0x4976a4a02f38326660d17bf34b431dc6e2eb2327",
-                "0x331d9a049d496385998067abf6cbb6371c8d2466",
-                "0xdfd5293d8e347dfe59e90efd55b2956a1343963d"
-              ],
-              "addressCount": 9,
-              "centralWallets": [
-                "0x323df350d40d13ea5b4ea16d0b8909a6c1324b4a"
-              ],
-              "transactionCount": 9,
-              "uniqueDepositors": 8,
-              "classification": "Probable Custodial Service",
-              "vaspBehaviorScore": 75,
-              "exactOrganization": "Unknown",
-              "verification": "UNVERIFIED",
-              "disclaimer": "HEURISTIC CLASSIFICATION \u2014 NOT VERIFIED ATTRIBUTION",
-              "evidence": [
-                "Consolidation pattern: 8 feeder address(es) regularly route into central hub (0x323df350...)",
+                "Consolidation pattern: 3 feeder address(es) regularly route into central hub (0x34c4f43c...)",
                 "Shared deposit infrastructure: Synchronized transfer topologies detected",
                 "Automated pooling behavior consistent with custodial deposit routing"
               ]
@@ -62326,11 +62963,20 @@
         },
         "section8_suspicious_behaviour": [
           {
+            "ruleId": "P6_RAPID_MOVEMENT_OF_FUNDS",
+            "title": "Rapid Movement of Funds (Peeling Chains & Pass-Through)",
+            "severity": "HIGH",
+            "evidence": [
+              "Received 0.8123 ETH and rapidly forwarded 0.8681 ETH"
+            ],
+            "detected": true
+          },
+          {
             "ruleId": "P8_SUSPICIOUS_TRANSACTION_PATTERN",
             "title": "Suspicious Transaction Pattern (High Velocity Burst)",
             "severity": "HIGH",
             "evidence": [
-              "50 transactions recorded across 17 counterparty endpoints"
+              "50 transactions recorded across 21 counterparty endpoints"
             ],
             "detected": true
           },
@@ -62366,7 +63012,7 @@
             "title": "Holding a Lot of ETH (High Custodial Balance)",
             "severity": "INFORMATIONAL",
             "evidence": [
-              "On-chain balance: 151130.4864 ETH"
+              "On-chain balance: 152564.0661 ETH"
             ],
             "detected": true
           },
@@ -62382,38 +63028,17 @@
         ],
         "section9_investigation_priority": [
           {
-            "entityName": "Binance 16",
-            "address": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
-            "actionabilityScore": 86,
-            "priority": "CRITICAL",
-            "percentageOfCase": 0.0,
-            "amountExposure": "31.8830",
-            "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
-            "kycStatus": "MANDATORY_KYC",
-            "isFiuRegistered": true,
-            "reasons": [
-              "Substantial financial exposure: 31.8830 asset units",
-              "0.0% of tracked funds",
-              "High attribution confidence supported by confirmed ledger tags",
-              "Verified regulated VASP infrastructure",
-              "Mandatory user identity (Aadhaar / PAN / Passport) KYC enforced",
-              "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
-              "Hop distance: 2 transfers from suspect wallet"
-            ],
-            "recommendedContactOrder": 1
-          },
-          {
             "entityName": "Binance 15",
             "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
-            "actionabilityScore": 86,
-            "priority": "CRITICAL",
+            "actionabilityScore": 76,
+            "priority": "HIGH",
             "percentageOfCase": 0.0,
-            "amountExposure": "20.9939",
+            "amountExposure": "3.0959",
             "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)",
             "kycStatus": "MANDATORY_KYC",
             "isFiuRegistered": true,
             "reasons": [
-              "Substantial financial exposure: 20.9939 asset units",
+              "Significant financial exposure: 3.0959 asset units",
               "0.0% of tracked funds",
               "High attribution confidence supported by confirmed ledger tags",
               "Verified regulated VASP infrastructure",
@@ -62421,7 +63046,7 @@
               "FIU-IND registered domestic reporting entity (Rapid Section 91 CrPC compliance)",
               "Hop distance: 2 transfers from suspect wallet"
             ],
-            "recommendedContactOrder": 1
+            "recommendedContactOrder": 2
           },
           {
             "entityName": "Binance 14",
@@ -62448,21 +63073,14 @@
         "section10_minimum_intervention_set": {
           "targetCoverageThreshold": 70.0,
           "achievedCoveragePercentage": 0.0,
-          "coveredAmount": "52.8769",
-          "vaspCount": 3,
+          "coveredAmount": "3.0959",
+          "vaspCount": 2,
           "selectedVasps": [
-            {
-              "name": "Binance 16",
-              "address": "0xdfd5293d8e347dfe59e90efd55b2956a1343963d",
-              "amountExposure": "31.8830",
-              "priority": "CRITICAL",
-              "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)"
-            },
             {
               "name": "Binance 15",
               "address": "0x21a31ee1afc51d94c2efccaa2092ad1028285549",
-              "amountExposure": "20.9939",
-              "priority": "CRITICAL",
+              "amountExposure": "3.0959",
+              "priority": "HIGH",
               "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)"
             },
             {
@@ -62473,7 +63091,7 @@
               "jurisdiction": "Cayman Islands / Global (FIU-IND Registered Offshore VASP)"
             }
           ],
-          "explanation": "Minimum Intervention Set recommends initiating formal notices to 3 VASP(s) to achieve 0.0% potential asset freeze/subscriber coverage (52.8769 out of total 151130.486388 case value)."
+          "explanation": "Minimum Intervention Set recommends initiating formal notices to 2 VASP(s) to achieve 0.0% potential asset freeze/subscriber coverage (3.0959 out of total 152564.066138 case value)."
         },
         "section11_attribution_confidence": {
           "attributionChallenges": [
@@ -62498,37 +63116,13 @@
               "requiresHumanReview": false
             },
             {
-              "entityName": "Binance 16",
-              "initialConfidence": 92,
-              "adjustedConfidence": 80,
-              "adjustedConfidenceLevel": "HIGH",
-              "supportingEvidence": [
-                "Direct traversal path identified: ['0x28c6c06298d514db089934071355e5743bf21d60', '0x3a4245a215a7af26438e42d97d21119b769842b3', '0xdfd5293d8e347dfe59e90efd55b2956a1343963d']",
-                "Transferred volume observed: 31.88299",
-                "Attribution source: Public Etherscan Verified Tag"
-              ],
-              "conflictingEvidence": [
-                "Funds traversed 2 intermediary unhosted wallets before reaching this destination",
-                "Single-source attribution label; independent corroboration from secondary blockchain analytics is pending"
-              ],
-              "assumptions": [
-                "Assumes public ledger attribution tag for 'Binance 16' accurately reflects current infrastructure ownership",
-                "Assumes intermediate transfers represent a continuous intentional laundering chain rather than independent commercial commerce"
-              ],
-              "alternativeExplanations": [
-                "Intermediary could have received and co-mingled independent legitimate third-party payments"
-              ],
-              "recommendation": "HIGH CONFIDENCE \u2014 ACTIONABLE FOR FORMAL SECTION 91 NOTICE",
-              "requiresHumanReview": false
-            },
-            {
               "entityName": "Binance 15",
               "initialConfidence": 92,
               "adjustedConfidence": 80,
               "adjustedConfidenceLevel": "HIGH",
               "supportingEvidence": [
-                "Direct traversal path identified: ['0x28c6c06298d514db089934071355e5743bf21d60', '0x3a4245a215a7af26438e42d97d21119b769842b3', '0x21a31ee1afc51d94c2efccaa2092ad1028285549']",
-                "Transferred volume observed: 20.99386",
+                "Direct traversal path identified: ['0x28c6c06298d514db089934071355e5743bf21d60', '0x4fd35aa611164ce397cb93dbe7475f57e17ea689', '0x21a31ee1afc51d94c2efccaa2092ad1028285549']",
+                "Transferred volume observed: 3.09593133",
                 "Attribution source: Public Etherscan Verified Tag"
               ],
               "conflictingEvidence": [
@@ -62553,7 +63147,7 @@
             {
               "gapId": "GAP-CL-UC-2026-0001",
               "title": "Unverified Service Cluster Ownership (UC-2026-0001)",
-              "description": "Cluster UC-2026-0001 controls 4 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
+              "description": "Cluster UC-2026-0001 controls 3 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
               "recommendedAction": "Obtain independent second-source label or issue inquiry to suspected infrastructure provider.",
               "potentialConfidenceImprovement": "67% -> ~85% (Estimated)",
               "priority": "HIGH"
@@ -62569,7 +63163,31 @@
             {
               "gapId": "GAP-CL-UC-2026-0003",
               "title": "Unverified Service Cluster Ownership (UC-2026-0003)",
-              "description": "Cluster UC-2026-0003 controls 9 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
+              "description": "Cluster UC-2026-0003 controls 10 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
+              "recommendedAction": "Obtain independent second-source label or issue inquiry to suspected infrastructure provider.",
+              "potentialConfidenceImprovement": "67% -> ~85% (Estimated)",
+              "priority": "HIGH"
+            },
+            {
+              "gapId": "GAP-CL-UC-2026-0004",
+              "title": "Unverified Service Cluster Ownership (UC-2026-0004)",
+              "description": "Cluster UC-2026-0004 controls 7 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
+              "recommendedAction": "Obtain independent second-source label or issue inquiry to suspected infrastructure provider.",
+              "potentialConfidenceImprovement": "67% -> ~85% (Estimated)",
+              "priority": "HIGH"
+            },
+            {
+              "gapId": "GAP-CL-UC-2026-0005",
+              "title": "Unverified Service Cluster Ownership (UC-2026-0005)",
+              "description": "Cluster UC-2026-0005 controls 3 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
+              "recommendedAction": "Obtain independent second-source label or issue inquiry to suspected infrastructure provider.",
+              "potentialConfidenceImprovement": "67% -> ~85% (Estimated)",
+              "priority": "HIGH"
+            },
+            {
+              "gapId": "GAP-CL-UC-2026-0006",
+              "title": "Unverified Service Cluster Ownership (UC-2026-0006)",
+              "description": "Cluster UC-2026-0006 controls 4 wallets exhibiting custodial behavior, but operating legal entity is unconfirmed.",
               "recommendedAction": "Obtain independent second-source label or issue inquiry to suspected infrastructure provider.",
               "potentialConfidenceImprovement": "67% -> ~85% (Estimated)",
               "priority": "HIGH"
@@ -62616,9 +63234,9 @@
             "actionId": "ACT-002",
             "priority": "CRITICAL",
             "actionType": "ISSUE_LAWFUL_REQUEST",
-            "title": "Serve Section 91 CrPC Lawful Notice to Binance 16",
-            "reason": "Largest identified destination of suspicious funds (31.8830 assets, Actionability Score: 86/100).",
-            "relatedEntity": "Binance 16",
+            "title": "Serve Section 91 CrPC Lawful Notice to Binance 15",
+            "reason": "Largest identified destination of suspicious funds (3.0959 assets, Actionability Score: 76/100).",
+            "relatedEntity": "Binance 15",
             "expectedInvestigativeValue": "Immediate account freeze to prevent further dispersal; disclosure of KYC subscriber identity, bank account details, and login IPs.",
             "evidenceRequired": "Certified transaction hash manifest, source wallet proof, and verified deposit router trail.",
             "currentConfidence": 92
@@ -62627,9 +63245,9 @@
             "actionId": "ACT-003",
             "priority": "HIGH",
             "actionType": "ISSUE_LAWFUL_REQUEST",
-            "title": "Serve Subpoena / Information Request to Binance 15",
-            "reason": "Secondary destination handling 20.9939 assets (0.0% of case).",
-            "relatedEntity": "Binance 15",
+            "title": "Serve Subpoena / Information Request to Binance 14",
+            "reason": "Secondary destination handling 0.0000 assets (0.0% of case).",
+            "relatedEntity": "Binance 14",
             "expectedInvestigativeValue": "Prevents asset dissipation across secondary laundering branch.",
             "evidenceRequired": "Transaction trail and recipient wallet identifier.",
             "currentConfidence": 85
@@ -62639,7 +63257,7 @@
             "priority": "HIGH",
             "actionType": "INVESTIGATE_CLUSTER",
             "title": "Investigate Potential Service Cluster UC-2026-0001",
-            "reason": "Controls 4 interconnected wallets with strong custodial pooling signature (Score: 75/100).",
+            "reason": "Controls 3 interconnected wallets with strong custodial pooling signature (Score: 75/100).",
             "relatedEntity": "UC-2026-0001",
             "expectedInvestigativeValue": "Uncovers hidden exchange deposit infrastructure or syndicate consolidation hubs.",
             "evidenceRequired": "Consolidation transaction timing analysis and counterparty clustering records.",
@@ -62649,7 +63267,7 @@
             "actionId": "ACT-005",
             "priority": "MEDIUM",
             "actionType": "CONTINUE_TRACING",
-            "title": "Expand Traversal on Unresolved Fund Residue (151077.599538 assets)",
+            "title": "Expand Traversal on Unresolved Fund Residue (152560.960379 assets)",
             "reason": "A portion of funds remains unlocated in intermediary private wallets.",
             "relatedEntity": "Unresolved Branch Wallets",
             "expectedInvestigativeValue": "Identifies secondary exit cash-out ramps or P2P merchant off-ramps.",
@@ -62674,11 +63292,11 @@
           "targetVasp": "Binance 14",
           "targetAddress": "0x28c6c06298d514db089934071355e5743bf21d60",
           "relevantTransactions": [
-            "0x809f1d6fbe280c1ab93cbd97429976f56f5d4ecfce527b6f4ec689083b6b2a13",
-            "0x56dc3efeb393722a168f0f12a0800a1b9d9a2b28fecb5ce2ba83a6662474ab3c",
-            "0x19b593110d8b3192af514dbdbe5d5e9ab067a77ba37388d1f3a566690e0c8040",
-            "0xc3181c952efda3fc03f5ddac39fa974a0d14fec3a436be3b29bdc624b07bdcb1",
-            "0xe8c1a799f53f9f0a2b731bf0aa265a49601063be6d6a87ad9aae5aacf95fcc7f"
+            "0x176e8abcebad212cba1c7dcf860a262524c00239d19b168c041a319bb521682d",
+            "0x5509c867f03249bed95b48181dffd43add533d89706d0b3b8dea01892912c1a2",
+            "0x844affdf1abee7647eae41821b6f79ceacd9f3d3e959cfa9358edb0875d157fc",
+            "0xd1c612cb04172cad0f2442a44f8196e5222f973b92406c120800d389d245945f",
+            "0x4b5dd62e2e5d4dffef40b3745fef0e3949e43f1f316e8dd9419f227df3e42d6f"
           ],
           "informationSought": [
             "Full legal subscriber identity (Aadhaar, PAN, Passport, Photo ID)",
@@ -62688,37 +63306,37 @@
             "IP login access logs with timestamp and port mapping",
             "Immediate asset preservation / debit freeze under Section 102 CrPC / PMLA"
           ],
-          "statutoryNoticeDraft": "================================================================================\nOFFICIAL NOTICE UNDER SECTION 91 OF THE CODE OF CRIMINAL PROCEDURE, 1973 (CrPC)\nREAD WITH SECTION 69B OF THE INFORMATION TECHNOLOGY ACT, 2000\nGOVERNMENT OF INDIA \u2022 MINISTRY OF HOME AFFAIRS\nINDIAN CYBER CRIME COORDINATION CENTRE (I4C) \u2022 SAHYOG INVESTIGATION PORTAL\n================================================================================\nNOTICE REF NO: I4C/SAHYOG/CASE-2026-I4C-TEST/VASP-DISC/2026\nDATE & TIME OF ISSUE: 13-Sep-2026 19:07 UTC\n\nTO:\n  THE NODAL OFFICER / LAW ENFORCEMENT COMPLIANCE CELL\n  ENTITY: BINANCE 14\n  SUBJECT: URGENT STATUTORY REQUISITION FOR SUBSCRIBER IDENTIFICATION, KYC DOSSIER,\n           AND TRANSACTION LEDGER RECORDS CONCERNING ILLICIT DIGITAL ASSET MOVEMENT\n\nWHEREAS an active cybercrime investigation has been instituted under Indian Penal Law\n(Case ID: CASE-2026-I4C-TEST), and digital evidence reveals proceeds of cyber fraud / illicit funds\noriginating from suspect source wallet:\n  SUSPECT WALLET: 0x28c6c06298d514db089934071355e5743bf21d60 (ETHEREUM)\n\nWERE TRACED THROUGH ON-CHAIN TRAVERSAL TO HAVE TRANSFERRED INTO INFRASTRUCTURE\nIDENTIFIED WITH YOUR REGISTERED EXCHANGE / CUSTODIAL SERVICES:\n  IDENTIFIED ENDPOINT ADDRESS: 0x28c6c06298d514db089934071355e5743bf21d60\n  APPROXIMATE TRAVERSED VOLUME: 0 ETHEREUM\n  EVIDENTIARY HOP DISTANCE: 0 HOP(S)\n\nACCORDINGLY, IN EXERCISE OF STATUTORY POWERS VESTED UNDER SECTION 91 CrPC, YOU ARE\nHEREBY DIRECTED TO PRODUCE AND FURNISH TO THIS AGENCY WITHIN 48 HOURS:\n  1. Complete KYC Dossier (Aadhaar, PAN, Passport, Driving License, Selfie Verification).\n  2. Registered Full Name, Residential Address, Mobile Number, and Verified Email Address.\n  3. Linked Indian / Global Fiat Bank Account Numbers and UPI VPA Identifiers.\n  4. Complete Internal Ledger Statement (Deposit, Trade, and Withdrawal Records).\n  5. IP Access Logs with UTC Timestamps, Port Mappings, and Device Fingerprint Identifiers.\n  6. External Digital Asset Destination Addresses for all subsequent withdrawals.\n\nFURTHERMORE, YOU ARE REQUESTED TO EXERCISE ASSET PRESERVATION PROTOCOLS TO SECURE AND\nFREEZE ANY REMAINING ASSET BALANCES LINKED TO THIS SUBSCRIBER ACCOUNT PENDING FORMAL\nORDER UNDER SECTION 102 CrPC / PMLA 2002.\n\nINVESTIGATING OFFICER: Cyber Forensics Officer\nDESIGNATION: Cyber Forensics Investigator (ID: LEA-TEST-001)\nAGENCY: National Cybercrime Forensic Unit (NCFU) / I4C\nDISCLAIMER: REQUEST PREPARATION \u2014 HUMAN REVIEW AND LAWFUL SIGN-OFF REQUIRED\n================================================================================",
+          "statutoryNoticeDraft": "================================================================================\nOFFICIAL NOTICE UNDER SECTION 91 OF THE CODE OF CRIMINAL PROCEDURE, 1973 (CrPC)\nREAD WITH SECTION 69B OF THE INFORMATION TECHNOLOGY ACT, 2000\nGOVERNMENT OF INDIA \u2022 MINISTRY OF HOME AFFAIRS\nINDIAN CYBER CRIME COORDINATION CENTRE (I4C) \u2022 SAHYOG INVESTIGATION PORTAL\n================================================================================\nNOTICE REF NO: I4C/SAHYOG/CASE-2026-I4C-TEST/VASP-DISC/2026\nDATE & TIME OF ISSUE: 13-Sep-2026 19:48 UTC\n\nTO:\n  THE NODAL OFFICER / LAW ENFORCEMENT COMPLIANCE CELL\n  ENTITY: BINANCE 14\n  SUBJECT: URGENT STATUTORY REQUISITION FOR SUBSCRIBER IDENTIFICATION, KYC DOSSIER,\n           AND TRANSACTION LEDGER RECORDS CONCERNING ILLICIT DIGITAL ASSET MOVEMENT\n\nWHEREAS an active cybercrime investigation has been instituted under Indian Penal Law\n(Case ID: CASE-2026-I4C-TEST), and digital evidence reveals proceeds of cyber fraud / illicit funds\noriginating from suspect source wallet:\n  SUSPECT WALLET: 0x28c6c06298d514db089934071355e5743bf21d60 (ETHEREUM)\n\nWERE TRACED THROUGH ON-CHAIN TRAVERSAL TO HAVE TRANSFERRED INTO INFRASTRUCTURE\nIDENTIFIED WITH YOUR REGISTERED EXCHANGE / CUSTODIAL SERVICES:\n  IDENTIFIED ENDPOINT ADDRESS: 0x28c6c06298d514db089934071355e5743bf21d60\n  APPROXIMATE TRAVERSED VOLUME: 0 ETHEREUM\n  EVIDENTIARY HOP DISTANCE: 0 HOP(S)\n\nACCORDINGLY, IN EXERCISE OF STATUTORY POWERS VESTED UNDER SECTION 91 CrPC, YOU ARE\nHEREBY DIRECTED TO PRODUCE AND FURNISH TO THIS AGENCY WITHIN 48 HOURS:\n  1. Complete KYC Dossier (Aadhaar, PAN, Passport, Driving License, Selfie Verification).\n  2. Registered Full Name, Residential Address, Mobile Number, and Verified Email Address.\n  3. Linked Indian / Global Fiat Bank Account Numbers and UPI VPA Identifiers.\n  4. Complete Internal Ledger Statement (Deposit, Trade, and Withdrawal Records).\n  5. IP Access Logs with UTC Timestamps, Port Mappings, and Device Fingerprint Identifiers.\n  6. External Digital Asset Destination Addresses for all subsequent withdrawals.\n\nFURTHERMORE, YOU ARE REQUESTED TO EXERCISE ASSET PRESERVATION PROTOCOLS TO SECURE AND\nFREEZE ANY REMAINING ASSET BALANCES LINKED TO THIS SUBSCRIBER ACCOUNT PENDING FORMAL\nORDER UNDER SECTION 102 CrPC / PMLA 2002.\n\nINVESTIGATING OFFICER: Cyber Forensics Officer\nDESIGNATION: Cyber Forensics Investigator (ID: LEA-TEST-001)\nAGENCY: National Cybercrime Forensic Unit (NCFU) / I4C\nDISCLAIMER: REQUEST PREPARATION \u2014 HUMAN REVIEW AND LAWFUL SIGN-OFF REQUIRED\n================================================================================",
           "disclaimer": "REQUEST PREPARATION \u2014 HUMAN REVIEW AND LAWFUL SIGN-OFF REQUIRED"
         },
         "section16_evidence_manifest": {
           "evidenceHashes": [
-            "0x809f1d6fbe280c1ab93cbd97429976f56f5d4ecfce527b6f4ec689083b6b2a13",
-            "0x56dc3efeb393722a168f0f12a0800a1b9d9a2b28fecb5ce2ba83a6662474ab3c",
-            "0x19b593110d8b3192af514dbdbe5d5e9ab067a77ba37388d1f3a566690e0c8040",
-            "0xc3181c952efda3fc03f5ddac39fa974a0d14fec3a436be3b29bdc624b07bdcb1",
-            "0xe8c1a799f53f9f0a2b731bf0aa265a49601063be6d6a87ad9aae5aacf95fcc7f",
-            "0x50cc8d349c811c3331ddc4b7b9432ab07bef93fa7ce2487d7a37fb6036d25508",
-            "0x3d64bbef0a5e07f4bfb3aa8a8a403f53ee457278f63cf047f347e42b5e0887a0",
-            "0xd3a511118609a3e7325e2ae4f1da58d4af345daab6a24996b277cfb61bd34d99",
-            "0x43317d68d7da43a8d4010621cc255976b482ff9d8f00592c002481684ec830f9",
-            "0x8a4f54b5578d8e6ae3c7abd9fecc3f8fa6c76536228e705b8baf7559eea69682",
-            "0x3d5978f3f5f1c1fe3eb2e90a8b0183851145cb3298efa17a29dc67fa9b1efa63",
-            "0x5efce3b12ef3dc4fc58ead1c77d814d356759f48d230a37e5b8e31fe9cd211a6",
-            "0xbd9b13185e090bcdffe49e1fb9864657e32af70749a6e673657aff431609a8bf",
-            "0x544b3585b3325e92ea767ac7f27c8af39cd6e00831c5e9b82d404a954bd58da4",
-            "0x4b3c82f5e0a5ed6efd54c18ff6e0a0c142274ac92b72f40f52ad0f1dd035aae0",
-            "0xab113eb54f6ab353448ed6d1c89ccc92dfa225b6aead1c649b7c69899955a480",
-            "0xc5d68ffbe4360ffaa126ff6e0a454c679eda687f6b6f7fe8b9c6af78d6d18238",
-            "0xfbaf3650b65c6c3cda9dfeb5680e1598788131146b86dd3f1804d925d4d593e5",
-            "0x5cf737cc6667ea4701a2b03f334bff7d9baa53b2523018ada564c0d0da5ffc73",
-            "0xc6a4554606e2b481c163ff9b2bf343c9548bf8edf12346c3e0a05f18659801d6"
+            "0x176e8abcebad212cba1c7dcf860a262524c00239d19b168c041a319bb521682d",
+            "0x5509c867f03249bed95b48181dffd43add533d89706d0b3b8dea01892912c1a2",
+            "0x844affdf1abee7647eae41821b6f79ceacd9f3d3e959cfa9358edb0875d157fc",
+            "0xd1c612cb04172cad0f2442a44f8196e5222f973b92406c120800d389d245945f",
+            "0x4b5dd62e2e5d4dffef40b3745fef0e3949e43f1f316e8dd9419f227df3e42d6f",
+            "0x8365e6a1bd370ae0c4b47ca2e43d43baab21c9205e594580b9df019478d5d039",
+            "0xe00bb21ee982e89e0ad7a6d202217eb6375a0ede7ed78160bf2de1ec4e0413e7",
+            "0x496eafb3a00b1f84c0dbb18c1df9840cbce74c3bc2c3777e8067855c22cb9f71",
+            "0x405d0368fdd58d7579d40bbf25d9a9bf34f5bcb32ead5138f257b034eb25226b",
+            "0xe05f58239b8d26919cb9e98f85360ec8462f25ae4955466434d89f0339d63974",
+            "0x994b6f1bddec8beec27430652f0f7d89a0adbf57e64e5d01bc077ef1f75b82cb",
+            "0x0467d609f170800571f8ff9f4f8694ef5e0d4e181cc9042355eac77aa22a5ea3",
+            "0x826edce33271b83344f82959c921f6775df04cc54132aadd5ae09d9096820c4a",
+            "0x39c0d8fc59bf52a804091f481a6004d10088f8d35920db5f5669c31c31a14b7f",
+            "0x19c52d3f275bc4beacc5a2fe185ec385d5661c1887b744e97c0acf76fc40d0b3",
+            "0xff175efd8e73d7099d0aced6598ca27d0448e7d67d05103b4087809bdf48dc4a",
+            "0xc8ce243e71eac98808ed1fa2f6ad79c2e327d6ddee9eae2d170c5107bf059883",
+            "0x7ceb4ae113b2feee90328ac7e915121dca7e1fcd78a78bf1a1cf4257982b7f23",
+            "0xce920c1dc2a4d386422f4251f9008840010135c1c2dcc8e7dfc4e115eeb32b36",
+            "0xbe6e12faf52462bb3806755aea49a4cfd60757a4fa1389adc0e787ecf570a4a7"
           ],
-          "sha256IntegrityHash": "ba3cecb73ac0eb666374cf4bb191c7bc06777bc09e70ff30149cd0cb56a8a9f2",
+          "sha256IntegrityHash": "e6ea11afa5baef0be8e033f61a322743e7bdf3828971c8201776a7f780de30e2",
           "engineVersion": "SAHYOG-Forensic-v2.6",
           "scoringConfigVersion": "2026.08-STRICT-SOP",
           "taintMethod": "PROPORTIONAL_TAINT",
-          "generationTimestamp": "2026-09-13T19:07:10.034929+00:00"
+          "generationTimestamp": "2026-09-13T19:48:46.951967+00:00"
         }
       }
     },
