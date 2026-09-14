@@ -49,7 +49,7 @@ if not exist "%TRACEACT_FRONTEND%\node_modules" (
 echo [OK] Node.js, npm, and frontend packages are available.
 
 echo [2/5] Checking FastAPI on port 8001...
-powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "try { $response=Invoke-WebRequest -UseBasicParsing -Uri '%TRACEACT_API_URL%' -TimeoutSec 2; if ($response.StatusCode -eq 200) { exit 0 } } catch {}; exit 1"
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "try { $r = Invoke-RestMethod -Uri '%TRACEACT_API_URL%' -TimeoutSec 2; if ($r.status -eq 'healthy') { exit 0 } } catch {}; exit 1"
 if errorlevel 1 (
     echo [*] Starting FastAPI backend...
     start "TraceACT Backend API - 8001" /D "%TRACEACT_ROOT%" cmd /k ""%TRACEACT_PYTHON%" -m uvicorn backend.main:app --host 0.0.0.0 --port 8001 --reload"
@@ -57,15 +57,16 @@ if errorlevel 1 (
         echo [ERROR] The backend process could not be started.
         goto :failed
     )
+    timeout /t 2 /nobreak >nul
 ) else (
     echo [OK] Reusing the backend already running on port 8001.
 )
 
 echo [3/5] Checking investigation console on port 3000...
-powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "try { $response=Invoke-WebRequest -UseBasicParsing -Uri '%TRACEACT_URL%' -TimeoutSec 2; if ($response.StatusCode -ge 200) { exit 0 } } catch {}; exit 1"
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "try { $r = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3000' -TimeoutSec 2; if ($r.StatusCode -ge 200) { exit 0 } } catch { try { $r2 = Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:3000' -TimeoutSec 2; if ($r2.StatusCode -ge 200) { exit 0 } } catch {} }; exit 1"
 if errorlevel 1 (
     echo [*] Starting investigation console...
-    start "TraceACT Investigation Console - 3000" /D "%TRACEACT_FRONTEND%" cmd /k "npm run dev -- --port 3000"
+    start "TraceACT Investigation Console - 3000" /D "%TRACEACT_FRONTEND%" cmd /k "npm.cmd run dev -- --port 3000"
     if errorlevel 1 (
         echo [ERROR] The frontend process could not be started.
         goto :failed
@@ -75,9 +76,9 @@ if errorlevel 1 (
 )
 
 echo [4/5] Waiting for the investigation console to become ready...
-powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "$deadline=(Get-Date).AddSeconds(50); do { try { $response=Invoke-WebRequest -UseBasicParsing -Uri '%TRACEACT_URL%' -TimeoutSec 2; if ($response.StatusCode -ge 200) { exit 0 } } catch {}; Start-Sleep -Milliseconds 750 } while ((Get-Date) -lt $deadline); exit 1"
+powershell -NoLogo -NoProfile -ExecutionPolicy Bypass -Command "$deadline=(Get-Date).AddSeconds(30); do { try { $r = Invoke-WebRequest -UseBasicParsing -Uri 'http://127.0.0.1:3000' -TimeoutSec 2; if ($r.StatusCode -ge 200) { exit 0 } } catch { try { $r2 = Invoke-WebRequest -UseBasicParsing -Uri 'http://localhost:3000' -TimeoutSec 2; if ($r2.StatusCode -ge 200) { exit 0 } } catch {} }; Start-Sleep -Milliseconds 600 } while ((Get-Date) -lt $deadline); exit 1"
 if errorlevel 1 (
-    echo [WARN] The console did not answer within 50 seconds.
+    echo [WARN] The console did not answer within 30 seconds.
     echo        Opening it anyway; review the two service windows for details.
 ) else (
     echo [OK] Investigation console is ready.

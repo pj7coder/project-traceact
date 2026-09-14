@@ -2,6 +2,21 @@ import React, { useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { Search, Copy, Check, Landmark, Loader2, Info } from 'lucide-react';
 
+const getCurrencyMeta = (asset = 'ETH', chain = '', addr = '') => {
+  const a = (asset || '').toUpperCase();
+  const c = (chain || '').toLowerCase();
+  if (a === 'BTC' || c === 'bitcoin' || addr.startsWith('1') || addr.startsWith('3') || addr.startsWith('bc1')) {
+    return { symbol: 'BTC', name: 'Bitcoin', color: '#f7931a', bg: 'rgba(247, 147, 26, 0.12)', border: 'rgba(247, 147, 26, 0.35)' };
+  }
+  if (a === 'TRX' || c === 'tron' || addr.startsWith('T')) {
+    return { symbol: 'TRX', name: 'TRON', color: '#eb0029', bg: 'rgba(235, 0, 41, 0.12)', border: 'rgba(235, 0, 41, 0.35)' };
+  }
+  if (a === 'SOL' || c === 'solana') {
+    return { symbol: 'SOL', name: 'Solana', color: '#14f195', bg: 'rgba(20, 241, 149, 0.12)', border: 'rgba(20, 241, 149, 0.35)' };
+  }
+  return { symbol: 'ETH', name: 'Ethereum', color: '#627eea', bg: 'rgba(98, 126, 234, 0.12)', border: 'rgba(98, 126, 234, 0.35)' };
+};
+
 const formatCurrencyValue = (val, asset = 'ETH') => {
   if (val === null || val === undefined || val === '') return `0.000 ${asset}`;
   const num = parseFloat(String(val));
@@ -9,15 +24,16 @@ const formatCurrencyValue = (val, asset = 'ETH') => {
 
   const cleanAsset = (asset || 'ETH').toUpperCase();
   if (cleanAsset === 'BTC') {
-    return `${num.toFixed(num < 0.01 ? 5 : 3)} BTC`;
+    if (num < 0.0001 && num > 0) return `${Math.round(num * 1e8).toLocaleString()} sat`;
+    return `${num.toFixed(num < 0.05 ? 5 : 3)} BTC`;
   }
   if (cleanAsset === 'TRX') {
-    return `${num.toLocaleString(undefined, { minimumFractionDigits: 1, maximumFractionDigits: 2 })} TRX`;
+    return `${num.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })} TRX`;
   }
   if (cleanAsset === 'SOL') {
     return `${num.toFixed(2)} SOL`;
   }
-  return `${num.toFixed(num < 0.1 ? 3 : 2)} ${cleanAsset}`;
+  return `${num.toFixed(num < 0.01 ? 4 : 2)} ${cleanAsset}`;
 };
 
 export const RectangularNode = ({ data, selected }) => {
@@ -28,6 +44,9 @@ export const RectangularNode = ({ data, selected }) => {
   const shortAddr = fullAddr.length > 10 
     ? `${fullAddr.slice(0, 5)}...${fullAddr.slice(-4)}` 
     : fullAddr;
+
+  const currMeta = getCurrencyMeta(data.asset, data.chain, fullAddr);
+  const asset = currMeta.symbol;
 
   // Determine Node Role & Type
   const isSearched = data.nodeType === 'investigated' || data.isTarget || data.depth === 0 || data.role === 'investigated';
@@ -77,7 +96,6 @@ export const RectangularNode = ({ data, selected }) => {
 
   const title = data.entityName || data.name || (isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr);
   const balanceRaw = data.balance || data.totalTransferred || data.totalAmount || data.totalVolume || '0';
-  const asset = (data.asset || 'ETH').toUpperCase();
   const txCount = data.txCount ?? data.transactionCount ?? 0;
 
   const handleCopy = (e) => {
@@ -105,7 +123,7 @@ export const RectangularNode = ({ data, selected }) => {
   const handleOpenDetail = (e) => {
     if (e) e.stopPropagation();
     if (data.onOpen) {
-      data.onOpen(data);
+      data.onOpen({ ...data, asset, currencyMeta: currMeta });
     }
   };
 
@@ -114,9 +132,9 @@ export const RectangularNode = ({ data, selected }) => {
       className={`custom-rect-node ${selected ? 'selected' : ''}`}
       onDoubleClick={handleOpenDetail}
       style={{
-        width: 210,
-        minWidth: 210,
-        maxWidth: 210,
+        width: 216,
+        minWidth: 216,
+        maxWidth: 216,
         border: selected ? `2px solid ${themeColor}` : borderStyle,
         boxShadow: selected ? `0 0 12px ${themeColor}40, var(--shadow-md)` : glowStyle,
       }}
@@ -163,6 +181,22 @@ export const RectangularNode = ({ data, selected }) => {
           />
           <span className="node-title" title={title} style={{ color: isSearched ? '#0071e3' : isVasp ? '#eab308' : 'var(--text-primary)' }}>
             {title}
+          </span>
+          <span
+            style={{
+              fontSize: 8.5,
+              fontWeight: 700,
+              padding: '1px 4px',
+              borderRadius: 3,
+              color: currMeta.color,
+              background: currMeta.bg,
+              border: `1px solid ${currMeta.border}`,
+              letterSpacing: '0.02em',
+              flexShrink: 0,
+            }}
+            title={`${currMeta.name} Network Asset`}
+          >
+            {currMeta.symbol}
           </span>
         </div>
 
@@ -253,7 +287,10 @@ export const RectangularNode = ({ data, selected }) => {
       {/* Metadata Grid */}
       <div className="node-meta-grid">
         <div>
-          <div className="meta-item-label">Amount / Vol</div>
+          <div className="meta-item-label" style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+            <span style={{ width: 4, height: 4, borderRadius: '50%', background: currMeta.color }} />
+            Amount / Vol
+          </div>
           <div className="meta-item-value" title={`${balanceRaw} ${asset}`}>
             {formatCurrencyValue(balanceRaw, asset)}
           </div>

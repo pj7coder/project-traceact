@@ -33,6 +33,17 @@ async function safeFetch(path, options = {}) {
     }
   }
 
+  // 4. Try local backend on port 8000 (standard FastAPI port)
+  const port8000Url = `http://127.0.0.1:8000/api${path}`;
+  if (`${API_BASE}${path}` !== port8000Url) {
+    try {
+      const res = await fetch(port8000Url, options);
+      if (res.ok) return await res.json();
+    } catch (e) {
+      // Port 8000 unavailable
+    }
+  }
+
   return null;
 }
 

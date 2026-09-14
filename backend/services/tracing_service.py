@@ -597,7 +597,15 @@ class MultiHopTracingEngine:
                 else:
                     rec_val = self._eth_to_decimal(node.totalReceivedFromParent or "0")
                     tx_cnt = node.transactionCount or 1
-                    bench_val = Decimal("0.5") if is_btc else Decimal("5.0")
+                    if is_btc:
+                        bench_val = Decimal("0.5")
+                    elif is_tron:
+                        bench_val = Decimal("25000.0")
+                    elif is_sol:
+                        bench_val = Decimal("50.0")
+                    else:
+                        bench_val = Decimal("5.0")
+
                     vol_ratio = float(rec_val / bench_val) if bench_val > 0 else 0.0
                     vol_points = min(42.0, math.log1p(max(0.0, vol_ratio)) * 13.5)
                     act_points = min(23.0, (float(tx_cnt) / 3.5) * 1.6)
@@ -620,10 +628,11 @@ class MultiHopTracingEngine:
                         node_color = "#10b981"
                         risk_lvl = "LOW"
 
+                    currency_label = "BTC" if is_btc else "TRX" if is_tron else "SOL" if is_sol else "ETH"
                     if r_score >= 60:
-                        node_tags.append("High Volume Flow" if not is_btc else "High Volume BTC Flow")
+                        node_tags.append(f"High Volume {currency_label} Flow")
                     elif r_score >= 25:
-                        node_tags.append("Medium Volume Flow" if not is_btc else "Medium Volume BTC Flow")
+                        node_tags.append(f"Medium Volume {currency_label} Flow")
                     else:
                         node_tags.append("Unhosted Peer")
 

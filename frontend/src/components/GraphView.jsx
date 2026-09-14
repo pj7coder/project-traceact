@@ -764,6 +764,30 @@ const GraphInner = ({
     [onTrackNode]
   );
 
+  const currMeta = useMemo(() => {
+    const a = (targetAsset || 'ETH').toUpperCase();
+    if (a === 'BTC') return { symbol: 'BTC', name: 'Bitcoin', color: '#f7931a' };
+    if (a === 'TRX') return { symbol: 'TRX', name: 'TRON', color: '#eb0029' };
+    if (a === 'SOL') return { symbol: 'SOL', name: 'Solana', color: '#14f195' };
+    return { symbol: 'ETH', name: 'Ethereum', color: '#0071e3' };
+  }, [targetAsset]);
+
+  const totalTracedVolume = useMemo(() => {
+    let sum = 0;
+    (initialEdges || []).forEach((e) => {
+      const val = parseFloat(String(e.data?.totalTransferred || e.totalValue || '0'));
+      if (!isNaN(val) && val > 0) sum += val;
+    });
+    return sum;
+  }, [initialEdges]);
+
+  const formattedTotalVolume = useMemo(() => {
+    const a = (targetAsset || 'ETH').toUpperCase();
+    if (a === 'BTC') return `${totalTracedVolume.toFixed(totalTracedVolume < 0.1 ? 4 : 3)} BTC`;
+    if (a === 'TRX') return `${totalTracedVolume.toLocaleString(undefined, { maximumFractionDigits: 1 })} TRX`;
+    return `${totalTracedVolume.toFixed(2)} ${a}`;
+  }, [totalTracedVolume, targetAsset]);
+
   // 1. Calculate layout based on chosen pattern mode
   const layoutedNodes = useMemo(() => {
     if (layoutMode === 'waterfall') {
@@ -851,17 +875,19 @@ const GraphInner = ({
         }
       }
 
+      const edgeAsset = (e.asset || e.data?.asset || targetAsset || 'ETH').toUpperCase();
       const rawVal = parseFloat(String(e.data?.totalTransferred || e.totalValue || '0'));
       let formattedVal = '';
       if (!isNaN(rawVal) && rawVal > 0) {
-        if (targetAsset === 'BTC') {
-          formattedVal = `${rawVal.toFixed(rawVal < 0.01 ? 4 : 3)} BTC`;
-        } else if (targetAsset === 'TRX') {
-          formattedVal = `${rawVal.toFixed(0)} TRX`;
-        } else if (targetAsset === 'SOL') {
+        if (edgeAsset === 'BTC') {
+          if (rawVal < 0.0001) formattedVal = `${Math.round(rawVal * 1e8).toLocaleString()} sat`;
+          else formattedVal = `${rawVal.toFixed(rawVal < 0.05 ? 5 : 3)} BTC`;
+        } else if (edgeAsset === 'TRX') {
+          formattedVal = `${rawVal.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 2 })} TRX`;
+        } else if (edgeAsset === 'SOL') {
           formattedVal = `${rawVal.toFixed(2)} SOL`;
         } else {
-          formattedVal = `${rawVal.toFixed(2)} ${targetAsset}`;
+          formattedVal = `${rawVal.toFixed(rawVal < 0.01 ? 4 : 2)} ${edgeAsset}`;
         }
       }
 
@@ -881,6 +907,7 @@ const GraphInner = ({
         },
         rawVal,
         formattedVal,
+        edgeAsset,
       };
     });
   }, [initialEdges, nodePosMap, targetAsset, layoutMode]);
@@ -1118,6 +1145,34 @@ const GraphInner = ({
           boxShadow: 'var(--shadow-sm)',
         }}
       >
+        {/* Active Network & Volume Chip */}
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: 5,
+            padding: '2px 8px',
+            borderRadius: 'var(--radius-pill)',
+            background: `${currMeta.color}15`,
+            border: `1px solid ${currMeta.color}35`,
+            color: currMeta.color,
+            fontWeight: 700,
+            fontSize: 10,
+            letterSpacing: '0.02em',
+          }}
+          title={`Active Tracing Network: ${currMeta.name}`}
+        >
+          <span style={{ width: 6, height: 6, borderRadius: '50%', background: currMeta.color }} />
+          <span>{currMeta.symbol}</span>
+          {totalTracedVolume > 0 && (
+            <span style={{ color: 'var(--text-secondary)', fontWeight: 600, fontSize: 9.5 }}>
+              ({formattedTotalVolume})
+            </span>
+          )}
+        </div>
+
+        <div style={{ width: 1, height: 14, background: 'var(--border-subtle)' }} />
+
         <div style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 10, color: 'var(--text-secondary)', fontWeight: 500, paddingRight: 4 }}>
           {selectedNodeId ? (
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
