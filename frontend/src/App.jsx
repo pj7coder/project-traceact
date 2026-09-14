@@ -410,6 +410,16 @@ export function App() {
     handleSearch({ address: addr, chain: currentChain, hops, minAmount, direction });
   };
 
+  const handleClearSearch = () => {
+    setSearchedAddress('');
+    setAnalysisData(null);
+    setInvestigationDossier(null);
+    setGraphNodes([]);
+    setGraphEdges([]);
+    setRiskAssessment(null);
+    setError(null);
+  };
+
   return (
     <div className="app-container">
       {/* Left Sidebar */}
@@ -429,6 +439,7 @@ export function App() {
         <header className="top-header">
           <SearchBar
             onSearch={handleSearch}
+            onClear={handleClearSearch}
             loading={loading}
             initialAddress={searchedAddress}
             hops={hops}

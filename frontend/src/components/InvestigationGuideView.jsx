@@ -41,10 +41,53 @@ export const InvestigationGuideView = ({ investigationData, wallet }) => {
     });
   };
 
-  const targetAddr = wallet?.address || investigationData?.targetAddress || '0x...';
+  const targetAddr = wallet?.address || investigationData?.targetAddress || '';
+
+  if (!targetAddr) {
+    return (
+      <div
+        style={{
+          background: 'var(--bg-card)',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-subtle)',
+          padding: '64px 28px',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 14,
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 'var(--radius-sm)',
+            background: 'rgba(0, 113, 227, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#0071e3',
+            marginBottom: 2,
+          }}
+        >
+          <Compass size={26} strokeWidth={1.8} />
+        </div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+          Deterministic Forensic Investigation Playbook (SOP)
+        </h3>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: 480, margin: 0, lineHeight: 1.55 }}>
+          No suspect wallet address entered. Enter a wallet address in the top search bar to generate an actionable, step-wise SOP interdiction workflow, NetworkX bottleneck mule identification, and statutory freeze requisition directives.
+        </p>
+      </div>
+    );
+  }
+
   const targetChain = wallet?.chain || investigationData?.chain || 'ethereum';
   const targetAsset = wallet?.asset || (targetChain === 'bitcoin' ? 'BTC' : (targetChain === 'tron' ? 'TRX' : (targetChain === 'solana' ? 'SOL' : 'ETH')));
-  const caseId = investigationData?.caseId || 'CASE-2026-I4C-ACTIVE';
+  const caseId = investigationData?.caseId || `CASE-${targetAddr.slice(2, 6).toUpperCase()}`;
 
   // NetworkX topological intelligence
   const netx = investigationData?.networkAnalytics;

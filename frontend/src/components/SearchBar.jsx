@@ -4,6 +4,7 @@ import { detectChain } from '../api/client';
 
 export const SearchBar = ({
   onSearch,
+  onClear,
   loading,
   initialAddress = '',
   hops,
@@ -100,6 +101,9 @@ export const SearchBar = ({
     setAddress('');
     setDetectedChain(null);
     setSelectedChain(null);
+    if (onClear) {
+      onClear();
+    }
   };
 
   const activeChain = selectedChain && selectedChain !== 'auto' ? selectedChain : detectedChain;

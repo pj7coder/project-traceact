@@ -39,43 +39,44 @@ export const Sidebar = ({
     };
   }, []);
 
+  const hasTarget = Boolean(wallet?.address);
   const nodeCount = graphData?.nodes?.length || 0;
   const edgeCount = graphData?.edges?.length || 0;
-  const suspicionScore = riskAssessment?.suspicionScore ?? wallet?.riskScore ?? 0;
-  const suspicionLevel = (riskAssessment?.riskLevel || riskAssessment?.riskClassification || wallet?.riskLevel || 'LOW').toUpperCase();
-  const ruleCount = riskAssessment?.triggeredRules?.length || 0;
-  const actionsCount = investigationData?.nextActions?.length || 2;
-  const caseId = investigationData?.caseId || (wallet?.address ? `CASE-${wallet.address.slice(2, 6).toUpperCase()}` : 'Ready');
+  const suspicionScore = hasTarget ? (riskAssessment?.suspicionScore ?? wallet?.riskScore ?? 0) : 0;
+  const suspicionLevel = hasTarget ? ((riskAssessment?.riskLevel || riskAssessment?.riskClassification || wallet?.riskLevel || 'LOW').toUpperCase()) : 'LOW';
+  const ruleCount = hasTarget ? (riskAssessment?.triggeredRules?.length || 0) : 0;
+  const actionsCount = hasTarget ? (investigationData?.nextActions?.length || 2) : 0;
+  const caseId = hasTarget ? (investigationData?.caseId || `CASE-${wallet.address.slice(2, 6).toUpperCase()}`) : 'Awaiting Target';
 
   const navItems = [
     {
       id: 'graph',
       title: 'Forensic Graph',
       icon: <GitFork size={16} />,
-      metricPrimary: `${nodeCount} Nodes · ${edgeCount} Edges`,
+      metricPrimary: hasTarget ? `${nodeCount} Nodes · ${edgeCount} Edges` : '0 Nodes · 0 Edges',
       metricSecondary: `${hops} ${hops === 1 ? 'Hop' : 'Hops'} Traversal`,
     },
     {
       id: 'suspicion',
       title: 'Suspicion Points',
       icon: <ShieldAlert size={16} />,
-      metricPrimary: `${suspicionScore} / 100 Points`,
-      metricSecondary: `${ruleCount} Rules (${suspicionLevel})`,
+      metricPrimary: hasTarget ? `${suspicionScore} / 100 Points` : '0 / 100 Points',
+      metricSecondary: hasTarget ? `${ruleCount} Rules (${suspicionLevel})` : '0 Rules (Standby)',
       badgeColor: suspicionScore >= 75 ? '#af52de' : suspicionScore >= 50 ? '#ff453a' : suspicionScore >= 20 ? '#ff9f0a' : '#34c759',
     },
     {
       id: 'investigate',
       title: 'Investigation Playbook',
       icon: <Compass size={16} />,
-      metricPrimary: `${actionsCount} Steps Planned`,
-      metricSecondary: 'Section 91 Ready',
+      metricPrimary: hasTarget ? `${actionsCount} Steps Planned` : '0 Steps Planned',
+      metricSecondary: hasTarget ? 'Section 91 Ready' : 'Standby',
     },
     {
       id: 'report',
       title: 'Forensic Dossier & Report',
       icon: <FileText size={16} />,
       metricPrimary: caseId,
-      metricSecondary: 'Sec 65B BSA Admissible',
+      metricSecondary: hasTarget ? 'Sec 65B BSA Admissible' : 'Standby',
     },
   ];
 

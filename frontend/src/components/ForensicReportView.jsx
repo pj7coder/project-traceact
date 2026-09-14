@@ -28,7 +28,50 @@ export const ForensicReportView = ({
   const [copied, setCopied] = useState(false);
   const [jsonDownloaded, setJsonDownloaded] = useState(false);
 
-  const target = wallet?.address || reportData?.targetAddress || caseDetails?.targetAddress || '0x71c836489b990038848971201991802901238910';
+  const target = wallet?.address || reportData?.targetAddress || caseDetails?.targetAddress || '';
+
+  if (!target) {
+    return (
+      <div
+        style={{
+          background: 'var(--bg-card)',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-subtle)',
+          padding: '64px 28px',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 14,
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 'var(--radius-sm)',
+            background: 'rgba(0, 113, 227, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#0071e3',
+            marginBottom: 2,
+          }}
+        >
+          <Printer size={26} strokeWidth={1.8} />
+        </div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+          Forensic Dossier & Statutory Report
+        </h3>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: 480, margin: 0, lineHeight: 1.55 }}>
+          No suspect wallet address entered. Enter a wallet address in the top search bar to trace multi-hop fund flows, attribute regulated VASP endpoints, and generate an official Section 91 CrPC and Section 65B BSA forensic dossier.
+        </p>
+      </div>
+    );
+  }
+
   const caseId = caseDetails?.caseId || reportData?.caseId || `CASE-2026-I4C-${target.slice(2, 6).toUpperCase()}`;
   const firNumber = caseDetails?.caseNumber || 'FIR-2026/CYBER-409';
   const crimeType = caseDetails?.crimeType || 'Cryptocurrency Investment Fraud & Rapid Peeling';
@@ -37,8 +80,8 @@ export const ForensicReportView = ({
     ? new Date(reportData.generatedAt).toLocaleString()
     : new Date().toLocaleString();
 
-  const score = riskAssessment?.suspicionScore ?? wallet?.riskScore ?? 88;
-  const riskLevel = (riskAssessment?.riskLevel || riskAssessment?.riskClassification || wallet?.riskLevel || 'CRITICAL').toUpperCase();
+  const score = riskAssessment?.suspicionScore ?? wallet?.riskScore ?? 0;
+  const riskLevel = (riskAssessment?.riskLevel || riskAssessment?.riskClassification || wallet?.riskLevel || (score >= 75 ? 'CRITICAL' : score >= 50 ? 'HIGH' : score >= 20 ? 'MEDIUM' : 'LOW')).toUpperCase();
 
   // Extract VASP nodes from graphData
   const vaspNodes = (graphData?.nodes || [])
@@ -420,15 +463,9 @@ Authorized under I4C / Ministry of Home Affairs (MHA) Framework`;
                     </tr>
                   ))
                 ) : (
-                  <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                    <td style={{ padding: '8px 10px', fontWeight: 600, color: '#eab308' }}>CoinDCX Omnibus</td>
-                    <td style={{ padding: '8px 10px', fontFamily: 'ui-monospace, monospace' }}>0x4838b106fce9647bdf1e7877bf73ce8b0bad5f97</td>
-                    <td style={{ padding: '8px 10px', fontWeight: 600 }}>5.200 {currentAsset}</td>
-                    <td style={{ padding: '8px 10px', color: 'var(--text-secondary)' }}>FIU-IND/2023/VASP/0012</td>
-                    <td style={{ padding: '8px 10px' }}>
-                      <span style={{ background: 'rgba(255, 69, 58, 0.12)', color: 'var(--risk-high)', padding: '2px 6px', borderRadius: 4, fontWeight: 600, fontSize: 10 }}>
-                        Section 91 Freeze
-                      </span>
+                  <tr>
+                    <td colSpan={5} style={{ padding: '18px 10px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
+                      No direct or intermediary regulated VASP endpoints identified within current hop threshold.
                     </td>
                   </tr>
                 )}
@@ -461,51 +498,59 @@ Authorized under I4C / Ministry of Home Affairs (MHA) Framework`;
                 </tr>
               </thead>
               <tbody>
-                {nodesList.slice(0, 15).map((node, idx) => {
-                  const addr = node.address || node.fullAddress || node.label || `0x...${idx}`;
-                  const hop = node.depth ?? (addr.toLowerCase() === target.toLowerCase() ? 0 : 1);
-                  const isVasp = (node.nodeType || node.type || '').includes('vasp') || (node.entityName || '').toLowerCase().includes('coindcx');
-                  const vol = parseFloat(node.totalTransferred || node.totalReceivedFromParent || node.balance || node.balanceEth || node.totalVolume || '1.25').toFixed(3);
-                  const nodeTime = node.timestamp || node.lastSeen || (node.depth === 0 ? 'Target Root' : '2026-09-14 14:15:22');
+                {nodesList.length > 0 ? (
+                  nodesList.slice(0, 15).map((node, idx) => {
+                    const addr = node.address || node.fullAddress || node.label || `0x...${idx}`;
+                    const hop = node.depth ?? (addr.toLowerCase() === target.toLowerCase() ? 0 : 1);
+                    const isVasp = (node.nodeType || node.type || '').includes('vasp') || (node.entityName || '').toLowerCase().includes('coindcx');
+                    const vol = parseFloat(node.totalTransferred || node.totalReceivedFromParent || node.balance || node.balanceEth || node.totalVolume || '0').toFixed(3);
+                    const nodeTime = node.timestamp || node.lastSeen || (node.depth === 0 ? 'Target Root' : 'On-Chain Ledger');
 
-                  return (
-                    <tr key={idx} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                      <td style={{ padding: '6px 10px', fontWeight: 600 }}>
-                        {hop === 0 ? 'Target' : `Hop ${hop}`}
-                      </td>
-                      <td style={{ padding: '6px 10px', fontFamily: 'ui-monospace, monospace' }}>
-                        {addr.length > 24 ? `${addr.slice(0, 10)}...${addr.slice(-8)}` : addr}
-                      </td>
-                      <td style={{ padding: '6px 10px' }}>
-                        {isVasp ? (
-                          <span style={{ color: '#eab308', fontWeight: 600 }}>{node.entityName || 'VASP Gateway'}</span>
-                        ) : (
-                          <span>{node.entityName || 'Unattributed Peeler'}</span>
-                        )}
-                      </td>
-                      <td style={{ padding: '6px 10px', fontWeight: 600 }}>
-                        {vol} {currentAsset}
-                      </td>
-                      <td style={{ padding: '6px 10px', color: 'var(--text-secondary)', fontSize: 10 }}>
-                        {typeof nodeTime === 'string' && nodeTime.length > 16 ? nodeTime.slice(0, 19).replace('T', ' ') : nodeTime}
-                      </td>
-                      <td style={{ padding: '6px 10px' }}>
-                        <span
-                          style={{
-                            padding: '1px 6px',
-                            borderRadius: 4,
-                            fontSize: 10,
-                            fontWeight: 600,
-                            background: isVasp ? 'rgba(234, 179, 8, 0.15)' : (node.riskScore || 15) >= 50 ? 'rgba(255, 69, 58, 0.15)' : 'rgba(52, 199, 89, 0.15)',
-                            color: isVasp ? '#eab308' : (node.riskScore || 15) >= 50 ? 'var(--risk-high)' : 'var(--risk-clean)',
-                          }}
-                        >
-                          {node.riskScore || 15}/100
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
+                    return (
+                      <tr key={idx} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+                        <td style={{ padding: '6px 10px', fontWeight: 600 }}>
+                          {hop === 0 ? 'Target' : `Hop ${hop}`}
+                        </td>
+                        <td style={{ padding: '6px 10px', fontFamily: 'ui-monospace, monospace' }}>
+                          {addr.length > 24 ? `${addr.slice(0, 10)}...${addr.slice(-8)}` : addr}
+                        </td>
+                        <td style={{ padding: '6px 10px' }}>
+                          {isVasp ? (
+                            <span style={{ color: '#eab308', fontWeight: 600 }}>{node.entityName || 'VASP Gateway'}</span>
+                          ) : (
+                            <span>{node.entityName || 'Unattributed Peeler'}</span>
+                          )}
+                        </td>
+                        <td style={{ padding: '6px 10px', fontWeight: 600 }}>
+                          {vol} {currentAsset}
+                        </td>
+                        <td style={{ padding: '6px 10px', color: 'var(--text-secondary)', fontSize: 10 }}>
+                          {typeof nodeTime === 'string' && nodeTime.length > 16 ? nodeTime.slice(0, 19).replace('T', ' ') : nodeTime}
+                        </td>
+                        <td style={{ padding: '6px 10px' }}>
+                          <span
+                            style={{
+                              padding: '1px 6px',
+                              borderRadius: 4,
+                              fontSize: 10,
+                              fontWeight: 600,
+                              background: isVasp ? 'rgba(234, 179, 8, 0.15)' : (node.riskScore || 15) >= 50 ? 'rgba(255, 69, 58, 0.15)' : 'rgba(52, 199, 89, 0.15)',
+                              color: isVasp ? '#eab308' : (node.riskScore || 15) >= 50 ? 'var(--risk-high)' : 'var(--risk-clean)',
+                            }}
+                          >
+                            {node.riskScore || 0}/100
+                          </span>
+                        </td>
+                      </tr>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td colSpan={6} style={{ padding: '18px 10px', textAlign: 'center', color: 'var(--text-tertiary)' }}>
+                      No counterparty transaction nodes discovered.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>
@@ -517,72 +562,70 @@ Authorized under I4C / Ministry of Home Affairs (MHA) Framework`;
             5. Forensic Heuristics & Suspicion Indicators
           </h4>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            {(riskAssessment?.triggeredRules && riskAssessment.triggeredRules.length > 0
-              ? riskAssessment.triggeredRules
-              : [
-                  {
-                    title: 'High-Value Deposit into Verified VASP (CoinDCX)',
-                    severity: 'ACTIONABLE',
-                    weight: 52,
-                    description: 'Funds transited directly into domestic custodial exchange deposit router.',
-                    evidence: ['1-hop transit to omnibus router', 'FIU-IND Reg: FIU-IND/2023/VASP/0012'],
-                  },
-                  {
-                    title: 'Peeling Chain and Outbound Fragmentation',
-                    severity: 'HIGH',
-                    weight: 25,
-                    description: 'Sequential balance shaving across consecutive intermediary hops within 30 minutes.',
-                    evidence: ['Fragmentation across 3 branches', 'Feeder volume: 2.1000 ETH'],
-                  },
-                ]
-            ).map((rule, idx) => (
+            {riskAssessment?.triggeredRules && riskAssessment.triggeredRules.length > 0 ? (
+              riskAssessment.triggeredRules.map((rule, idx) => (
+                <div
+                  key={idx}
+                  style={{
+                    background: 'var(--bg-surface)',
+                    padding: '10px 14px',
+                    borderRadius: 'var(--radius-xs)',
+                    border: '1px solid var(--border-subtle)',
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'flex-start',
+                    gap: 12,
+                  }}
+                >
+                  <div>
+                    <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
+                      {rule.title}
+                    </div>
+                    <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
+                      {rule.description}
+                    </div>
+                    {rule.evidence && (
+                      <div style={{ fontSize: 10.5, color: 'var(--text-tertiary)', marginTop: 4, fontFamily: 'ui-monospace, monospace' }}>
+                        Evidence: {Array.isArray(rule.evidence) ? rule.evidence.join(' · ') : String(rule.evidence)}
+                      </div>
+                    )}
+                  </div>
+                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
+                    <span
+                      style={{
+                        fontSize: 10,
+                        fontWeight: 700,
+                        padding: '2px 8px',
+                        borderRadius: 'var(--radius-pill)',
+                        background: 'rgba(255, 69, 58, 0.15)',
+                        color: 'var(--risk-high)',
+                        display: 'inline-block',
+                        marginBottom: 3,
+                      }}
+                    >
+                      {rule.severity || 'HIGH'}
+                    </span>
+                    <div style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>
+                      +{rule.weight || 25} Pts
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
               <div
-                key={idx}
                 style={{
                   background: 'var(--bg-surface)',
-                  padding: '10px 14px',
+                  padding: '16px',
                   borderRadius: 'var(--radius-xs)',
                   border: '1px solid var(--border-subtle)',
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'flex-start',
-                  gap: 12,
+                  textAlign: 'center',
+                  color: 'var(--text-secondary)',
+                  fontSize: 12,
                 }}
               >
-                <div>
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-primary)' }}>
-                    {rule.title}
-                  </div>
-                  <div style={{ fontSize: 11, color: 'var(--text-secondary)', marginTop: 2 }}>
-                    {rule.description}
-                  </div>
-                  {rule.evidence && (
-                    <div style={{ fontSize: 10.5, color: 'var(--text-tertiary)', marginTop: 4, fontFamily: 'ui-monospace, monospace' }}>
-                      Evidence: {Array.isArray(rule.evidence) ? rule.evidence.join(' · ') : String(rule.evidence)}
-                    </div>
-                  )}
-                </div>
-                <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <span
-                    style={{
-                      fontSize: 10,
-                      fontWeight: 700,
-                      padding: '2px 8px',
-                      borderRadius: 'var(--radius-pill)',
-                      background: 'rgba(255, 69, 58, 0.15)',
-                      color: 'var(--risk-high)',
-                      display: 'inline-block',
-                      marginBottom: 3,
-                    }}
-                  >
-                    {rule.severity || 'HIGH'}
-                  </span>
-                  <div style={{ fontSize: 10, color: 'var(--text-tertiary)' }}>
-                    +{rule.weight || 25} Pts
-                  </div>
-                </div>
+                No suspicious AML typology rules triggered for this address.
               </div>
-            ))}
+            )}
           </div>
         </div>
 

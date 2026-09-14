@@ -834,9 +834,7 @@ export async function getSystemSettings() {
 
 export async function getDemoInvestigation() {
   const data = await safeFetch('/investigations/demo', { method: 'POST', headers: { 'Content-Type': 'application/json' } });
-  if (data) return data;
-
-  return await runUnifiedInvestigation({ chain: 'ethereum', address: '0x71c836489b990038848971201991802901238910', maxDepth: 2 });
+  return data || null;
 }
 
 // ============================================================================

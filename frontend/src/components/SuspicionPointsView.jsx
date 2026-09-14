@@ -175,8 +175,42 @@ export const SuspicionPointsView = ({ riskAssessment, wallet }) => {
 
   if (!riskAssessment && !wallet) {
     return (
-      <div style={{ padding: 40, textAlign: 'center', color: 'var(--text-secondary)' }}>
-        Enter a wallet address above to run the Suspicion Engine.
+      <div
+        style={{
+          background: 'var(--bg-card)',
+          borderRadius: 'var(--radius-md)',
+          border: '1px solid var(--border-subtle)',
+          padding: '64px 28px',
+          textAlign: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 14,
+          boxShadow: 'var(--shadow-sm)',
+        }}
+      >
+        <div
+          style={{
+            width: 52,
+            height: 52,
+            borderRadius: 'var(--radius-sm)',
+            background: 'rgba(255, 69, 58, 0.12)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#ff453a',
+            marginBottom: 2,
+          }}
+        >
+          <ShieldAlert size={26} strokeWidth={1.8} />
+        </div>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+          Suspicion Points & Typology Engine
+        </h3>
+        <p style={{ fontSize: 13, color: 'var(--text-secondary)', maxWidth: 480, margin: 0, lineHeight: 1.55 }}>
+          No suspect wallet address entered. Enter a wallet address in the top search bar to compute forensic suspicion scores, trigger 16-point AML priority typologies, and view risk matrices.
+        </p>
       </div>
     );
   }
