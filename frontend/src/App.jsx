@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { SearchBar } from './components/SearchBar';
 import { WalletOverviewCard } from './components/WalletOverviewCard';
@@ -87,6 +87,7 @@ export function App() {
   const [graphEdges, setGraphEdges] = useState([]);
   const [riskAssessment, setRiskAssessment] = useState(null);
   const [investigationDossier, setInvestigationDossier] = useState(null);
+  const currentSearchId = useRef(0);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -110,6 +111,7 @@ export function App() {
     direction: searchDir = direction,
   }) => {
     if (!address) return;
+    const searchId = ++currentSearchId.current;
     setLoading(true);
     setError(null);
     setSearchedAddress(address);
@@ -121,6 +123,7 @@ export function App() {
     try {
       // 1. Fetch wallet baseline overview
       const analyzeRes = await analyzeWallet(chain, address, searchHops);
+      if (searchId !== currentSearchId.current) return;
       setAnalysisData(analyzeRes);
 
       let finalNodes = analyzeRes.graph?.nodes || [];
@@ -142,8 +145,10 @@ export function App() {
           minimumTransferValue: searchMin,
         });
 
+        if (searchId !== currentSearchId.current) return;
+
         if (traceRes && traceRes.nodes && traceRes.nodes.length > 0) {
-          finalNodes = traceRes.nodes.map((tn) => ({
+          const traceNodes = traceRes.nodes.map((tn) => ({
             id: tn.address.toLowerCase(),
             type: 'customWalletNode',
             address: tn.address,
@@ -163,7 +168,7 @@ export function App() {
             },
           }));
 
-          finalEdges = (traceRes.edges || []).map((te, idx) => ({
+          const traceEdges = (traceRes.edges || []).map((te, idx) => ({
             id: `e-${te.source}-${te.target}-${idx}`,
             source: te.source.toLowerCase(),
             target: te.target.toLowerCase(),
@@ -177,10 +182,30 @@ export function App() {
             },
             animated: false,
           }));
+
+          // Merge baseline and trace nodes so no counterparties are lost
+          const nodeMap = new Map();
+          finalNodes.forEach((n) => nodeMap.set(n.id.toLowerCase(), n));
+          traceNodes.forEach((n) => {
+            const key = n.id.toLowerCase();
+            if (nodeMap.has(key)) {
+              nodeMap.set(key, { ...nodeMap.get(key), ...n, data: { ...nodeMap.get(key).data, ...n.data } });
+            } else {
+              nodeMap.set(key, n);
+            }
+          });
+          finalNodes = Array.from(nodeMap.values());
+
+          const edgeMap = new Map();
+          finalEdges.forEach((e) => edgeMap.set(`${e.source.toLowerCase()}->${e.target.toLowerCase()}`, e));
+          traceEdges.forEach((e) => edgeMap.set(`${e.source.toLowerCase()}->${e.target.toLowerCase()}`, e));
+          finalEdges = Array.from(edgeMap.values());
         }
       } catch (traceErr) {
         console.warn('Trace funds notice, using 1-hop:', traceErr);
       }
+
+      if (searchId !== currentSearchId.current) return;
 
       // Suspicion Points evaluation
       try {
@@ -189,10 +214,12 @@ export function App() {
           address,
           multihopNodes: finalNodes.map((n) => n.data || n),
         });
+        if (searchId !== currentSearchId.current) return;
         if (heuristicRes && heuristicRes.riskAssessment) {
           setRiskAssessment(heuristicRes.riskAssessment);
         }
       } catch (heurErr) {
+        if (searchId !== currentSearchId.current) return;
         setRiskAssessment({
           suspicionScore: analyzeRes.wallet?.riskScore || 15,
           riskLevel: analyzeRes.wallet?.riskLevel || 'LOW',
@@ -210,19 +237,25 @@ export function App() {
           minimumTransferValue: searchMin,
           direction: searchDir,
         });
+        if (searchId !== currentSearchId.current) return;
         setInvestigationDossier(dossierRes);
       } catch (dossierErr) {
         console.warn('Dossier notice:', dossierErr);
       }
 
+      if (searchId !== currentSearchId.current) return;
+
       setGraphNodes(finalNodes);
       setGraphEdges(finalEdges);
       showToast(`Traced ${searchHops} ${searchHops === 1 ? 'hop' : 'hops'} (${detectedAsset}).`);
     } catch (err) {
+      if (searchId !== currentSearchId.current) return;
       console.error('Wallet analysis failed:', err);
       setError(err.message || 'Error communicating with backend forensics engine.');
     } finally {
-      setLoading(false);
+      if (searchId === currentSearchId.current) {
+        setLoading(false);
+      }
     }
   };
 
@@ -411,6 +444,8 @@ export function App() {
   };
 
   const handleClearSearch = () => {
+    currentSearchId.current += 1;
+    setLoading(false);
     setSearchedAddress('');
     setAnalysisData(null);
     setInvestigationDossier(null);
@@ -525,7 +560,7 @@ export function App() {
                     />
                   )}
                 </div>
-              ) : loading ? (
+              ) : (loading && searchedAddress) ? (
                 <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-secondary)' }}>
                   <Loader2 size={32} color="var(--accent-primary)" style={{ margin: '0 auto 12px', animation: 'spin 1s linear infinite' }} />
                   <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>

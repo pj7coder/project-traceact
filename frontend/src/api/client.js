@@ -524,10 +524,17 @@ export async function analyzeWallet(chain, address, maxDepth = 2) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ chain: c, address: cleanAddr, maxDepth: depth }),
   });
-  if (data) return data;
+  if (data && data.graph && data.graph.nodes && data.graph.nodes.length > 1) {
+    return data;
+  }
 
-  // 2. Fetch REAL on-chain ledger records directly from Blockscout API with specified maxDepth
+  // 2. Fetch REAL on-chain ledger records directly with specified maxDepth
   const realData = await fetchRealOnChainData(cleanAddr, c, depth);
+  if (realData && realData.graph && realData.graph.nodes && realData.graph.nodes.length > 1) {
+    return realData;
+  }
+
+  if (data) return data;
   if (realData) return realData;
 
   throw new Error(`Unable to fetch ledger data for ${cleanAddr}. Please check the wallet address and network connection.`);

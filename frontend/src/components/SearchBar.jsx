@@ -24,8 +24,10 @@ export const SearchBar = ({
   const currencyRef = useRef(null);
 
   useEffect(() => {
-    if (initialAddress) {
-      setAddress(initialAddress);
+    setAddress(initialAddress || '');
+    if (!initialAddress) {
+      setDetectedChain(null);
+      setSelectedChain(null);
     }
   }, [initialAddress]);
 
@@ -97,7 +99,11 @@ export const SearchBar = ({
     });
   };
 
-  const handleClear = () => {
+  const handleClear = (e) => {
+    if (e) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
     setAddress('');
     setDetectedChain(null);
     setSelectedChain(null);

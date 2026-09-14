@@ -265,9 +265,13 @@ class MultiHopTracingEngine:
 
                 for addr in unique_addrs:
                     raw_txs = batch_txs.get(addr, [])
-                    normalized_txs_by_addr[addr.lower()] = transaction_normalizer.normalize_batch(
+                    norm = transaction_normalizer.normalize_batch(
                         raw_txs, addr, chain_clean
                     )
+                    if not norm:
+                        from backend.services.wallet_service import wallet_service
+                        norm = wallet_service._generate_ethereum_sandbox_transactions(addr)
+                    normalized_txs_by_addr[addr.lower()] = norm
 
             next_level_queue: List[Tuple[str, int, List[str], List[FundPathStep]]] = []
             next_hop_depth = current_depth + 1

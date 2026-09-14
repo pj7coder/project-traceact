@@ -402,6 +402,35 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
 
   layoutSide(outgoingByDepth, false);
   layoutSide(incomingByDepth, true);
+
+  // Preserve any remaining unassigned nodes from nodeMap (e.g. multi-hop expansion or non-tree counterparties)
+  const assignedSet = new Set(resultNodes.map((n) => n.id));
+  const unassigned = [];
+  nodeMap.forEach((n, k) => {
+    if (!assignedSet.has(k)) {
+      unassigned.push(n);
+    }
+  });
+
+  if (unassigned.length > 0) {
+    unassigned.forEach((uNode, uIdx) => {
+      const depth = uNode.data?.depth || uNode.depth || 1;
+      const isLeft = (uNode.data?.role || uNode.role || '').toLowerCase() === 'incoming' || uIdx % 2 === 1;
+      const colX = isLeft ? -depth * H_STEP : depth * H_STEP;
+      const y = (uIdx - (unassigned.length - 1) / 2) * MIN_V_GAP;
+      resultNodes.push({
+        ...uNode,
+        id: uNode.id,
+        position: { x: colX, y },
+        data: buildNodeData(uNode, {
+          depth,
+          asset: targetAsset,
+          role: isLeft ? 'incoming' : 'outgoing',
+        }),
+      });
+    });
+  }
+
   resolveCollisions(resultNodes);
 
   return resultNodes;
@@ -583,6 +612,35 @@ function computeWaterfallLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
 
   layoutVerticalSide(outgoingByDepth, false); // Bottom
   layoutVerticalSide(incomingByDepth, true);  // Top
+
+  // Preserve any remaining unassigned nodes from nodeMap
+  const assignedSetV = new Set(resultNodes.map((n) => n.id));
+  const unassignedV = [];
+  nodeMap.forEach((n, k) => {
+    if (!assignedSetV.has(k)) {
+      unassignedV.push(n);
+    }
+  });
+
+  if (unassignedV.length > 0) {
+    unassignedV.forEach((uNode, uIdx) => {
+      const depth = uNode.data?.depth || uNode.depth || 1;
+      const isTop = (uNode.data?.role || uNode.role || '').toLowerCase() === 'incoming' || uIdx % 2 === 1;
+      const rowY = isTop ? -depth * V_STEP : depth * V_STEP;
+      const x = (uIdx - (unassignedV.length - 1) / 2) * MIN_H_GAP;
+      resultNodes.push({
+        ...uNode,
+        id: uNode.id,
+        position: { x, y: rowY },
+        data: buildNodeData(uNode, {
+          depth,
+          asset: targetAsset,
+          role: isTop ? 'incoming' : 'outgoing',
+        }),
+      });
+    });
+  }
+
   resolveCollisions(resultNodes);
 
   return resultNodes;
@@ -713,6 +771,30 @@ function computeRadialLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
       });
     }
   });
+
+  // Preserve any remaining unassigned nodes from nodeMap
+  const assignedSetR = new Set(resultNodes.map((n) => n.id));
+  const unassignedR = [];
+  nodeMap.forEach((n, k) => {
+    if (!assignedSetR.has(k)) unassignedR.push(n);
+  });
+
+  if (unassignedR.length > 0) {
+    unassignedR.forEach((uNode, idx) => {
+      const theta = (2 * Math.PI * idx) / unassignedR.length;
+      const x = Math.round(R2 * Math.cos(theta));
+      const y = Math.round(R2 * Math.sin(theta));
+      resultNodes.push({
+        ...uNode,
+        id: uNode.id,
+        position: { x, y },
+        data: buildNodeData(uNode, {
+          depth: uNode.data?.depth || uNode.depth || 2,
+          asset: targetAsset,
+        }),
+      });
+    });
+  }
 
   resolveCollisions(resultNodes);
   return resultNodes;
