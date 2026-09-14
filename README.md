@@ -1,72 +1,29 @@
-# 🛡️ Automated Cryptocurrency Wallet Attribution Engine
-### Smart India Hackathon (SIH) 2026 — Day 1 Foundation
+# 🛡️ Project TraceACT — Forensic Blockchain Intelligence & VASP Attribution Engine
+### Smart India Hackathon (SIH) 2026
+**Target Ecosystem:** Indian Cyber Crime Coordination Centre (I4C), State Police Cyber Crime Cells, and the SAHYOG Ecosystem  
+**Classification:** Law Enforcement Forensic Intelligence Platform  
+**Platform Version:** 2.0.0 (Production Grade)
 
-Automated Attribution of Unknown Cryptocurrency Wallets to Nearest Virtual Asset Service Providers (VASPs) through Blockchain Intelligence APIs.
+Automated Attribution of Unknown Cryptocurrency Wallets to Nearest Virtual Asset Service Providers (VASPs) through Multi-Hop Blockchain Intelligence, NetworkX Graph Analytics, and Statutory Notice Generation.
 
 ---
 
 ## 📌 Project Overview
 
-During cybercrime and financial fraud investigations involving cryptocurrencies, law enforcement agencies and forensic analysts often start with an **unknown Ethereum suspect wallet**. The ultimate objective of this project is to automate the attribution of these wallets to the nearest regulated **Virtual Asset Service Provider (VASP / Exchange)** for KYC subpoena execution.
+During cybercrime and financial fraud investigations involving cryptocurrencies, law enforcement agencies and forensic analysts often start with an **unknown cryptocurrency suspect wallet**. The ultimate objective of **Project TraceACT** is to automate the attribution of these wallets to the nearest regulated **Virtual Asset Service Provider (VASP / Exchange)** for immediate asset freezing and KYC subpoena execution under Indian Law (Section 91 & 102 CrPC / Section 94 & 106 BNSS).
 
-### **Day 1 Objective (Completed)**
-Day 1 establishes the **core blockchain investigation foundation**:
-1. **Ethereum Address Validation**: Instant syntactic and checksum validation.
-2. **Live Blockchain Data Ingestion**: Direct fetching of real on-chain balance, gas metrics, and raw transactions from Ethereum mainnet (via Blockscout REST API v2 and Ethereum JSON-RPC with Etherscan fallback).
-3. **Transaction Normalization**: Converting disparate blockchain payloads into a unified, chain-agnostic canonical model.
-4. **1-Hop Connected Wallet Discovery**: Identifying unique sender (inflow) and recipient (outflow) counterparties, computing transaction counts and total ETH volume.
-5. **Interactive 1-Hop Relationship Graph**: Visualizing suspect-counterparty topology with React Flow, featuring radial layout, interactive inspection, direction-based filtering, and animated transaction flows.
-6. **Cybersecurity Investigation Dashboard**: Dark-mode, high-density investigation UI with wallet overview KPI cards, paginated transaction ledger, and counterparty breakdown.
-
----
-
-## 🏗️ Architecture & Component Design
-
-```
-SIH_2026/
-├── backend/
-│   ├── api/
-│   │   └── routes.py              # FastAPI endpoints (/api/wallet/analyze, /api/health)
-│   ├── config/
-│   │   └── settings.py            # Pydantic BaseSettings for timeouts, RPCs, API keys
-│   ├── models/                    # Data models & persistence layer
-│   ├── schemas/
-│   │   └── wallet.py              # Pydantic schemas: NormalizedTransaction, ConnectedWallet, GraphData
-│   ├── services/
-│   │   ├── blockchain_service.py  # Isolated provider (Blockscout v2 + Etherscan + Public JSON-RPC)
-│   │   ├── transaction_normalizer.py # Standardizes raw provider responses into canonical model
-│   │   ├── wallet_service.py      # Computes balances, transaction flow stats, peer discovery
-│   │   └── graph_service.py       # Constructs 1-hop radial graph with aggregated weighted edges
-│   ├── utils/
-│   │   └── validators.py          # Strict Ethereum regex and checksum validators
-│   ├── main.py                    # FastAPI application entrypoint with CORS & logging
-│   ├── requirements.txt           # Python backend dependencies
-│   └── .env.example
-├── frontend/
-│   ├── app/
-│   │   ├── globals.css            # Dark cyber theme, React Flow styles, custom animations
-│   │   ├── layout.tsx             # Root layout with metadata
-│   │   └── page.tsx               # Main investigation workspace
-│   ├── components/
-│   │   ├── Navbar.tsx             # Header with network status & SIH branding
-│   │   ├── WalletSearch.tsx       # Address input, real-time validation, sample target picks
-│   │   ├── WalletOverview.tsx     # KPI metrics: Balance, Tx count, In/Out breakdown, Peers
-│   │   ├── GraphVisualization.tsx # Interactive 1-hop React Flow graph with custom nodes
-│   │   ├── TransactionsTable.tsx  # Paginated transaction ledger with copy & Etherscan links
-│   │   ├── ConnectedWalletsList.tsx # Counterparty cards with volume breakdown and pivot action
-│   │   └── NodeDetailsModal.tsx   # Topology inspector drawer for graph nodes
-│   ├── services/
-│   │   └── api.ts                 # Typed API client for FastAPI backend
-│   ├── types/
-│   │   └── wallet.ts              # TypeScript interfaces matching backend models
-│   ├── utils/
-│   │   └── formatters.ts          # Address shortening, Wei-to-ETH conversion, date formatting
-│   ├── package.json
-│   ├── tailwind.config.js
-│   └── tsconfig.json
-├── .env.example
-└── README.md
-```
+TraceACT automates the entire investigation pipeline in **under 3 seconds**:
+1. **Multi-Chain Recognition:** Auto-detects and validates Ethereum (EVM), Bitcoin (Bech32/SegWit/P2PKH), Tron (TRC-20), and Solana addresses.
+2. **Multi-Hop BFS Fund Traversal:** Level-by-level concurrent Breadth-First Search tracing funds 1 to 5 hops outward with cycle/loop prevention.
+3. **Deterministic VASP Attribution:** Direct on-chain matching against 25 verified Indian (FIU-IND registered) and global exchanges with hop and branching penalties.
+4. **NetworkX Graph Analytics:** Computes betweenness centrality, PageRank, wash-trading cycle detection, and identifies critical money-mule bottlenecks (`CRITICAL_BOTTLENECK_MULE`).
+5. **16-Priority Forensic Rule Engine:** Calculates a continuous 0–100 Suspicion Score with customizable investigator system logic profiles (`balanced`, `strict`, `fraud_syndicate`, `relaxed`, `custom`).
+6. **Unknown VASP Behavioral Discovery:** Extracts 28+ behavioral features to detect unlabelled commercial hubs and assigns `UC-YYYY-XXXX` cluster tags.
+7. **Proportional Taint Accounting & Conservation Check:** Mathematically tracks fund flows and flags balance inflation/contamination anomalies.
+8. **Minimum Intervention Set (MIS):** Solves set-cover optimization to find the minimum set of VASPs needed to freeze $\ge 70\%$ of stolen proceeds.
+9. **Deterministic Step-Wise SOP Playbook (Zero LLM):** Generates a 7-step chronological action plan for investigators with statutory citations and deadlines.
+10. **Statutory Notice & Section 65B BSA Certificate Generator:** Formats ready-to-serve Section 91 CrPC notices for the SAHYOG portal with SHA-256 evidence integrity hashes.
+11. **24/7 Automated Background Sentry:** 60-minute periodic ledger balance tracking with automated SMTP alerts (`alerts@sahyog-lea.gov.in`).
 
 ---
 
@@ -74,107 +31,81 @@ SIH_2026/
 
 | Layer | Technology | Purpose |
 | :--- | :--- | :--- |
-| **Frontend** | Next.js 14, React 18, TypeScript | High-performance reactive web application |
-| **Styling** | Tailwind CSS | Custom cybersecurity dark-mode design system |
-| **Graph Engine** | `@xyflow/react` (React Flow) | Hardware-accelerated 1-hop visual transaction topology |
-| **Backend** | Python 3.11+, FastAPI, Uvicorn | Asynchronous, high-throughput REST API |
-| **Data Validation** | Pydantic v2 | Strict schema validation and serialization |
-| **Blockchain Client** | HTTPX (Async), Blockscout v2, JSON-RPC | Zero-auth real-time Ethereum mainnet querying |
+| **Frontend UI** | React 18, Vite 6, Vanilla CSS (CSS Variables) | Apple Dark Cyberpunk high-density forensic workstation |
+| **Graph Visualization** | `@xyflow/react` (React Flow 12.4.4) | Hardware-accelerated interactive node-edge topology canvas with minimap |
+| **Backend Framework** | Python 3.11+, FastAPI, Uvicorn | Asynchronous, high-throughput REST API |
+| **Graph Analytics Engine**| NetworkX (v3.0+) | Betweenness centrality, bottleneck mule identification, wash-trading cycle detection |
+| **Data Validation** | Pydantic v2 & Pydantic-Settings | Strict schema validation, serialization, and runtime configuration |
+| **Database & Persistence**| MongoDB (Motor/PyMongo) + `EmbeddedAsyncCollection` | High-availability database with automatic JSON-backed disk fallback (`db_store.json`) |
+| **Blockchain Client** | HTTPX (Async), Blockscout v2, Blockstream, TronGrid, Solana RPC | Multi-chain real-time on-chain ledger querying with sandbox fallbacks |
+| **Local AI / Report** | Ollama (`llama3.2:3b`) + Python Deterministic Generator | Generates 16-section investigative dossiers and Section 91 CrPC legal notices |
 
 ---
 
-## 🚀 Getting Started
+## 🚀 Quick Launch (Windows)
 
-### 1. Prerequisites
-- **Node.js**: v18.0.0 or higher (v22+ recommended)
-- **Python**: v3.10 or higher (v3.13 tested)
-
-### 2. Clone and Setup Environment Variables
-
-Copy the example environment files:
-```bash
-# Root / Backend config
-cp backend/.env.example backend/.env
+Simply double-click `start.cmd` in the root directory:
+```cmd
+start.cmd
 ```
+This automated launcher checks your environment, starts the FastAPI backend on port `8001`, starts the Vite frontend on port `3000`, and opens your browser automatically.
 
-> **Note on API Keys:** The system is pre-configured to query **Blockscout REST API v2** and **Public Ethereum JSON-RPC** out of the box with zero API key required. If you wish to use Etherscan, simply add `ETHERSCAN_API_KEY=your_key` to `backend/.env`.
+### Manual Startup
 
----
-
-### 3. Start the Backend Server
-
+#### Backend Setup
 ```bash
-# Navigate to backend directory
-cd backend
+# Activate virtual environment
+.\venv\Scripts\activate
 
 # Install dependencies
-pip install -r requirements.txt
+pip install -r backend/requirements.txt
 
-# Run FastAPI server
-python -m uvicorn backend.main:app --reload --host 0.0.0.0 --port 8001
+# Run FastAPI backend
+python -m uvicorn backend.main:app --host 0.0.0.0 --port 8001 --reload
 ```
-- Backend will be available at: `http://localhost:8001`
-- Interactive Swagger API docs: `http://localhost:8001/docs`
-- Health check: `http://localhost:8001/api/health`
+- Interactive Swagger API Documentation: `http://localhost:8001/docs`
+- Health Check: `http://localhost:8001/api/health`
 
----
-
-### 4. Start the Frontend Application
-
+#### Frontend Setup
 ```bash
-# Open a new terminal and navigate to frontend directory
 cd frontend
-
-# Install dependencies
 npm install
-
-# Start Next.js development server
 npm run dev
 ```
-- Frontend application will be available at: `http://localhost:3000`
+- Frontend Workstation: `http://localhost:3000`
 
 ---
 
-## 🔍 How Wallet Analysis Works
+## 🎯 Verification & Demo Scenario
 
-1. **Input & Validation**:
-   - The user inputs a 42-character hexadecimal Ethereum address (`0x...`).
-   - The frontend and backend validate the address using strict regex `^0x[a-fA-F0-9]{40}$`.
-2. **Blockchain Querying**:
-   - `blockchain_service.py` connects asynchronously to Ethereum mainnet to fetch the real ETH balance and raw transaction history.
-3. **Transaction Normalization**:
-   - `transaction_normalizer.py` converts raw transactions into a canonical schema: `txHash`, `fromAddress`, `toAddress`, `value` (in ETH), `valueWei`, `direction` (`incoming` / `outgoing` / `self`), `blockNumber`, `timestamp`, `gasUsed`, and `fee`.
-4. **Counterparty Identification**:
-   - `wallet_service.py` iterates through all transactions, isolates distinct connected addresses, calculates aggregate transaction counts, and computes total ETH volumes transferred in both directions.
-5. **Topology Generation**:
-   - `graph_service.py` places the target wallet at the center `(400, 300)` and places all 1-hop counterparties in a clean radial geometry. Multiple transactions between the same wallet pair are aggregated into unified directed edges with transaction count and volume labels.
-6. **Dashboard Visualization**:
-   - The frontend renders KPI summary cards, the interactive React Flow canvas, a paginated transaction ledger, and counterparty breakdown cards.
+To test the full investigation pipeline with 1 click, click the **"🎯 SIH 2026 Reference Demo Scenario"** preset in the search bar or run:
+```bash
+curl -X POST http://localhost:8001/api/investigations/demo
+```
+**Case Profile (`CASE-2026-SIH-DEMO-001`):**
+- **Suspect Target:** `0x71C836489B990038848971201991802901238910` (10.0 ETH cyber theft).
+- **Branch 1 (5.2 ETH / 52%):** Direct deposit into **CoinDCX** (FIU-IND Registered). Actionability: **92/100 (CRITICAL)**.
+- **Branch 2 (2.1 ETH / 21%):** Forwarded through intermediate mule `0x3344b...` into **Binance Global**. Actionability: **78/100 (HIGH)**.
+- **Branch 3 (1.4 ETH / 14%):** Forwarded into **Unknown Cluster UC-2026-0042** (27 addresses, 611 depositors).
+- **Minimum Intervention Set (MIS):** Recommends serving notices to **CoinDCX** and **Binance** to achieve **73.0% asset coverage** with just 2 targeted notices.
 
 ---
 
-## 🎯 Verification & Sample Wallets
+## 📚 Essential Project Documentation
 
-You can test the system using any valid Ethereum address or use the built-in quick test buttons:
-- **Vitalik Buterin (`vitalik.eth`)**: `0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045`
-- **Ethereum Foundation**: `0xde0B295669a9FD93d5F28D9Ec85E40f4cb697BAe`
-- **Binance Hot Wallet**: `0x28C6c06298d514Db089934071355E5743bf21d60`
+- **[DOCUMENTATION.md](DOCUMENTATION.md):** Complete 800-line master technical documentation covering system architecture, mathematical formulas, algorithms, data contracts, and legal frameworks.
+- **[question.md](question.md):** Hackathon evaluation master guide with 37 curated Q&As covering theory, technical implementation, legal admissibility (CrPC/BNSS/BSA), and curveball judge questions.
 
 ---
 
-## 📋 Current Day 1 Scope & Limitations
+## 🧪 Automated Testing
 
-### ✅ What is Built Today:
-- Real Ethereum mainnet data ingestion (balances, gas, fees, transactions).
-- Canonical multi-chain transaction normalization.
-- 1-hop counterparty detection with incoming/outgoing volume aggregations.
-- Interactive 1-hop graph with custom nodes, edge badges, minimap, and node inspector.
-- Robust error handling for invalid addresses, empty wallets, rate limits, and network errors.
+Run the complete backend test suite (41 tests covering multi-hop tracing, VASP attribution, NetworkX analytics, and deterministic playbooks):
+```bash
+pytest backend/tests -v
+```
 
-### ⏳ Future Roadmap (Upcoming Days):
-- **VASP & Exchange Attribution**: Clustering and matching deposit addresses to Binance, Coinbase, Kraken, OKX, WazirX, CoinDCX, etc.
-- **Multi-Hop Recursive Tracing**: Graph expansion beyond 1-hop to trace illicit fund flows through intermediate hops.
-- **Multi-Chain Expansion**: Bitcoin (UTXO model), Polygon, Arbitrum, BSC, and Solana.
-- **Risk Scoring & Mixer Detection**: Identifying interactions with Tornado Cash, bridges, and high-risk entities.
-- **AI-Powered Forensic Summary**: Automated natural language case report generation for LEAs.
-- **Law Enforcement & SAHYOG Integration**: Generating standardized 91 CrPC notice templates for legal compliance.
+---
+
+## 📜 Legal Notice & Compliance
+*Project TraceACT is engineered for the Smart India Hackathon (SIH) 2026. All investigative methodologies, rule engine heuristics, and legal notice generators are designed to assist authorized Law Enforcement Officers and Judicial Authorities in the prevention, detection, and investigation of cybercrime under applicable statutory frameworks.*

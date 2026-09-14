@@ -190,6 +190,8 @@ class InvestigationDossierResponse(BaseModel):
     evidenceGaps: List[Dict[str, Any]]
     blindSpots: List[str]
     nextActions: List[Dict[str, Any]]
+    investigationPlaybook: Optional[List[Dict[str, Any]]] = Field(default_factory=list, description="Deterministic 7-step SOP Playbook")
+    networkAnalytics: Optional[Dict[str, Any]] = Field(default=None, description="NetworkX centrality and topology analytics")
     timeline: List[Dict[str, Any]]
     caseCoverage: Dict[str, Any]
     report: Optional[InvestigationReportResponse] = None

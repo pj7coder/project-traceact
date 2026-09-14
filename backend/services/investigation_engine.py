@@ -643,5 +643,215 @@ class InvestigationIntelligenceEngine:
 
         return actions
 
+    # -------------------------------------------------------------
+    # 8. Deterministic Step-Wise Investigation Playbook (Zero LLM)
+    # -------------------------------------------------------------
+    def generate_deterministic_investigation_playbook(
+        self,
+        target_address: str,
+        chain: str,
+        ranked_vasps: List[Dict[str, Any]],
+        mis: Dict[str, Any],
+        bottleneck_mules: List[Dict[str, Any]],
+        clusters: List[Dict[str, Any]],
+        unresolved_val: Decimal,
+        total_case_value: Decimal,
+        case_id: str = "CASE-2026",
+        detected_cycles: Optional[List[List[str]]] = None,
+    ) -> List[Dict[str, Any]]:
+        """
+        Generates a 100% deterministic, step-wise Standard Operating Procedure (SOP)
+        playbook for the forensic investigator under Indian Law (CrPC/BNSS/BSA).
+        Operates without LLMs using domain rules, NetworkX centrality, and statutory deadlines.
+        """
+        chain_clean = chain.lower().strip()
+        asset = "BTC" if chain_clean == "bitcoin" else ("TRX" if chain_clean == "tron" else ("SOL" if chain_clean == "solana" else "ETH"))
+        clean_target = (target_address or "").strip()
+        playbook: List[Dict[str, Any]] = []
+
+        # STEP 1: Evidence Preservation & Hashing
+        playbook.append({
+            "stepNumber": 1,
+            "phase": "GOLDEN_WINDOW",
+            "phaseLabel": "Phase 1: Immediate Containment (0–2h)",
+            "priority": "CRITICAL",
+            "title": "Preserve Cryptographic Ledger State (Section 65B BSA)",
+            "statutoryReference": "Section 65B(4) Indian Evidence Act, 1872 / Section 63 Bharatiya Sakshya Adhiniyam, 2023",
+            "targetEntity": "Suspect On-Chain Ledger State",
+            "targetAddress": clean_target,
+            "amount": f"{self._fmt(total_case_value)} {asset}",
+            "actionableDirective": (
+                f"Freeze on-chain state for suspect address {clean_target[:10]}... by computing SHA-256 integrity hash "
+                f"of the raw transaction manifest. Record current block height and validator timestamp to preclude evidence tampering defenses."
+            ),
+            "deadline": "Immediate (< 1 Hour)",
+            "expectedOutcome": "Non-repudiable legal chain-of-custody established for judicial trial.",
+            "badgeClass": "badge-critical",
+        })
+
+        # STEP 2: Emergency Statutory Freeze Notice to Primary VASP
+        if ranked_vasps:
+            top_vasp = ranked_vasps[0]
+            v_name = top_vasp.get("entityName", "Primary VASP")
+            v_addr = top_vasp.get("address", "")
+            v_amt = top_vasp.get("amountExposure", "0")
+            v_pct = top_vasp.get("percentageOfCase", 0)
+            v_jur = top_vasp.get("jurisdiction", "Regulated VASP")
+            playbook.append({
+                "stepNumber": 2,
+                "phase": "GOLDEN_WINDOW",
+                "phaseLabel": "Phase 1: Immediate Containment (0–2h)",
+                "priority": "CRITICAL",
+                "title": f"Serve Emergency Section 91 & 102 CrPC Notice to {v_name}",
+                "statutoryReference": "Section 91 & 102 CrPC (Section 94 & 106 BNSS) r/w FIU-IND AML/CFT Guidelines",
+                "targetEntity": v_name,
+                "targetAddress": v_addr,
+                "amount": f"{v_amt} {asset} ({v_pct}% of Case)",
+                "actionableDirective": (
+                    f"Issue formal statutory requisition to Nodal Compliance Officer of {v_name} ({v_jur}). "
+                    f"Order immediate debit freeze on beneficiary custodial account receiving {v_amt} {asset} and demand full KYC dossier "
+                    f"(PAN, Aadhaar/Passport, linked bank accounts, and IP login audit logs)."
+                ),
+                "deadline": "Within 2 Hours (Golden Window before fiat withdrawal)",
+                "expectedOutcome": "Immediate debit freeze on suspect custodial balance and identification of real-world beneficiary.",
+                "badgeClass": "badge-critical",
+            })
+
+        # STEP 3: Interdict Key Bottleneck Mule (NetworkX Centrality)
+        if bottleneck_mules:
+            top_mule = bottleneck_mules[0]
+            m_addr = top_mule.get("address", "")
+            m_cent = top_mule.get("betweennessCentrality", 0)
+            playbook.append({
+                "stepNumber": 3,
+                "phase": "ACTIVE_INTERDICTION",
+                "phaseLabel": "Phase 2: Active Interdiction (2–24h)",
+                "priority": "HIGH",
+                "title": f"Interdict Critical Bottleneck Mule: {m_addr[:10]}...",
+                "statutoryReference": "Section 91 CrPC (Section 94 BNSS) - Layering Intermediation",
+                "targetEntity": f"Key Money Mule (Betweenness Centrality: {m_cent})",
+                "targetAddress": m_addr,
+                "amount": "Intermediary Layering Hub",
+                "actionableDirective": (
+                    f"NetworkX topology identified {m_addr} as the critical bridge carrying {round(m_cent * 100, 1)}% of shortest paths. "
+                    f"Requisition the initial gas-funding transaction of this mule wallet to discover the parent funding exchange where the operator purchased transaction fees."
+                ),
+                "deadline": "Within 6 Hours",
+                "expectedOutcome": "Uncovers the parent exchange account funding the mule network; disrupts criminal syndicate.",
+                "badgeClass": "badge-high",
+            })
+        else:
+            playbook.append({
+                "stepNumber": 3,
+                "phase": "ACTIVE_INTERDICTION",
+                "phaseLabel": "Phase 2: Active Interdiction (2–24h)",
+                "priority": "HIGH",
+                "title": "Subpoena Gas/Fee Funding Origin for Suspect Target",
+                "statutoryReference": "Section 91 CrPC (Section 94 BNSS)",
+                "targetEntity": "Gas Funding Source",
+                "targetAddress": clean_target,
+                "amount": "Account Creation Inflow",
+                "actionableDirective": (
+                    f"Trace the genesis transaction providing native gas to {clean_target[:10]}... "
+                    f"Issue Section 91 notice to the originating exchange to identify the wallet's funding patron."
+                ),
+                "deadline": "Within 6 Hours",
+                "expectedOutcome": "Identifies the source entity that activated the criminal wallet.",
+                "badgeClass": "badge-high",
+            })
+
+        # STEP 4: Secondary VASP Subpoenas under Minimum Intervention Set (MIS)
+        if len(ranked_vasps) > 1:
+            sec_vasp = ranked_vasps[1]
+            s_name = sec_vasp.get("entityName", "Secondary VASP")
+            s_addr = sec_vasp.get("address", "")
+            s_amt = sec_vasp.get("amountExposure", "0")
+            cov_pct = mis.get("achievedCoveragePercentage", 70)
+            playbook.append({
+                "stepNumber": 4,
+                "phase": "ACTIVE_INTERDICTION",
+                "phaseLabel": "Phase 2: Active Interdiction (2–24h)",
+                "priority": "HIGH",
+                "title": f"Serve Secondary Requisition to {s_name} ({s_amt} {asset})",
+                "statutoryReference": "Section 91 CrPC / Law Enforcement Portal (LERT)",
+                "targetEntity": s_name,
+                "targetAddress": s_addr,
+                "amount": f"{s_amt} {asset}",
+                "actionableDirective": (
+                    f"Serve statutory subpoena on secondary destination {s_name}. In conjunction with Step 2, "
+                    f"this fulfills the Minimum Intervention Set (MIS) recommendation to achieve {cov_pct}% stolen fund coverage."
+                ),
+                "deadline": "Within 12 Hours",
+                "expectedOutcome": "Secures secondary branch from dissipation across offshore accounts.",
+                "badgeClass": "badge-high",
+            })
+
+        # STEP 5: Service Cluster Inquiry if Unknown Cluster Detected
+        if clusters:
+            top_cl = clusters[0]
+            cl_id = top_cl.get("clusterId", "UC-2026")
+            cl_cnt = top_cl.get("addressCount", 1)
+            cl_score = top_cl.get("vaspBehaviorScore", 80)
+            playbook.append({
+                "stepNumber": 5,
+                "phase": "ACTIVE_INTERDICTION",
+                "phaseLabel": "Phase 2: Active Interdiction (2–24h)",
+                "priority": "MEDIUM",
+                "title": f"Issue Inquiry for Potential Custodial Cluster {cl_id}",
+                "statutoryReference": "Section 91 CrPC Inquiry on Unregistered Intermediary / Payment Bridge",
+                "targetEntity": f"Cluster {cl_id} ({top_cl.get('classification', 'Probable Custodial')})",
+                "targetAddress": top_cl.get("addresses", [clean_target])[0],
+                "amount": f"{cl_cnt} Interconnected Addresses (VASP Score: {cl_score}/100)",
+                "actionableDirective": (
+                    f"Cluster {cl_id} exhibits commercial pooling ({cl_cnt} addresses). "
+                    f"Issue Section 91 notice to associated domain registrars, payment gateways, or cloud hosts linked to this cluster's consolidation activity."
+                ),
+                "deadline": "Within 24 Hours",
+                "expectedOutcome": "Determines whether cluster is an unregistered OTC desk or underground payment processor.",
+                "badgeClass": "badge-medium",
+            })
+
+        # STEP 6: Deploy 24/7 Automated Sentry on Residue
+        playbook.append({
+            "stepNumber": 6,
+            "phase": "JUDICIAL_RECOVERY",
+            "phaseLabel": "Phase 3: Judicial Recovery (24–72h)",
+            "priority": "MEDIUM",
+            "title": f"Deploy 24/7 Automated Sentry on Unresolved Residue ({self._fmt(unresolved_val)} {asset})",
+            "statutoryReference": "Police Standing Order on Continuous Electronic Asset Tracking",
+            "targetEntity": "Unhosted Residue Wallets",
+            "targetAddress": "Residual Unspent Outflows",
+            "amount": f"{self._fmt(unresolved_val)} {asset} Unresolved",
+            "actionableDirective": (
+                f"Activate 60-minute automated ledger tracking on {self._fmt(unresolved_val)} {asset} parked in unhosted wallets. "
+                f"Configured to dispatch immediate SMTP alerts upon subsequent sweep to another VASP or cross-chain bridge."
+            ),
+            "deadline": "Continuous Background Monitoring",
+            "expectedOutcome": "Real-time alerts if suspect attempts delayed liquidation.",
+            "badgeClass": "badge-clean",
+        })
+
+        # STEP 7: Charge-Sheet Annexures & Section 65B Certificate Assembly
+        playbook.append({
+            "stepNumber": 7,
+            "phase": "JUDICIAL_RECOVERY",
+            "phaseLabel": "Phase 3: Judicial Recovery (24–72h)",
+            "priority": "CRITICAL",
+            "title": "Compile Final Judicial Charge-Sheet Annexures & Sec 65B Certificate",
+            "statutoryReference": "Section 173 CrPC / Section 193 BNSS r/w Section 65B Indian Evidence Act / Section 63 BSA",
+            "targetEntity": "Jurisdictional Criminal Court",
+            "targetAddress": f"Case File {case_id}",
+            "amount": f"Total Admissibility Docket: {self._fmt(total_case_value)} {asset}",
+            "actionableDirective": (
+                f"Compile the 16-section TraceACT forensic dossier, VASP compliance confirmation letters, "
+                f"frozen account debit notices, and signed Section 65B BSA certificate into the formal charge sheet for court submission."
+            ),
+            "deadline": "Within 72 Hours (Filing Window)",
+            "expectedOutcome": "Court-ready electronic evidence packet ready for framing of charges.",
+            "badgeClass": "badge-critical",
+        })
+
+        return playbook
+
 
 investigation_engine = InvestigationIntelligenceEngine()

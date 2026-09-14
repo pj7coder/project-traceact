@@ -41,6 +41,7 @@ from backend.services.report_service import report_service
 from backend.services.rule_engine import rule_engine
 from backend.services.vasp_discovery_service import vasp_discovery_service
 from backend.services.investigation_engine import investigation_engine
+from backend.services.graph_analytics_service import graph_analytics_service
 from backend.database.mongo import db_manager
 
 logger = logging.getLogger("api_routes")
@@ -461,12 +462,53 @@ async def run_investigation(request: AttributionRequest) -> InvestigationDossier
         )
 
         cid = f"CASE-{datetime.now(timezone.utc).year}-I4C-{int(time.time() % 10000):04d}"
+
+        # -------------------------------------------------------------
+        # NetworkX Topological Analysis & Confidence Calibration
+        # -------------------------------------------------------------
+        netx_analytics = graph_analytics_service.analyze_network_topology(
+            nodes=node_dicts,
+            edges=edge_dicts,
+            target_address=norm_addr,
+            vasp_candidates=[c.model_dump() if hasattr(c, "model_dump") else c for c in attrib_res.vaspCandidates],
+        )
+
+        # Apply NetworkX confidence adjustments to VASP candidates
+        conf_map = {adj["address"].lower(): adj for adj in netx_analytics.get("confidenceAdjustments", [])}
+        for cand in attrib_res.vaspCandidates:
+            c_addr = cand.address.lower()
+            if c_addr in conf_map:
+                adj = conf_map[c_addr]
+                if adj.get("adjustedLevel") == "HIGH":
+                    cand.confidence = ConfidenceLevel.HIGH
+                elif adj.get("adjustedLevel") == "MEDIUM":
+                    cand.confidence = ConfidenceLevel.MEDIUM
+
+        if attrib_res.nearestVasp and attrib_res.nearestVasp.address.lower() in conf_map:
+            adj = conf_map[attrib_res.nearestVasp.address.lower()]
+            if adj.get("adjustedLevel") == "HIGH":
+                attrib_res.nearestVasp.confidence = ConfidenceLevel.HIGH
+
         next_actions = investigation_engine.generate_next_actions(
             ranked_vasps=ranked_vasps,
             clusters=clusters,
             gaps=evidence_gaps,
             unresolved_val=Decimal(taint_results["unresolvedValue"]),
             case_id=cid,
+        )
+
+        # Generate 100% Deterministic Step-Wise Investigation Playbook (Zero LLM)
+        playbook = investigation_engine.generate_deterministic_investigation_playbook(
+            target_address=norm_addr,
+            chain=chain_val,
+            ranked_vasps=ranked_vasps,
+            mis=mis,
+            bottleneck_mules=netx_analytics.get("bottleneckMules", []),
+            clusters=clusters,
+            unresolved_val=Decimal(taint_results["unresolvedValue"]),
+            total_case_value=orig_val,
+            case_id=cid,
+            detected_cycles=netx_analytics.get("detectedCycles", []),
         )
 
         timeline = [
@@ -516,6 +558,8 @@ async def run_investigation(request: AttributionRequest) -> InvestigationDossier
             evidenceGaps=evidence_gaps,
             blindSpots=blind_spots,
             nextActions=next_actions,
+            investigationPlaybook=playbook,
+            networkAnalytics=netx_analytics,
             timeline=timeline,
             caseCoverage={
                 "originalAmount": taint_results["originalSuspiciousValue"],
@@ -1065,6 +1109,26 @@ async def run_demo_investigation() -> InvestigationDossierResponse:
         limitations=["Demonstration data calibrated for national hackathon evaluation."],
     )
 
+    demo_netx = graph_analytics_service.analyze_network_topology(
+        nodes=demo_nodes,
+        edges=demo_edges,
+        target_address=demo_suspect,
+        vasp_candidates=[c.model_dump() for c in demo_attribution.vaspCandidates],
+    )
+
+    demo_playbook = investigation_engine.generate_deterministic_investigation_playbook(
+        target_address=demo_suspect,
+        chain="ethereum",
+        ranked_vasps=ranked_vasps,
+        mis=mis,
+        bottleneck_mules=demo_netx.get("bottleneckMules", []),
+        clusters=clusters,
+        unresolved_val=Decimal("1.3000"),
+        total_case_value=Decimal("10.0000"),
+        case_id=cid,
+        detected_cycles=demo_netx.get("detectedCycles", []),
+    )
+
     dossier = InvestigationDossierResponse(
         caseId=cid,
         targetAddress=demo_suspect,
@@ -1099,6 +1163,8 @@ async def run_demo_investigation() -> InvestigationDossierResponse:
         ],
         blindSpots=["Unhosted intermediary wallet 0x3344b... private keys are self-custodied."],
         nextActions=next_actions,
+        investigationPlaybook=demo_playbook,
+        networkAnalytics=demo_netx,
         timeline=timeline,
         caseCoverage={
             "originalAmount": "10.0000",
