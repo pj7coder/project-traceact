@@ -85,10 +85,18 @@ class HistoryService:
 
             # Generate historical tags
             tags = []
-            if prev_count >= 1:
-                tags.append(f"Searched {prev_count} times before")
-            if len(investigators) > 1:
-                tags.append(f"Investigated by {len(investigators)} agencies")
+            inv_count = len(investigators) if len(investigators) > 1 else new_count
+            if inv_count > 1:
+                tags.append(f"Searched by {inv_count} investigators before")
+            elif inv_count == 1:
+                tags.append("Searched by 1 investigator before")
+
+            curr_apps = existing.get("appearanceCountInGraphs", 0)
+            if curr_apps > 1:
+                tags.append(f"Appeared in {curr_apps} previous investigations")
+            elif curr_apps == 1:
+                tags.append("This wallet appeared in your previous investigations")
+
             if len(cases) > 1:
                 tags.append(f"Linked to {len(cases)} active cases")
 
@@ -170,27 +178,31 @@ class HistoryService:
             }
 
         searched = record.get("globalSearchCount", 0)
+        investigators = record.get("investigators", [])
         appeared = record.get("appearanceCountInGraphs", 0)
         tags = list(record.get("tags", []))
 
-        if searched > 1:
-            tags.append(f"Searched {searched} times before")
-        elif searched == 1:
-            tags.append("Searched 1 time before")
+        inv_count = len(investigators) if len(investigators) > 1 else searched
+        if inv_count > 1:
+            tags.append(f"Searched by {inv_count} investigators before")
+        elif inv_count == 1:
+            tags.append("Searched by 1 investigator before")
 
         if appeared > 1:
-            tags.append(f"Appeared in {appeared} past cases")
+            tags.append(f"Appeared in {appeared} previous investigations")
+        elif appeared == 1:
+            tags.append("This wallet appeared in your previous investigations")
 
         return {
             "address": clean_addr,
             "chain": chain,
             "globalSearchCount": searched,
             "appearanceCountInGraphs": appeared,
-            "investigators": record.get("investigators", []),
+            "investigators": investigators,
             "firstSearchedAt": record.get("firstSearchedAt"),
             "lastSearchedAt": record.get("lastSearchedAt"),
             "associatedCaseIds": record.get("associatedCaseIds", []),
-            "tags": list(set(tags)),
+            "tags": list(dict.fromkeys(tags)),
         }
 
 

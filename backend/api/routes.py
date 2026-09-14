@@ -537,7 +537,128 @@ async def run_investigation(request: AttributionRequest) -> InvestigationDossier
 
 
 # -------------------------------------------------------------
-# 7c. Retrieve Saved Investigation Report
+# 7c. Case Archive & Saved Investigations Management
+# -------------------------------------------------------------
+@router.get(
+    "/investigations",
+    summary="List All Saved Investigations in Case Archive",
+)
+async def list_saved_investigations(limit: int = 50):
+    try:
+        items = await db_manager.investigations.find({}, limit=limit)
+        # Sort descending by creation date if present
+        items.sort(key=lambda x: str(x.get("createdAt", x.get("timestamp", ""))), reverse=True)
+        return {
+            "count": len(items),
+            "investigations": items,
+        }
+    except Exception as e:
+        logger.error(f"Error listing saved investigations: {e}")
+        return {"count": 0, "investigations": []}
+
+
+@router.post(
+    "/investigations/save",
+    summary="Save or Update an Investigation Case Docket",
+)
+async def save_investigation(payload: Dict[str, Any]):
+    try:
+        case_id = payload.get("caseId") or f"CASE-2026-I4C-{int(datetime.now().timestamp())}"
+        payload["caseId"] = case_id
+        payload["_id"] = f"case:{case_id}"
+        if "createdAt" not in payload:
+            payload["createdAt"] = datetime.now(timezone.utc).isoformat()
+        payload["updatedAt"] = datetime.now(timezone.utc).isoformat()
+        if "investigatorId" not in payload:
+            payload["investigatorId"] = settings.INVESTIGATOR_ID
+
+        # Also record the target wallet in the history repository
+        target_addr = payload.get("targetAddress") or payload.get("suspectAddress")
+        target_chain = payload.get("chain", "ethereum")
+        if target_addr:
+            await history_service.record_target_search(
+                address=target_addr,
+                chain=target_chain,
+                investigator_id=payload.get("investigatorId"),
+                case_id=case_id,
+            )
+
+        # Index graph nodes if present
+        graph_data = payload.get("graph") or {}
+        nodes_list = graph_data.get("nodes") or payload.get("nodes") or []
+        if nodes_list:
+            clean_nodes = []
+            for n in nodes_list:
+                addr = n.get("address") or n.get("id") or (n.get("data", {}).get("fullAddress"))
+                if addr:
+                    clean_nodes.append({"address": addr, "entityName": n.get("entityName")})
+            await history_service.record_graph_nodes_batch(clean_nodes, chain=target_chain, case_id=case_id)
+
+        await db_manager.investigations.update_one(
+            {"_id": payload["_id"]},
+            {"$set": payload},
+            upsert=True,
+        )
+        return {
+            "status": "success",
+            "message": f"Investigation case {case_id} saved successfully.",
+            "caseId": case_id,
+            "case": payload,
+        }
+    except Exception as e:
+        logger.exception(f"Error saving investigation: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Failed to save investigation: {str(e)}",
+        )
+
+
+@router.get(
+    "/investigations/{case_id}",
+    summary="Retrieve Full Investigation Case Docket",
+)
+async def get_saved_investigation(case_id: str):
+    doc = await db_manager.investigations.find_one({"_id": f"case:{case_id}"})
+    if not doc:
+        results = await db_manager.investigations.find({"caseId": case_id}, limit=1)
+        doc = results[0] if results else None
+    if not doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Investigation case {case_id} not found in database archive.",
+        )
+    return doc
+
+
+@router.delete(
+    "/investigations/{case_id}",
+    summary="Delete an Investigation Case Docket",
+)
+async def delete_saved_investigation(case_id: str):
+    doc = await db_manager.investigations.find_one({"_id": f"case:{case_id}"})
+    if not doc:
+        results = await db_manager.investigations.find({"caseId": case_id}, limit=1)
+        doc = results[0] if results else None
+    if not doc:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"Investigation case {case_id} not found.",
+        )
+    # Delete from fallback / collection
+    try:
+        col = db_manager.investigations
+        if hasattr(col, "_items") and doc.get("_id") in col._items:
+            del col._items[doc["_id"]]
+            col._save()
+        elif hasattr(col, "delete_one"):
+            await col.delete_one({"_id": doc["_id"]})
+    except Exception as e:
+        logger.warning(f"Error deleting investigation {case_id}: {e}")
+    return {"status": "deleted", "caseId": case_id}
+
+
+# -------------------------------------------------------------
+# 7d. Retrieve Saved Investigation Report
 # -------------------------------------------------------------
 @router.get(
     "/investigations/{case_id}/report",

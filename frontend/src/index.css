@@ -128,35 +128,20 @@ html, body, #root {
   background: rgba(140, 140, 145, 0.4);
 }
 
-/* Layout Core */
+/* Layout Core (Full-Width Dashboard with Folder Docket Structure) */
 .app-container {
   display: flex;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
   background-color: var(--bg-app);
   overflow: hidden;
 }
 
-/* Sidebar (Left Part) */
-.app-sidebar {
-  width: 240px;
-  min-width: 240px;
-  height: 100%;
-  background: var(--bg-sidebar);
-  backdrop-filter: var(--blur-standard);
-  -webkit-backdrop-filter: var(--blur-standard);
-  border-right: 1px solid var(--border-subtle);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 16px 12px;
-  z-index: 20;
-  transition: background 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple);
-}
-
-/* Main Area (Right Part) */
+/* Main Area */
 .app-main {
   flex: 1;
+  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -530,4 +515,161 @@ html, body, #root {
 @keyframes scaleUp {
   from { opacity: 0; transform: scale(0.97) translateY(8px); }
   to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* ==========================================================================
+   Folder Docket Case Management & Tabs System
+   ========================================================================== */
+.folder-docket-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-glass);
+  backdrop-filter: var(--blur-standard);
+  -webkit-backdrop-filter: var(--blur-standard);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 0 20px;
+  height: 44px;
+  min-height: 44px;
+  gap: 12px;
+  z-index: 14;
+  overflow-x: auto;
+}
+
+.folder-tabs-group {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 100%;
+}
+
+.folder-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid transparent;
+  border-bottom: none;
+  border-radius: var(--radius-xs) var(--radius-xs) 0 0;
+  cursor: pointer;
+  transition: all 0.15s var(--ease-apple);
+  height: 36px;
+  white-space: nowrap;
+  outline: none;
+}
+
+.folder-tab:hover {
+  color: var(--text-primary);
+  background: var(--bg-glass-subtle);
+}
+
+.folder-tab.active {
+  color: var(--accent-primary);
+  font-weight: 600;
+  background: var(--bg-card);
+  border-color: var(--border-subtle);
+  border-bottom: 2px solid var(--accent-primary);
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.folder-tab.folder-action-tab {
+  background: rgba(0, 113, 227, 0.08);
+  color: var(--accent-primary);
+  border: 1px dashed rgba(0, 113, 227, 0.4);
+  border-bottom: none;
+  font-weight: 600;
+}
+
+.folder-tab.folder-action-tab:hover {
+  background: rgba(0, 113, 227, 0.16);
+  border-color: var(--accent-primary);
+}
+
+.folder-tab-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: var(--radius-pill);
+  background: var(--bg-tag);
+  color: var(--text-secondary);
+}
+
+.folder-tab.active .folder-tab-badge {
+  background: var(--accent-primary);
+  color: #ffffff;
+}
+
+/* Active Investigation Sub-Docket Bar */
+.active-docket-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-subtle);
+  padding: 6px 20px;
+  font-size: 11px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.case-folder-card {
+  transition: transform 0.18s var(--ease-apple), box-shadow 0.18s var(--ease-apple), border-color 0.18s var(--ease-apple);
+}
+
+.case-folder-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-md);
+}
+
+/* ==========================================================================
+   Print & PDF Generation Formatting (Section 65B Court Dossier)
+   ========================================================================== */
+@media print {
+  @page {
+    margin: 12mm 15mm;
+    size: A4 portrait;
+  }
+
+  body, html, #root, .app-container, .app-main, .main-content {
+    background: #ffffff !important;
+    color: #000000 !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Hide UI elements during print */
+  .top-header,
+  .folder-docket-bar,
+  .active-docket-bar,
+  .no-print,
+  button,
+  .apple-btn,
+  .apple-icon-btn,
+  .search-container {
+    display: none !important;
+  }
+
+  .printable-dossier {
+    box-shadow: none !important;
+    border: none !important;
+    padding: 0 !important;
+    background: transparent !important;
+    color: #000000 !important;
+  }
+
+  .printable-dossier table {
+    page-break-inside: auto;
+  }
+
+  .printable-dossier tr {
+    page-break-inside: avoid;
+    page-break-after: auto;
+  }
 }

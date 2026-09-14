@@ -414,6 +414,12 @@ class MultiHopTracingEngine:
                             existing.depth = next_hop_depth
                         if forensic_tags:
                             existing.tags = list(set((existing.tags or []) + forensic_tags))
+                        curr_rec = self._eth_to_decimal(existing.totalReceivedFromParent or "0") + total_vol_dec
+                        existing.totalReceivedFromParent = self._format_decimal(curr_rec)
+                        if last_seen and (not existing.lastSeen or str(last_seen) > str(existing.lastSeen)):
+                            existing.lastSeen = last_seen
+                        if first_seen and (not existing.firstSeen or str(first_seen) < str(existing.firstSeen)):
+                            existing.firstSeen = first_seen
 
                     # Build step and path
                     step = FundPathStep(

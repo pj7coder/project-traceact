@@ -1,5 +1,4 @@
-import React, { useState, useCallback } from 'react';
-import { Sidebar } from './components/Sidebar';
+import React, { useState, useCallback, useEffect } from 'react';
 import { SearchBar } from './components/SearchBar';
 import { WalletOverviewCard } from './components/WalletOverviewCard';
 import { GraphView } from './components/GraphView';
@@ -7,6 +6,9 @@ import { TransactionList } from './components/TransactionList';
 import { SuspicionPointsView } from './components/SuspicionPointsView';
 import { InvestigationGuideView } from './components/InvestigationGuideView';
 import { ForensicReportView } from './components/ForensicReportView';
+import { CaseArchiveView } from './components/CaseArchiveView';
+import { SaveCaseModal } from './components/SaveCaseModal';
+import { NewCaseModal } from './components/NewCaseModal';
 import { SettingsModal } from './components/SettingsModal';
 import {
   analyzeWallet,
@@ -14,8 +16,29 @@ import {
   evaluateHeuristics,
   runUnifiedInvestigation,
   getDemoInvestigation,
+  getSavedInvestigations,
+  saveInvestigationCase,
+  checkHealth,
 } from './api/client';
-import { Shield, AlertCircle, CheckCircle2, Loader2, AlertTriangle } from 'lucide-react';
+import {
+  Shield,
+  AlertCircle,
+  CheckCircle2,
+  Loader2,
+  AlertTriangle,
+  Folder,
+  FolderOpen,
+  FolderPlus,
+  FileText,
+  BookOpen,
+  Save,
+  Printer,
+  Compass,
+  GitFork,
+  Activity,
+  Layers,
+  Database,
+} from 'lucide-react';
 
 class GraphErrorBoundary extends React.Component {
   constructor(props) {
@@ -78,9 +101,24 @@ export function App() {
   const [minAmount, setMinAmount] = useState('0.0');
   const [direction, setDirection] = useState('both');
 
-  // Active navigation tab (graph | suspicion | investigate | report)
+  // Primary navigation: 'graph' | 'suspicion' | 'investigate' | 'archive' | 'report' | 'guide'
   const [activeTab, setActiveTab] = useState('graph');
+  const [activeDocketSubTab, setActiveDocketSubTab] = useState('graph');
+
+  // Modals
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isSaveCaseOpen, setIsSaveCaseOpen] = useState(false);
+  const [isNewCaseOpen, setIsNewCaseOpen] = useState(false);
+
+  // Saved investigations count & active case metadata
+  const [savedCasesCount, setSavedCasesCount] = useState(0);
+  const [activeCaseDetails, setActiveCaseDetails] = useState({
+    caseId: 'CASE-2026-I4C-INITIAL',
+    caseNumber: 'FIR-2026/CYBER-409',
+    crimeType: 'Cryptocurrency Investment Fraud / Peeling',
+    investigatorName: 'Cyber Forensics Officer (LEA-4092)',
+    notes: '',
+  });
 
   // Loaded Forensic Data
   const [analysisData, setAnalysisData] = useState(null);
@@ -88,6 +126,41 @@ export function App() {
   const [graphEdges, setGraphEdges] = useState([]);
   const [riskAssessment, setRiskAssessment] = useState(null);
   const [investigationDossier, setInvestigationDossier] = useState(null);
+
+  // Backend Health Status
+  const [backendHealthy, setBackendHealthy] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const checkStatus = async () => {
+      try {
+        const res = await checkHealth();
+        if (isMounted) setBackendHealthy(res.status === 'healthy');
+      } catch {
+        if (isMounted) setBackendHealthy(false);
+      }
+    };
+    checkStatus();
+    const timer = setInterval(checkStatus, 15000);
+    return () => {
+      isMounted = false;
+      clearInterval(timer);
+    };
+  }, []);
+
+  // Refresh saved cases count
+  const refreshSavedCasesCount = useCallback(async () => {
+    try {
+      const saved = await getSavedInvestigations();
+      setSavedCasesCount(saved ? saved.length : 0);
+    } catch {
+      // ignore
+    }
+  }, []);
+
+  useEffect(() => {
+    refreshSavedCasesCount();
+  }, [refreshSavedCasesCount]);
 
   const showToast = (msg) => {
     setToastMessage(msg);
@@ -119,6 +192,14 @@ export function App() {
     const detectedAsset = getAssetForChain(chain, address);
     setCurrentAsset(detectedAsset);
 
+    const newCaseId = `CASE-2026-I4C-${address.slice(2, 6).toUpperCase()}-${Date.now().toString().slice(-4)}`;
+    setActiveCaseDetails((prev) => ({
+      ...prev,
+      caseId: newCaseId,
+      targetAddress: address,
+      chain,
+    }));
+
     try {
       // 1. Fetch wallet baseline overview
       const analyzeRes = await analyzeWallet(chain, address, searchHops);
@@ -127,13 +208,12 @@ export function App() {
       let finalNodes = analyzeRes.graph?.nodes || [];
       let finalEdges = analyzeRes.graph?.edges || [];
 
-      // Immediately render 1-hop counterparties so graph appears instantaneously
       if (finalNodes.length > 0) {
         setGraphNodes(finalNodes);
         setGraphEdges(finalEdges);
       }
 
-      // If demo target address and live node returned only 1 node, load full demo scenario
+      // Demo fallback handler
       if (address.toLowerCase() === '0x71c836489b990038848971201991802901238910' && finalNodes.length <= 1) {
         try {
           const demoDossier = await getDemoInvestigation();
@@ -163,31 +243,14 @@ export function App() {
                 description: 'Funds fragmented across 3 separate branches within 20 minutes.',
                 evidence: ['Binance feeder branch (2.1000 ETH)', 'Cluster UC-42 feeder branch (1.4000 ETH)'],
               },
-              {
-                ruleId: 'P8_UNVERIFIED_CLUSTER',
-                priority: 3,
-                title: 'Consolidation at Suspected Custodial Service Cluster',
-                severity: 'MEDIUM',
-                weight: 15,
-                description: 'Funds forwarded into Cluster UC-2026-0042 pooling wallet.',
-                evidence: ['27 interconnected addresses pooling volume'],
-              },
             ],
-            heuristicsBreakdown: {
-              baseScore: 92,
-              normalizedScore: 92,
-              sensitivityMultiplier: 1.0,
-              mixerBooster: false,
-              vaspDampener: false,
-              hasCriticalTrigger: true,
-            },
             recommendation: 'IMMEDIATE ACTION: Serve Section 91 CrPC notice to CoinDCX Nodal Officer to freeze 5.2000 ETH.',
           });
         } catch (demoErr) {
           console.warn('Demo fallback notice:', demoErr);
         }
       } else {
-        // Multi-hop BFS tracing across specified depth
+        // Multi-hop tracing
         try {
           const traceRes = await traceWalletFunds({
             chain,
@@ -227,10 +290,10 @@ export function App() {
             }));
           }
         } catch (traceErr) {
-          console.warn('Trace funds notice, using 1-hop:', traceErr);
+          console.warn('Trace funds notice:', traceErr);
         }
 
-        // Suspicion Points evaluation
+        // Evaluate Heuristics
         try {
           const heuristicRes = await evaluateHeuristics({
             chain,
@@ -249,7 +312,7 @@ export function App() {
           });
         }
 
-        // Investigation playbook & dossier
+        // Unified Investigation Dossier
         try {
           const dossierRes = await runUnifiedInvestigation({
             chain,
@@ -266,7 +329,29 @@ export function App() {
 
       setGraphNodes(finalNodes);
       setGraphEdges(finalEdges);
-      showToast(`Traced ${searchHops} ${searchHops === 1 ? 'hop' : 'hops'} (${detectedAsset}).`);
+      setActiveTab('graph');
+      setActiveDocketSubTab('graph');
+      showToast(`Docket ${newCaseId} traced across ${searchHops} hops.`);
+
+      // Auto-record and save active investigation into database
+      try {
+        await saveInvestigationCase({
+          caseId: newCaseId,
+          title: `Investigation on ${address.slice(0, 8)}... (${detectedAsset})`,
+          caseNumber: 'FIR-2026/CYBER-409',
+          crimeType: 'Cryptocurrency Fund Tracing',
+          targetAddress: address,
+          chain,
+          suspicionScore: 85,
+          riskLevel: 'HIGH',
+          nodes: finalNodes.map((n) => n.data || n),
+          edges: finalEdges,
+          wallet: analyzeRes?.wallet,
+        });
+        refreshSavedCasesCount();
+      } catch (autoSaveErr) {
+        console.warn('Auto-save notice:', autoSaveErr);
+      }
     } catch (err) {
       console.error('Wallet analysis failed:', err);
       setError(err.message || 'Error communicating with backend forensics engine.');
@@ -275,7 +360,7 @@ export function App() {
     }
   };
 
-  // Node branch tracking / expansion (Expands 2 HOPS on pressing the node's search icon)
+  // Node branch tracking / expansion (Expands 2 HOPS on pressing node search icon)
   const handleTrackNode = useCallback(
     async (nodeData, onDone) => {
       const targetAddr = nodeData.fullAddress || nodeData.address || nodeData.label;
@@ -288,7 +373,6 @@ export function App() {
       const nodeAsset = getAssetForChain(nodeChain, targetAddr);
 
       try {
-        // Execute 2-hop expansion from target node as reference
         let newDiscoveredNodes = [];
         let newDiscoveredEdges = [];
 
@@ -296,7 +380,7 @@ export function App() {
           const trace2Hop = await traceWalletFunds({
             chain: nodeChain,
             address: targetAddr,
-            maxDepth: 2, // EXPAND EXACTLY 2 HOPS as requested
+            maxDepth: 2,
             direction: 'both',
             minimumTransferValue: minAmount,
           });
@@ -333,39 +417,13 @@ export function App() {
             });
           }
         } catch (traceErr) {
-          console.warn('Trace 2-hop API notice, fetching direct counterparties:', traceErr);
-          const subRes = await analyzeWallet(nodeChain, targetAddr);
-          if (subRes && subRes.connectedWallets) {
-            const parentDepth = nodeData.depth || 1;
-            subRes.connectedWallets.slice(0, 6).forEach((cw) => {
-              newDiscoveredNodes.push({
-                address: cw.address,
-                depth: parentDepth + 1,
-                type: 'wallet',
-                chain: nodeChain,
-                riskScore: cw.riskScore || 15,
-                riskLevel: cw.riskLevel || 'LOW',
-                totalAmount: cw.totalAmount,
-                transactionCount: cw.transactionCount,
-                tags: cw.tags || [],
-              });
-              newDiscoveredEdges.push({
-                source: targetAddr.toLowerCase(),
-                target: cw.address.toLowerCase(),
-                totalValue: cw.totalAmount,
-                asset: nodeAsset,
-                transactionCount: cw.transactionCount,
-                hopDepth: parentDepth + 1,
-              });
-            });
-          }
+          console.warn('Trace 2-hop notice:', traceErr);
         }
 
         if (newDiscoveredNodes.length > 0) {
           const existingIds = new Set(graphNodes.map((n) => n.id.toLowerCase()));
           const parentKey = targetAddr.toLowerCase();
 
-          // Mark parent as expanded target
           const mergedNodes = graphNodes.map((n) => {
             if (n.id.toLowerCase() === parentKey) {
               return {
@@ -380,7 +438,6 @@ export function App() {
             return n;
           });
 
-          // Append new 2-hop nodes
           newDiscoveredNodes.forEach((tn) => {
             const id = tn.address.toLowerCase();
             if (!existingIds.has(id)) {
@@ -400,7 +457,6 @@ export function App() {
             }
           });
 
-          // Append straight edges
           const existingEdgeKeys = new Set(graphEdges.map((e) => `${e.source}->${e.target}`));
           const mergedEdges = [...graphEdges];
 
@@ -433,35 +489,160 @@ export function App() {
         }
       } catch (err) {
         console.error('2-hop branch expansion failed:', err);
-        showToast(`Expansion notice: ${err.message || 'Counterparty limit reached'}`);
       } finally {
-        if (onDone) onDone(); // Stops loading spinner on node track button
+        if (onDone) onDone();
       }
     },
     [graphNodes, graphEdges, currentChain, minAmount]
   );
 
-  const handleInvestigateAddress = (addr) => {
-    handleSearch({ address: addr, chain: currentChain, hops, minAmount, direction });
+  // Open saved case from archive docket
+  const handleOpenSavedCase = (savedCase) => {
+    const target = savedCase.targetAddress || savedCase.wallet?.address;
+    if (target) {
+      setSearchedAddress(target);
+    }
+    const chain = savedCase.chain || 'ethereum';
+    setCurrentChain(chain);
+    setCurrentAsset(getAssetForChain(chain, target));
+
+    setActiveCaseDetails({
+      caseId: savedCase.caseId,
+      caseNumber: savedCase.caseNumber || 'FIR-2026/CYBER-409',
+      crimeType: savedCase.crimeType || 'Cryptocurrency Fund Tracing',
+      investigatorName: savedCase.investigatorName || 'Cyber Forensics Officer (LEA-4092)',
+      notes: savedCase.notes || '',
+      targetAddress: target,
+      chain,
+    });
+
+    if (savedCase.wallet) {
+      setAnalysisData({
+        wallet: savedCase.wallet,
+        metadata: { chain, totalPeersDiscovered: (savedCase.nodes || []).length },
+      });
+    }
+
+    if (savedCase.nodes && savedCase.nodes.length > 0) {
+      const formattedNodes = savedCase.nodes.map((n) => {
+        const d = n.data || n;
+        const addr = d.address || d.fullAddress || n.id || '';
+        return {
+          id: (n.id || addr).toLowerCase(),
+          type: 'customWalletNode',
+          data: {
+            ...d,
+            fullAddress: addr,
+            label: d.label || `${addr.slice(0, 6)}...${addr.slice(-4)}`,
+            nodeType: d.nodeType || d.type || 'wallet',
+            asset: getAssetForChain(chain, addr),
+          },
+        };
+      });
+      setGraphNodes(formattedNodes);
+    }
+
+    if (savedCase.edges && savedCase.edges.length > 0) {
+      setGraphEdges(savedCase.edges);
+    }
+
+    if (savedCase.riskAssessment) {
+      setRiskAssessment(savedCase.riskAssessment);
+    }
+
+    if (savedCase.investigationDossier) {
+      setInvestigationDossier(savedCase.investigationDossier);
+    }
+
+    setActiveTab('graph');
+    setActiveDocketSubTab('graph');
+    showToast(`Case ${savedCase.caseId} opened from database docket.`);
   };
+
+  // Launch new case from modal
+  const handleLaunchNewCase = ({ address, chain, caseNumber, crimeType, hops: newHops, direction: newDir, minAmount: newMin }) => {
+    setHops(newHops);
+    setDirection(newDir);
+    setMinAmount(newMin);
+    setActiveCaseDetails({
+      caseId: `CASE-2026-I4C-${address.slice(2, 6).toUpperCase()}-${Date.now().toString().slice(-4)}`,
+      caseNumber,
+      crimeType,
+      investigatorName: 'Cyber Forensics Officer (LEA-4092)',
+      notes: '',
+      targetAddress: address,
+      chain,
+    });
+    handleSearch({ address, chain, hops: newHops, minAmount: newMin, direction: newDir });
+  };
+
+  const isActiveDocket = ['graph', 'suspicion', 'investigate'].includes(activeTab);
+  const suspicionScore = riskAssessment?.suspicionScore ?? analysisData?.wallet?.riskScore ?? 0;
+  const suspicionLevel = (riskAssessment?.riskLevel || analysisData?.wallet?.riskLevel || 'LOW').toUpperCase();
+  const ruleCount = riskAssessment?.triggeredRules?.length || 0;
+
+  // Cross-case tags on the current active wallet
+  const activeTags = analysisData?.wallet?.tags || [];
+  const crossInvestigatorTag = activeTags.find(
+    (t) => typeof t === 'string' && (t.toLowerCase().includes('investigator') || t.toLowerCase().includes('previous'))
+  );
 
   return (
     <div className="app-container">
-      {/* Left Sidebar */}
-      <Sidebar
-        activeTab={activeTab}
-        setActiveTab={setActiveTab}
-        hops={hops}
-        graphData={{ nodes: graphNodes, edges: graphEdges }}
-        riskAssessment={riskAssessment}
-        wallet={analysisData?.wallet}
-        investigationData={investigationDossier}
-      />
+      {/* Top Application Header Bar */}
+      <header className="top-header">
+        {/* Left Branding */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <div
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 'var(--radius-xs)',
+              background: 'linear-gradient(135deg, #0071e3 0%, #2997ff 100%)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#ffffff',
+              boxShadow: '0 2px 8px rgba(0, 113, 227, 0.3)',
+            }}
+          >
+            <Shield size={17} strokeWidth={2.4} />
+          </div>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <h1 style={{ fontSize: 13.5, fontWeight: 700, letterSpacing: '-0.02em', color: 'var(--text-primary)' }}>
+                TraceACT
+              </h1>
+              <span
+                style={{
+                  fontSize: 9,
+                  fontWeight: 700,
+                  padding: '1px 5px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'rgba(0, 113, 227, 0.12)',
+                  color: 'var(--accent-primary)',
+                  letterSpacing: '0.04em',
+                }}
+              >
+                LEA FORENSICS
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, fontSize: 9.5, color: 'var(--text-tertiary)' }}>
+              <span
+                style={{
+                  width: 5,
+                  height: 5,
+                  borderRadius: '50%',
+                  background: backendHealthy ? '#34c759' : '#ff9f0a',
+                }}
+              />
+              <span>{backendHealthy ? 'Database Engine Connected' : 'Local Forensics Engine'}</span>
+            </div>
+          </div>
+        </div>
 
-      {/* Main Right Area */}
-      <main className="app-main">
-        {/* Top Header Bar */}
-        <header className="top-header">
+        {/* Center / Right Search Bar */}
+        <div style={{ flex: 1, maxWidth: 680, margin: '0 16px' }}>
           <SearchBar
             onSearch={handleSearch}
             loading={loading}
@@ -474,9 +655,228 @@ export function App() {
             setDirection={setDirection}
             onOpenSettings={() => setIsSettingsOpen(true)}
           />
-        </header>
+        </div>
+      </header>
 
-        {/* Main Content Area */}
+      {/* Top Folder-Docket Navigation Bar (Folder-like Tabs Structure) */}
+      <nav className="folder-docket-bar">
+        <div className="folder-tabs-group">
+          {/* Tab 1: Active Investigation Case */}
+          <button
+            className={`folder-tab ${isActiveDocket ? 'active' : ''}`}
+            onClick={() => {
+              setActiveTab(activeDocketSubTab || 'graph');
+            }}
+          >
+            <FolderOpen size={14} />
+            <span>Active Case Docket</span>
+            {graphNodes.length > 0 && (
+              <span className="folder-tab-badge">
+                {graphNodes.length} Nodes
+              </span>
+            )}
+          </button>
+
+          {/* Tab 2: Case Archive & Saved Investigations */}
+          <button
+            className={`folder-tab ${activeTab === 'archive' ? 'active' : ''}`}
+            onClick={() => setActiveTab('archive')}
+          >
+            <Database size={14} />
+            <span>Case Archive & Saved Dockets</span>
+            {savedCasesCount > 0 && (
+              <span className="folder-tab-badge">
+                {savedCasesCount}
+              </span>
+            )}
+          </button>
+
+          {/* Tab 3: Official Forensic Dossier & Report */}
+          <button
+            className={`folder-tab ${activeTab === 'report' ? 'active' : ''}`}
+            onClick={() => setActiveTab('report')}
+          >
+            <FileText size={14} />
+            <span>Forensic Dossier & CrPC 91</span>
+          </button>
+
+          {/* Tab 4: Standard Operating Procedures (SOP) */}
+          <button
+            className={`folder-tab ${activeTab === 'guide' ? 'active' : ''}`}
+            onClick={() => setActiveTab('guide')}
+          >
+            <BookOpen size={14} />
+            <span>SOP Guidelines</span>
+          </button>
+
+          {/* Action Tab: Start New Investigation */}
+          <button
+            className="folder-tab folder-action-tab"
+            onClick={() => setIsNewCaseOpen(true)}
+          >
+            <FolderPlus size={14} />
+            <span>+ Start New Investigation</span>
+          </button>
+        </div>
+      </nav>
+
+      {/* Active Case Docket Sub-Bar (When an investigation is in active mode) */}
+      {isActiveDocket && (
+        <div className="active-docket-bar">
+          {/* Left: Case ID & Cross-Investigation Alert */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <Folder size={14} color="#0071e3" />
+              <strong style={{ color: 'var(--text-primary)', fontFamily: 'ui-monospace, monospace', fontSize: 11.5 }}>
+                {activeCaseDetails.caseId}
+              </strong>
+              <span
+                style={{
+                  fontSize: 9.5,
+                  padding: '1px 6px',
+                  borderRadius: 'var(--radius-pill)',
+                  background: 'rgba(0, 113, 227, 0.1)',
+                  color: 'var(--accent-primary)',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                }}
+              >
+                {currentChain} ({currentAsset})
+              </span>
+            </div>
+
+            {/* Cross-Investigator Match Badge */}
+            {crossInvestigatorTag && (
+              <div
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4,
+                  fontSize: 10,
+                  fontWeight: 600,
+                  background: 'rgba(175, 82, 222, 0.15)',
+                  border: '1px solid rgba(175, 82, 222, 0.35)',
+                  color: '#af52de',
+                  padding: '2px 8px',
+                  borderRadius: 'var(--radius-pill)',
+                }}
+              >
+                <AlertTriangle size={11} color="#af52de" />
+                <span>{crossInvestigatorTag}</span>
+              </div>
+            )}
+          </div>
+
+          {/* Center: Docket View Mode Switcher Pills */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              background: 'var(--bg-surface)',
+              border: '1px solid var(--border-subtle)',
+              borderRadius: 'var(--radius-pill)',
+              padding: '2px',
+              gap: 2,
+            }}
+          >
+            <button
+              onClick={() => {
+                setActiveTab('graph');
+                setActiveDocketSubTab('graph');
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '3px 10px',
+                borderRadius: 'var(--radius-pill)',
+                border: 'none',
+                background: activeTab === 'graph' ? 'var(--accent-primary)' : 'transparent',
+                color: activeTab === 'graph' ? '#ffffff' : 'var(--text-secondary)',
+                fontSize: 11,
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.15s var(--ease-apple)',
+              }}
+            >
+              <GitFork size={12} />
+              <span>Forensic Graph</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveTab('suspicion');
+                setActiveDocketSubTab('suspicion');
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '3px 10px',
+                borderRadius: 'var(--radius-pill)',
+                border: 'none',
+                background: activeTab === 'suspicion' ? 'var(--accent-primary)' : 'transparent',
+                color: activeTab === 'suspicion' ? '#ffffff' : 'var(--text-secondary)',
+                fontSize: 11,
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.15s var(--ease-apple)',
+              }}
+            >
+              <Shield size={12} />
+              <span>Suspicion Points ({suspicionScore}/100)</span>
+            </button>
+
+            <button
+              onClick={() => {
+                setActiveTab('investigate');
+                setActiveDocketSubTab('investigate');
+              }}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 5,
+                padding: '3px 10px',
+                borderRadius: 'var(--radius-pill)',
+                border: 'none',
+                background: activeTab === 'investigate' ? 'var(--accent-primary)' : 'transparent',
+                color: activeTab === 'investigate' ? '#ffffff' : 'var(--text-secondary)',
+                fontSize: 11,
+                fontWeight: 500,
+                cursor: 'pointer',
+                transition: 'all 0.15s var(--ease-apple)',
+              }}
+            >
+              <Compass size={12} />
+              <span>Investigation Playbook</span>
+            </button>
+          </div>
+
+          {/* Right: Actions */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <button
+              className="apple-btn apple-btn-secondary"
+              onClick={() => setIsSaveCaseOpen(true)}
+              style={{ padding: '4px 10px', fontSize: 11 }}
+            >
+              <Save size={12} />
+              <span>Save Case</span>
+            </button>
+
+            <button
+              className="apple-btn apple-btn-primary"
+              onClick={() => setActiveTab('report')}
+              style={{ padding: '4px 10px', fontSize: 11 }}
+            >
+              <Printer size={12} />
+              <span>Generate PDF Dossier</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Main Content Area */}
+      <main className="app-main">
         <div className="main-content">
           {/* Notification Toast */}
           {toastMessage && (
@@ -521,12 +921,12 @@ export function App() {
             </div>
           )}
 
-          {/* Wallet Overview Strip */}
-          {analysisData?.wallet && (
+          {/* Wallet Overview Card (Shown in Active Docket) */}
+          {isActiveDocket && analysisData?.wallet && (
             <WalletOverviewCard wallet={analysisData.wallet} metadata={analysisData.metadata} />
           )}
 
-          {/* Tab 1: Forensic Graph View */}
+          {/* Tab: Forensic Graph View */}
           {activeTab === 'graph' && (
             <>
               {graphNodes.length > 0 ? (
@@ -538,7 +938,9 @@ export function App() {
                       rootAddress={analysisData?.wallet?.address}
                       targetAsset={currentAsset}
                       onTrackNode={handleTrackNode}
-                      onInvestigateAddress={handleInvestigateAddress}
+                      onInvestigateAddress={(addr) =>
+                        handleSearch({ address: addr, chain: currentChain, hops, minAmount, direction })
+                      }
                     />
                   </GraphErrorBoundary>
 
@@ -551,7 +953,11 @@ export function App() {
                 </div>
               ) : loading ? (
                 <div style={{ padding: '60px 20px', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                  <Loader2 size={32} color="var(--accent-primary)" style={{ margin: '0 auto 12px', animation: 'spin 1s linear infinite' }} />
+                  <Loader2
+                    size={32}
+                    color="var(--accent-primary)"
+                    style={{ margin: '0 auto 12px', animation: 'spin 1s linear infinite' }}
+                  />
                   <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
                     Tracing Blockchain Counterparties...
                   </h3>
@@ -560,20 +966,24 @@ export function App() {
                   </p>
                 </div>
               ) : (
-                <div style={{ padding: '40px 20px', textAlign: 'center', color: 'var(--text-secondary)' }}>
-                  <Shield size={28} color="var(--accent-primary)" style={{ margin: '0 auto 8px' }} />
-                  <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 3 }}>
+                <div style={{ padding: '50px 20px', textAlign: 'center', color: 'var(--text-secondary)' }}>
+                  <Shield size={32} color="var(--accent-primary)" style={{ margin: '0 auto 10px' }} />
+                  <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 4 }}>
                     Multi-Hop Forensic Graph
                   </h3>
-                  <p style={{ fontSize: 11.5, maxWidth: 380, margin: '0 auto', lineHeight: 1.4 }}>
-                    Enter a wallet address above to trace fund movements across hops, attribute VASP endpoints, and calculate suspicion points.
+                  <p style={{ fontSize: 11.5, maxWidth: 420, margin: '0 auto 16px', lineHeight: 1.45 }}>
+                    Enter a suspect wallet address above or click <strong>+ Start New Investigation</strong> to trace fund movements, attribute VASP endpoints, and generate a court-admissible report.
                   </p>
+                  <button className="apple-btn apple-btn-primary" onClick={() => setIsNewCaseOpen(true)}>
+                    <FolderPlus size={13} />
+                    <span>+ Start New Investigation Docket</span>
+                  </button>
                 </div>
               )}
             </>
           )}
 
-          {/* Tab 2: Suspicion Points View */}
+          {/* Tab: Suspicion Points View */}
           {activeTab === 'suspicion' && (
             <SuspicionPointsView
               riskAssessment={riskAssessment}
@@ -581,7 +991,7 @@ export function App() {
             />
           )}
 
-          {/* Tab 3: Investigation Playbook & Next Steps */}
+          {/* Tab: Investigation Playbook & Next Steps */}
           {activeTab === 'investigate' && (
             <InvestigationGuideView
               investigationData={investigationDossier}
@@ -589,15 +999,62 @@ export function App() {
             />
           )}
 
-          {/* Tab 4: Forensic Dossier & Report */}
+          {/* Tab: Case Archive & Saved Dockets */}
+          {activeTab === 'archive' && (
+            <CaseArchiveView
+              onOpenCase={handleOpenSavedCase}
+              onStartNewCase={() => setIsNewCaseOpen(true)}
+              showToast={showToast}
+            />
+          )}
+
+          {/* Tab: Forensic Dossier & Report */}
           {activeTab === 'report' && (
             <ForensicReportView
               reportData={investigationDossier}
+              wallet={analysisData?.wallet}
+              graphData={{ nodes: graphNodes, edges: graphEdges }}
+              riskAssessment={riskAssessment}
+              currentChain={currentChain}
+              currentAsset={currentAsset}
+              caseDetails={activeCaseDetails}
+            />
+          )}
+
+          {/* Tab: SOP Guidelines */}
+          {activeTab === 'guide' && (
+            <InvestigationGuideView
+              investigationData={investigationDossier}
               wallet={analysisData?.wallet}
             />
           )}
         </div>
       </main>
+
+      {/* Save Case Modal */}
+      <SaveCaseModal
+        isOpen={isSaveCaseOpen}
+        onClose={() => setIsSaveCaseOpen(false)}
+        targetAddress={searchedAddress}
+        currentChain={currentChain}
+        graphNodes={graphNodes}
+        graphEdges={graphEdges}
+        riskAssessment={riskAssessment}
+        wallet={analysisData?.wallet}
+        investigationDossier={investigationDossier}
+        onSaved={(savedCase) => {
+          setActiveCaseDetails(savedCase);
+          refreshSavedCasesCount();
+          showToast(`Case ${savedCase.caseId} saved to database archive.`);
+        }}
+      />
+
+      {/* Start New Investigation Modal */}
+      <NewCaseModal
+        isOpen={isNewCaseOpen}
+        onClose={() => setIsNewCaseOpen(false)}
+        onLaunch={handleLaunchNewCase}
+      />
 
       {/* Settings Modal */}
       <SettingsModal

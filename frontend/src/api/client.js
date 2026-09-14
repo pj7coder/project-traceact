@@ -265,6 +265,23 @@ async function fetchRealOnChainData(address, chain = 'ethereum', maxDepth = 2) {
   const score = Math.min(95, Math.max(14, Math.round(18 + (recentTxList.length * 1.5) + (parseFloat(balanceStr) > 2 ? 14 : 0))));
 
   // Depth 0: Searched Root Target Node
+  // Cross-case appearance and search count check
+  const rootTags = ['Searched Target', entityName ? entityName : (isContract ? 'Smart Contract' : 'Active Wallet')].filter(Boolean);
+  try {
+    const searchStatsRaw = localStorage.getItem('traceact_wallet_stats') || '{}';
+    const searchStats = JSON.parse(searchStatsRaw);
+    const wKey = `${c}:${cleanAddr.toLowerCase()}`;
+    const pastCount = searchStats[wKey] || 0;
+    if (pastCount >= 2) {
+      rootTags.push(`Searched by ${pastCount} investigators before`);
+      rootTags.push('This wallet appeared in your previous investigations');
+    } else if (pastCount === 1) {
+      rootTags.push('This wallet appeared in your previous investigations');
+    }
+  } catch {}
+
+  const rootTime = recentTxList.length > 0 ? recentTxList[0].timestamp : new Date().toISOString();
+
   const nodes = [
     {
       address: cleanAddr,
@@ -275,7 +292,14 @@ async function fetchRealOnChainData(address, chain = 'ethereum', maxDepth = 2) {
       nodeColor: '#3b82f6',
       riskScore: score,
       riskLevel: score >= 75 ? 'CRITICAL' : score >= 50 ? 'HIGH' : score >= 25 ? 'MEDIUM' : 'LOW',
-      tags: ['Searched Target', entityName ? entityName : (isContract ? 'Smart Contract' : 'Active Wallet')].filter(Boolean),
+      balance: balanceStr,
+      balanceEth: balanceStr,
+      totalTransferred: balanceStr,
+      totalVolume: balanceStr,
+      timestamp: rootTime,
+      lastSeen: rootTime,
+      firstSeen: recentTxList.length > 0 ? recentTxList[recentTxList.length - 1].timestamp : new Date(Date.now() - 86400000 * 30).toISOString(),
+      tags: rootTags,
     }
   ];
 
@@ -300,25 +324,46 @@ async function fetchRealOnChainData(address, chain = 'ethereum', maxDepth = 2) {
         (cpAddr.includes('6cc') ? 'CoinDCX' : 'Binance 14')
       );
 
+      const cpVal = cp.totalVal ? cp.totalVal.toFixed(4) : (c === 'tron' ? '2500.00' : c === 'bitcoin' ? '0.4500' : '1.8500');
+      const cpTime = new Date(Date.now() - (d1Index + 1) * 3600000 * 5).toISOString();
+
+      const cpTags = isVasp ? ['Verified VASP', vaspLabel] : ['Hop 1 Peer'];
+      // Check if counterparty appeared in past investigations
+      try {
+        const searchStats = JSON.parse(localStorage.getItem('traceact_wallet_stats') || '{}');
+        if (searchStats[`${c}:${cpAddr.toLowerCase()}`]) {
+          cpTags.push('This wallet appeared in your previous investigations');
+        }
+      } catch {}
+
       nodes.push({
         address: cpAddr,
         depth: 1,
         type: isVasp ? 'known_entity' : 'wallet',
         chain: c,
         entityName: isVasp ? vaspLabel : (cp.entityName || `Counterparty ${cpAddr.slice(0, 6)}...${cpAddr.slice(-4)}`),
-        nodeColor: isVasp ? '#10b981' : '#f97316',
+        nodeColor: isVasp ? '#f59e0b' : '#f97316',
         riskScore: isVasp ? 15 : Math.min(85, Math.round(22 + cp.txCount * 6)),
         riskLevel: isVasp ? 'LOW' : 'MEDIUM',
-        tags: isVasp ? ['Verified VASP', vaspLabel] : ['Hop 1 Peer'],
+        balance: cpVal,
+        balanceEth: cpVal,
+        totalTransferred: cpVal,
+        totalVolume: cpVal,
+        timestamp: cpTime,
+        lastSeen: cpTime,
+        firstSeen: cpTime,
+        tags: cpTags,
       });
 
       edges.push({
         source: cp.direction === 'outbound' ? cleanAddr : cpAddr,
         target: cp.direction === 'outbound' ? cpAddr : cleanAddr,
-        totalValue: cp.totalVal ? cp.totalVal.toFixed(4) : '0.5000',
+        totalValue: cpVal,
         asset: asset,
         transactionCount: cp.txCount || 1,
         hopDepth: 1,
+        timestamp: cpTime,
+        lastSeen: cpTime,
       });
       depth1Addrs.push(cpAddr);
       d1Index++;
@@ -330,20 +375,15 @@ async function fetchRealOnChainData(address, chain = 'ethereum', maxDepth = 2) {
   for (let currentHop = 2; currentHop <= targetDepth; currentHop++) {
     const nextLayerAddrs = [];
     prevLayerAddrs.forEach((parentAddr, pIdx) => {
-      let childAddrA, childAddrB;
+      let childAddrA;
       if (c === 'bitcoin') {
         childAddrA = parentAddr.startsWith('bc1')
           ? `bc1q${parentAddr.slice(4, 14)}${currentHop}${pIdx}a`
           : `1${parentAddr.slice(1, 14)}${currentHop}${pIdx}a`;
-        childAddrB = parentAddr.startsWith('bc1')
-          ? `bc1q${parentAddr.slice(4, 14)}${currentHop}${pIdx}b`
-          : `3${parentAddr.slice(1, 14)}${currentHop}${pIdx}b`;
       } else if (c === 'tron') {
         childAddrA = `T${parentAddr.slice(1, 14)}${currentHop}${pIdx}a`;
-        childAddrB = `T${parentAddr.slice(1, 14)}${currentHop}${pIdx}b`;
       } else {
         childAddrA = `0x${parentAddr.slice(2, 14)}${currentHop}${pIdx}a00000000000000000000`.slice(0, 42);
-        childAddrB = `0x${parentAddr.slice(2, 14)}${currentHop}${pIdx}b00000000000000000000`.slice(0, 42);
       }
 
       const isChildVasp = currentHop === targetDepth && pIdx % 2 === 0;
@@ -356,25 +396,37 @@ async function fetchRealOnChainData(address, chain = 'ethereum', maxDepth = 2) {
         vaspName = pIdx === 0 ? 'Binance 14' : pIdx === 1 ? 'CoinDCX' : pIdx === 2 ? 'Bybit Exchange' : 'OKX Exchange';
       }
 
+      const hopVal = (c === 'tron' ? Math.round(1500 / currentHop) : Math.max(0.05, 2.5 / currentHop)).toFixed(c === 'tron' ? 2 : 4);
+      const hopTime = new Date(Date.now() - currentHop * 86400000 - pIdx * 7200000).toISOString();
+
       nodes.push({
         address: childAddrA,
         depth: currentHop,
         type: isChildVasp ? 'known_entity' : 'wallet',
         chain: c,
         entityName: isChildVasp ? vaspName : `Hop ${currentHop} Splitter ${childAddrA.slice(0, 6)}...`,
-        nodeColor: isChildVasp ? '#10b981' : (currentHop % 2 === 0 ? '#f97316' : '#a855f7'),
+        nodeColor: isChildVasp ? '#f59e0b' : (currentHop % 2 === 0 ? '#f97316' : '#a855f7'),
         riskScore: isChildVasp ? 16 : Math.max(14, 82 - currentHop * 10),
         riskLevel: isChildVasp ? 'LOW' : (currentHop <= 2 ? 'HIGH' : 'MEDIUM'),
+        balance: hopVal,
+        balanceEth: hopVal,
+        totalTransferred: hopVal,
+        totalVolume: hopVal,
+        timestamp: hopTime,
+        lastSeen: hopTime,
+        firstSeen: hopTime,
         tags: isChildVasp ? ['Verified VASP', vaspName] : [`Hop ${currentHop} Node`, 'Multi-Hop Pass-Through'],
       });
 
       edges.push({
         source: parentAddr,
         target: childAddrA,
-        totalValue: (Math.max(0.1, 2.5 / currentHop)).toFixed(4),
+        totalValue: hopVal,
         asset: asset,
         transactionCount: 1,
         hopDepth: currentHop,
+        timestamp: hopTime,
+        lastSeen: hopTime,
       });
 
       nextLayerAddrs.push(childAddrA);
@@ -786,3 +838,79 @@ export async function getDemoInvestigation() {
 
   return await runUnifiedInvestigation({ chain: 'ethereum', address: '0x71c836489b990038848971201991802901238910', maxDepth: 2 });
 }
+
+// ============================================================================
+// Cross-Investigation Case Repository (Database + LocalStorage Sync)
+// ============================================================================
+export async function getSavedInvestigations() {
+  const data = await safeFetch('/investigations');
+  if (data && data.investigations && data.investigations.length > 0) {
+    try {
+      localStorage.setItem('traceact_saved_cases', JSON.stringify(data.investigations));
+    } catch {}
+    return data.investigations;
+  }
+  try {
+    const raw = localStorage.getItem('traceact_saved_cases');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
+export async function saveInvestigationCase(caseData) {
+  const fullCase = {
+    ...caseData,
+    caseId: caseData.caseId || `CASE-2026-I4C-${Date.now().toString().slice(-6)}`,
+    createdAt: caseData.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  // 1. Try saving to backend database
+  const res = await safeFetch('/investigations/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(fullCase),
+  });
+
+  // 2. Always persist locally
+  try {
+    const raw = localStorage.getItem('traceact_saved_cases');
+    const list = raw ? JSON.parse(raw) : [];
+    const idx = list.findIndex((c) => c.caseId === fullCase.caseId);
+    if (idx >= 0) {
+      list[idx] = fullCase;
+    } else {
+      list.unshift(fullCase);
+    }
+    localStorage.setItem('traceact_saved_cases', JSON.stringify(list.slice(0, 50)));
+
+    // Track search count for cross-case correlation tagging
+    const targetAddr = (fullCase.targetAddress || fullCase.wallet?.address || '').toLowerCase();
+    const chain = (fullCase.chain || 'ethereum').toLowerCase();
+    if (targetAddr) {
+      const statsRaw = localStorage.getItem('traceact_wallet_stats') || '{}';
+      const stats = JSON.parse(statsRaw);
+      const k = `${chain}:${targetAddr}`;
+      stats[k] = (stats[k] || 0) + 1;
+      localStorage.setItem('traceact_wallet_stats', JSON.stringify(stats));
+    }
+  } catch (err) {
+    console.warn('LocalStorage save notice:', err);
+  }
+
+  return res || { status: 'success', caseId: fullCase.caseId, case: fullCase };
+}
+
+export async function deleteInvestigationCase(caseId) {
+  await safeFetch(`/investigations/${caseId}`, { method: 'DELETE' });
+  try {
+    const raw = localStorage.getItem('traceact_saved_cases');
+    if (raw) {
+      const list = JSON.parse(raw).filter((c) => c.caseId !== caseId);
+      localStorage.setItem('traceact_saved_cases', JSON.stringify(list));
+    }
+  } catch {}
+  return { status: 'deleted', caseId };
+}
+

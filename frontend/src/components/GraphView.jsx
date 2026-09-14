@@ -876,7 +876,8 @@ const GraphInner = ({
       }
 
       const edgeAsset = (e.asset || e.data?.asset || targetAsset || 'ETH').toUpperCase();
-      const rawVal = parseFloat(String(e.data?.totalTransferred || e.totalValue || '0'));
+      let rawVal = parseFloat(String(e.data?.totalTransferred || e.totalValue || e.data?.totalValue || e.amount || e.data?.amount || '0'));
+      if (isNaN(rawVal)) rawVal = 0;
       let formattedVal = '';
       if (!isNaN(rawVal) && rawVal > 0) {
         if (edgeAsset === 'BTC') {

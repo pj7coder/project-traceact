@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Handle, Position } from '@xyflow/react';
-import { Search, Copy, Check, Landmark, Loader2, Info } from 'lucide-react';
+import { Search, Copy, Check, Landmark, Loader2, Info, Clock, History } from 'lucide-react';
 
 const getCurrencyMeta = (asset = 'ETH', chain = '', addr = '') => {
   const a = (asset || '').toUpperCase();
@@ -48,7 +48,7 @@ export const RectangularNode = ({ data, selected }) => {
   const currMeta = getCurrencyMeta(data.asset, data.chain, fullAddr);
   const asset = currMeta.symbol;
 
-  // Determine Node Role & Type
+  // Determine Node Role & Tagging
   const isSearched = data.nodeType === 'investigated' || data.isTarget || data.depth === 0 || data.role === 'investigated';
   
   const isVasp = !isSearched && Boolean(
@@ -59,44 +59,72 @@ export const RectangularNode = ({ data, selected }) => {
     (data.entityName && /exchange|vasp|coindcx|binance|wazirx|kraken|coinbase|bybit|kucoin/i.test(data.entityName))
   );
 
+  const tags = data.tags || [];
+  const isAppearedBefore = tags.some(t => /appeared in (your |.*)previous investigations/i.test(t));
+  const isMultiInvestigator = tags.some(t => /searched by \d+ investigators before/i.test(t));
+  const isTaggedCrossCase = isAppearedBefore || isMultiInvestigator;
+
   const riskScore = data.riskScore ?? 0;
   const riskLevel = (data.riskLevel || (riskScore >= 75 ? 'CRITICAL' : riskScore >= 50 ? 'HIGH' : riskScore >= 20 ? 'MEDIUM' : 'LOW')).toUpperCase();
 
-  // Color Mapping:
-  // - Searched Target: Blue (#0071e3)
-  // - VASP: Gold (#eab308)
-  // - Counterparties: Suspicion Engine Score
-  let themeColor = '#34c759';
+  // Whole Node Coloring (For Tagging Only, Not for Suspicion):
+  // - VASP: Whole node has gold background (#eab308)
+  // - Target Root: Whole node has blue background (#0071e3)
+  // - Cross-Case Tagged: Whole node has forensic purple background (#af52de)
+  // - Standard Peers: Clean card background (suspicion stays on risk badge)
+  let nodeBg = 'var(--bg-card)';
   let borderStyle = '1px solid var(--border-subtle)';
   let glowStyle = 'none';
+  let themeColor = '#34c759';
 
-  if (isSearched) {
-    themeColor = '#0071e3';
-    borderStyle = '1.5px solid #0071e3';
-    glowStyle = '0 0 8px rgba(0, 113, 227, 0.25)';
-  } else if (isVasp) {
-    themeColor = '#eab308';
+  if (isVasp) {
+    nodeBg = 'linear-gradient(145deg, rgba(234, 179, 8, 0.22) 0%, rgba(202, 138, 4, 0.12) 100%)';
     borderStyle = '1.5px solid #eab308';
-    glowStyle = '0 0 8px rgba(234, 179, 8, 0.25)';
+    glowStyle = '0 0 10px rgba(234, 179, 8, 0.25)';
+    themeColor = '#eab308';
+  } else if (isSearched) {
+    nodeBg = 'linear-gradient(145deg, rgba(0, 113, 227, 0.18) 0%, rgba(0, 113, 227, 0.08) 100%)';
+    borderStyle = '1.5px solid #0071e3';
+    glowStyle = '0 0 10px rgba(0, 113, 227, 0.25)';
+    themeColor = '#0071e3';
+  } else if (isTaggedCrossCase) {
+    nodeBg = 'linear-gradient(145deg, rgba(175, 82, 222, 0.18) 0%, rgba(175, 82, 222, 0.08) 100%)';
+    borderStyle = '1.5px solid #af52de';
+    glowStyle = '0 0 10px rgba(175, 82, 222, 0.25)';
+    themeColor = '#af52de';
   } else {
-    if (riskScore >= 75 || riskLevel === 'CRITICAL') {
-      themeColor = '#af52de';
-      borderStyle = '1px solid rgba(175, 82, 222, 0.45)';
-    } else if (riskScore >= 50 || riskLevel === 'HIGH') {
-      themeColor = '#ff453a';
-      borderStyle = '1px solid rgba(255, 69, 58, 0.4)';
-    } else if (riskScore >= 20 || riskLevel === 'MEDIUM') {
-      themeColor = '#ff9f0a';
-      borderStyle = '1px solid rgba(255, 159, 10, 0.35)';
-    } else {
-      themeColor = '#34c759';
-      borderStyle = '1px solid rgba(52, 199, 89, 0.3)';
-    }
+    nodeBg = 'var(--bg-card)';
+    borderStyle = '1px solid var(--border-subtle)';
+    themeColor = riskScore >= 75 ? '#af52de' : riskScore >= 50 ? '#ff453a' : riskScore >= 20 ? '#ff9f0a' : '#34c759';
   }
 
   const title = data.entityName || data.name || (isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr);
-  const balanceRaw = data.balance || data.totalTransferred || data.totalAmount || data.totalVolume || '0';
+  
+  // Robust Volume Calculation: fallback across all possible keys so volume is never 0
+  let balanceRaw = data.balance ?? data.balanceEth ?? data.totalTransferred ?? data.totalAmount ?? data.totalVolume ?? '0';
+  if ((balanceRaw === '0' || balanceRaw === 0 || !balanceRaw) && data.totalReceivedFromParent && data.totalReceivedFromParent !== '0') {
+    balanceRaw = data.totalReceivedFromParent;
+  }
+  if ((balanceRaw === '0' || balanceRaw === 0 || !balanceRaw) && data.totalSent && data.totalSent !== '0') {
+    balanceRaw = data.totalSent;
+  }
+
   const txCount = data.txCount ?? data.transactionCount ?? 0;
+
+  // Timestamp extraction and formatting
+  const rawTime = data.timestamp || data.lastSeen || data.firstSeen || null;
+  const formatTime = (ts) => {
+    if (!ts) return null;
+    try {
+      const d = new Date(ts);
+      if (isNaN(d.getTime())) return null;
+      return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) + ', ' +
+        d.toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit', hour12: false });
+    } catch {
+      return null;
+    }
+  };
+  const formattedTime = formatTime(rawTime);
 
   const handleCopy = (e) => {
     e.stopPropagation();
@@ -132,11 +160,12 @@ export const RectangularNode = ({ data, selected }) => {
       className={`custom-rect-node ${selected ? 'selected' : ''}`}
       onDoubleClick={handleOpenDetail}
       style={{
-        width: 216,
-        minWidth: 216,
-        maxWidth: 216,
+        width: 218,
+        minWidth: 218,
+        maxWidth: 218,
+        background: nodeBg,
         border: selected ? `2px solid ${themeColor}` : borderStyle,
-        boxShadow: selected ? `0 0 12px ${themeColor}40, var(--shadow-md)` : glowStyle,
+        boxShadow: selected ? `0 0 14px ${themeColor}50, var(--shadow-md)` : glowStyle,
       }}
       title="Click to highlight Inflow (Green) / Outflow (Red) · Double-click for full dossier"
     >
@@ -179,7 +208,7 @@ export const RectangularNode = ({ data, selected }) => {
               flexShrink: 0,
             }} 
           />
-          <span className="node-title" title={title} style={{ color: isSearched ? '#0071e3' : isVasp ? '#eab308' : 'var(--text-primary)' }}>
+          <span className="node-title" title={title} style={{ color: isSearched ? '#0071e3' : isVasp ? '#ca8a04' : isTaggedCrossCase ? '#af52de' : 'var(--text-primary)' }}>
             {title}
           </span>
           <span
@@ -254,28 +283,50 @@ export const RectangularNode = ({ data, selected }) => {
         </button>
       </div>
 
+      {/* Timestamp Line (Transaction Time) */}
+      {formattedTime && (
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3.5, fontSize: 8.5, color: 'var(--text-tertiary)', margin: '1px 0 3px', fontFamily: 'ui-monospace, monospace' }}>
+          <Clock size={8} />
+          <span>{formattedTime}</span>
+        </div>
+      )}
+
       {/* Badges */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '3px 0' }}>
-        {isSearched ? (
-          <span className="apple-badge" style={{ background: 'rgba(0, 113, 227, 0.12)', color: '#0071e3' }}>
-            Target Root
-          </span>
-        ) : isVasp ? (
-          <span className="apple-badge" style={{ background: 'rgba(234, 179, 8, 0.15)', color: '#ca8a04', display: 'inline-flex', alignItems: 'center', gap: 3 }}>
-            <Landmark size={8.5} />
-            Verified VASP
-          </span>
-        ) : (
-          <span 
-            className="apple-badge" 
-            style={{
-              background: `rgba(${themeColor === '#af52de' ? '175, 82, 222' : themeColor === '#ff453a' ? '255, 69, 58' : themeColor === '#ff9f0a' ? '255, 159, 10' : '52, 199, 89'}, 0.14)`,
-              color: themeColor,
-            }}
-          >
-            {riskLevel} ({riskScore})
-          </span>
-        )}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', margin: '3px 0', gap: 4, flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
+          {isSearched ? (
+            <span className="apple-badge" style={{ background: 'rgba(0, 113, 227, 0.16)', color: '#0071e3', fontWeight: 600 }}>
+              Target Root
+            </span>
+          ) : isVasp ? (
+            <span className="apple-badge" style={{ background: 'rgba(234, 179, 8, 0.22)', color: '#b45309', display: 'inline-flex', alignItems: 'center', gap: 3, fontWeight: 700 }}>
+              <Landmark size={8.5} />
+              VASP
+            </span>
+          ) : (
+            <span 
+              className="apple-badge" 
+              style={{
+                background: `rgba(${themeColor === '#af52de' ? '175, 82, 222' : themeColor === '#ff453a' ? '255, 69, 58' : themeColor === '#ff9f0a' ? '255, 159, 10' : '52, 199, 89'}, 0.14)`,
+                color: themeColor,
+              }}
+            >
+              {riskLevel} ({riskScore})
+            </span>
+          )}
+
+          {isAppearedBefore && (
+            <span className="apple-badge" style={{ background: 'rgba(175, 82, 222, 0.18)', color: '#af52de', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: 2 }} title="This wallet appeared in your previous investigations">
+              <History size={7.5} />
+              Prior Case
+            </span>
+          )}
+          {isMultiInvestigator && !isAppearedBefore && (
+            <span className="apple-badge" style={{ background: 'rgba(175, 82, 222, 0.18)', color: '#af52de', fontWeight: 600 }} title="Searched by multiple investigators before">
+              Multi-LEA
+            </span>
+          )}
+        </div>
 
         {data.depth !== undefined && (
           <span style={{ fontSize: 8.5, color: 'var(--text-tertiary)', fontWeight: 500 }}>
