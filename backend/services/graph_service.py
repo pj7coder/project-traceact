@@ -109,8 +109,9 @@ class GraphService:
                     node_color = "#8b5cf6"  # Purple for bridge
                     tags.append("DeFi Bridge")
 
+            node_id = wallet.address.lower() if wallet.address.startswith("0x") else wallet.address
             connected_node = GraphNode(
-                id=wallet.address,
+                id=node_id,
                 type="connectedWalletNode",
                 data=GraphNodeData(
                     label=self._format_short_address(wallet.address),
@@ -119,7 +120,7 @@ class GraphService:
                     role=wallet.direction.value,
                     txCount=wallet.transactionCount,
                     totalVolume=wallet.totalAmount,
-                    balance=None,
+                    balance=getattr(wallet, "balance", None) or wallet.totalAmount,
                     asset=wallet.asset,
                     entityName=ent.entity_name if ent else None,
                     entityType=ent.entity_type if ent else None,
@@ -136,45 +137,58 @@ class GraphService:
         edge_aggregates: Dict[Tuple[str, str], Dict[str, Any]] = {}
 
         for tx in transactions:
-            from_addr = (tx.fromAddress or "").lower()
-            to_addr = (tx.toAddress or "").lower()
+            from_addr = (tx.fromAddress or "").strip()
+            to_addr = (tx.toAddress or "").strip()
 
-            if not from_addr or not to_addr or from_addr == to_addr:
+            if not from_addr or not to_addr or from_addr.lower() == to_addr.lower():
                 continue
 
-            pair = (from_addr, to_addr)
+            pair = (from_addr.lower(), to_addr.lower())
             if pair not in edge_aggregates:
                 edge_aggregates[pair] = {
+                    "source": from_addr,
+                    "target": to_addr,
                     "count": 0,
+                    "totalVal": Decimal("0"),
                     "totalWei": Decimal("0"),
-                    "asset": tx.asset,
+                    "asset": tx.asset or investigated_wallet.asset or "ETH",
                 }
 
             try:
-                tx_wei = Decimal(str(tx.valueRaw or tx.value or "0"))
+                tx_val = Decimal(str(tx.value or "0"))
+            except Exception:
+                tx_val = Decimal("0")
+
+            try:
+                tx_wei = Decimal(str(tx.valueRaw or "0"))
             except Exception:
                 tx_wei = Decimal("0")
 
             edge_aggregates[pair]["count"] += 1
+            edge_aggregates[pair]["totalVal"] += tx_val
             edge_aggregates[pair]["totalWei"] += tx_wei
 
         # Build GraphEdge objects
-        for (src, tgt), data in edge_aggregates.items():
-            existing_node_ids = {n.id for n in nodes}
-            if src not in existing_node_ids or tgt not in existing_node_ids:
+        existing_node_ids = {n.id.lower() for n in nodes}
+        for (src_k, tgt_k), data in edge_aggregates.items():
+            if src_k not in existing_node_ids or tgt_k not in existing_node_ids:
                 continue
 
             asset_sym = data.get("asset", "ETH")
-            total_str = self._wei_to_eth_str(data["totalWei"]) if asset_sym == "ETH" else str(data["totalWei"])
+            val_dec = data["totalVal"]
+            total_str = f"{val_dec:.6f}".rstrip("0").rstrip(".") or "0"
             tx_count = data["count"]
             label = f"{tx_count} tx ({total_str} {asset_sym})" if total_str != "0" else f"{tx_count} tx"
 
-            edge_id = f"e_{src[:8]}_{tgt[:8]}"
+            edge_id = f"e_{src_k[:8]}_{tgt_k[:8]}"
+            edge_src = data["source"].lower() if data["source"].startswith("0x") else data["source"]
+            edge_tgt = data["target"].lower() if data["target"].startswith("0x") else data["target"]
+
             edges.append(
                 GraphEdge(
                     id=edge_id,
-                    source=src,
-                    target=tgt,
+                    source=edge_src,
+                    target=edge_tgt,
                     label=label,
                     data=GraphEdgeData(
                         transactionCount=tx_count,

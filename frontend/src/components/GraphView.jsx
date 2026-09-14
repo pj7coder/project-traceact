@@ -48,7 +48,13 @@ function prepareNodesAndAdjacency(rawNodes, rawEdges, rootAddress) {
     const rawId = node.id || node.address || (node.data && (node.data.fullAddress || node.data.address)) || '';
     const key = rawId.toLowerCase();
     if (key && !nodeMap.has(key)) {
-      nodeMap.set(key, { ...node, id: key });
+      const fullAddr = node.data?.fullAddress || node.data?.address || node.address || node.id || key;
+      nodeMap.set(key, {
+        ...node,
+        id: key,
+        address: fullAddr,
+        fullAddress: fullAddr,
+      });
     }
   });
 
@@ -117,6 +123,81 @@ function resolveCollisions(nodesList) {
       }
     }
   }
+}
+
+/**
+ * Common Helper: Normalizes and preserves all forensic node attributes so address,
+ * fullAddress, balance, totalAmount, transactionCount, tags, and entity metadata
+ * are NEVER lost across layout transforms.
+ */
+function buildNodeData(node, overrides = {}) {
+  const innerData = node.data || {};
+  const fullAddr =
+    overrides.fullAddress ||
+    innerData.fullAddress ||
+    overrides.address ||
+    innerData.address ||
+    node.fullAddress ||
+    node.address ||
+    node.id ||
+    '';
+
+  const balance =
+    overrides.balance ??
+    innerData.balance ??
+    node.balance ??
+    innerData.balanceEth ??
+    node.balanceEth ??
+    '0';
+
+  const totalAmount =
+    overrides.totalAmount ??
+    innerData.totalAmount ??
+    node.totalAmount ??
+    innerData.totalVolume ??
+    node.totalVolume ??
+    innerData.totalReceivedFromParent ??
+    node.totalReceivedFromParent ??
+    '0';
+
+  const transactionCount =
+    overrides.transactionCount ??
+    innerData.transactionCount ??
+    node.transactionCount ??
+    innerData.txCount ??
+    node.txCount ??
+    1;
+
+  const riskScore = overrides.riskScore ?? innerData.riskScore ?? node.riskScore ?? 0;
+  const riskLevel = overrides.riskLevel || innerData.riskLevel || node.riskLevel || 'LOW';
+
+  const tags = Array.from(
+    new Set([
+      ...(node.tags || []),
+      ...(innerData.tags || []),
+      ...(overrides.tags || []),
+    ])
+  );
+
+  return {
+    ...node,
+    ...innerData,
+    ...overrides,
+    id: node.id,
+    address: fullAddr,
+    fullAddress: fullAddr,
+    label:
+      fullAddr && fullAddr.length > 10
+        ? `${fullAddr.slice(0, 5)}...${fullAddr.slice(-4)}`
+        : fullAddr || 'Unknown',
+    balance,
+    totalAmount,
+    transactionCount,
+    txCount: transactionCount,
+    riskScore,
+    riskLevel,
+    tags,
+  };
 }
 
 /**
@@ -211,13 +292,12 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
       ...rootNode,
       id: rootId,
       position: { x: 0, y: 0 },
-      data: {
-        ...(rootNode.data || rootNode),
+      data: buildNodeData(rootNode, {
         isTarget: true,
         nodeType: 'investigated',
         depth: 0,
         asset: targetAsset,
-      },
+      }),
     },
   ];
 
@@ -259,12 +339,11 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
         ...h1,
         id: h1.id,
         position: { x: col1X, y: branchCenterY },
-        data: {
-          ...(h1.data || h1),
+        data: buildNodeData(h1, {
           depth: 1,
           asset: targetAsset,
           role: isLeft ? 'incoming' : 'outgoing',
-        },
+        }),
       });
 
       const col2X = isLeft ? -2 * H_STEP : 2 * H_STEP;
@@ -274,12 +353,11 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
           ...children[0],
           id: children[0].id,
           position: { x: col2X, y: branchCenterY },
-          data: {
-            ...(children[0].data || children[0]),
+          data: buildNodeData(children[0], {
             depth: 2,
             asset: targetAsset,
             role: isLeft ? 'incoming' : 'outgoing',
-          },
+          }),
         });
       } else if (children.length > 1) {
         children.forEach((c, cIdx) => {
@@ -288,12 +366,11 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
             ...c,
             id: c.id,
             position: { x: col2X, y: childY },
-            data: {
-              ...(c.data || c),
+            data: buildNodeData(c, {
               depth: 2,
               asset: targetAsset,
               role: isLeft ? 'incoming' : 'outgoing',
-            },
+            }),
           });
         });
       }
@@ -313,12 +390,11 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
             ...node,
             id: node.id,
             position: { x: colX, y },
-            data: {
-              ...(node.data || node),
+            data: buildNodeData(node, {
               depth: d,
               asset: targetAsset,
               role: isLeft ? 'incoming' : 'outgoing',
-            },
+            }),
           });
         });
       });
@@ -418,13 +494,12 @@ function computeWaterfallLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
       ...rootNode,
       id: rootId,
       position: { x: 0, y: 0 },
-      data: {
-        ...(rootNode.data || rootNode),
+      data: buildNodeData(rootNode, {
         isTarget: true,
         nodeType: 'investigated',
         depth: 0,
         asset: targetAsset,
-      },
+      }),
     },
   ];
 
@@ -466,12 +541,11 @@ function computeWaterfallLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
         ...h1,
         id: h1.id,
         position: { x: branchCenterX, y: row1Y },
-        data: {
-          ...(h1.data || h1),
+        data: buildNodeData(h1, {
           depth: 1,
           asset: targetAsset,
           role: isTop ? 'incoming' : 'outgoing',
-        },
+        }),
       });
 
       const row2Y = isTop ? -2 * V_STEP : 2 * V_STEP;
@@ -481,12 +555,11 @@ function computeWaterfallLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
           ...children[0],
           id: children[0].id,
           position: { x: branchCenterX, y: row2Y },
-          data: {
-            ...(children[0].data || children[0]),
+          data: buildNodeData(children[0], {
             depth: 2,
             asset: targetAsset,
             role: isTop ? 'incoming' : 'outgoing',
-          },
+          }),
         });
       } else if (children.length > 1) {
         children.forEach((c, cIdx) => {
@@ -495,12 +568,11 @@ function computeWaterfallLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
             ...c,
             id: c.id,
             position: { x: childX, y: row2Y },
-            data: {
-              ...(c.data || c),
+            data: buildNodeData(c, {
               depth: 2,
               asset: targetAsset,
               role: isTop ? 'incoming' : 'outgoing',
-            },
+            }),
           });
         });
       }
@@ -573,13 +645,12 @@ function computeRadialLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
       ...rootNode,
       id: rootId,
       position: { x: 0, y: 0 },
-      data: {
-        ...(rootNode.data || rootNode),
+      data: buildNodeData(rootNode, {
         isTarget: true,
         nodeType: 'investigated',
         depth: 0,
         asset: targetAsset,
-      },
+      }),
     },
   ];
 
@@ -605,11 +676,10 @@ function computeRadialLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
       ...h1,
       id: h1.id,
       position: { x: x1, y: y1 },
-      data: {
-        ...(h1.data || h1),
+      data: buildNodeData(h1, {
         depth: 1,
         asset: targetAsset,
-      },
+      }),
     });
 
     const children = hop1Children.get(h1.id) || [];
@@ -620,11 +690,10 @@ function computeRadialLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
         ...children[0],
         id: children[0].id,
         position: { x: x2, y: y2 },
-        data: {
-          ...(children[0].data || children[0]),
+        data: buildNodeData(children[0], {
           depth: 2,
           asset: targetAsset,
-        },
+        }),
       });
     } else if (children.length > 1) {
       const fanAngle = Math.min(0.35, (2 * Math.PI) / (N1 * 2));
@@ -636,11 +705,10 @@ function computeRadialLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
           ...c,
           id: c.id,
           position: { x: x2, y: y2 },
-          data: {
-            ...(c.data || c),
+          data: buildNodeData(c, {
             depth: 2,
             asset: targetAsset,
-          },
+          }),
         });
       });
     }
@@ -699,13 +767,12 @@ function computeEntityLanesLayout(rawNodes, rawEdges, rootAddress, targetAsset) 
       ...rootNode,
       id: rootId,
       position: { x: 0, y: 0 },
-      data: {
-        ...(rootNode.data || rootNode),
+      data: buildNodeData(rootNode, {
         isTarget: true,
         nodeType: 'investigated',
         depth: 0,
         asset: targetAsset,
-      },
+      }),
     },
   ];
 
@@ -717,10 +784,9 @@ function computeEntityLanesLayout(rawNodes, rawEdges, rootAddress, targetAsset) 
         ...node,
         id: node.id,
         position: { x: colX, y },
-        data: {
-          ...(node.data || node),
+        data: buildNodeData(node, {
           asset: targetAsset,
-        },
+        }),
       });
     });
   };
@@ -927,7 +993,7 @@ const GraphInner = ({
         type: n.type || 'customWalletNode',
         selected: Boolean(isNodeSelected),
         data: {
-          ...(n.data || n),
+          ...buildNodeData(n),
           asset: targetAsset,
           onOpen: handleOpenNode,
           onTrack: handleTrackNode,

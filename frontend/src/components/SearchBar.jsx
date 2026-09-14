@@ -68,26 +68,7 @@ export const SearchBar = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const sampleTargets = [
-    { label: 'Vitalik (ETH)', address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', chain: 'ethereum', symbol: 'ETH', color: '#0071e3' },
-    { label: 'Binance (BTC)', address: '1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s', chain: 'bitcoin', symbol: 'BTC', color: '#f7931a' },
-    { label: 'USDT Tron (TRX)', address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', chain: 'tron', symbol: 'TRX', color: '#eb0029' },
-  ];
 
-  const handlePickSample = (sample) => {
-    setAddress(sample.address);
-    setSelectedChain(sample.chain);
-    setDetectedChain(sample.chain);
-    setShowFilterDropdown(false);
-    setShowCurrencyDropdown(false);
-    onSearch({
-      address: sample.address,
-      chain: sample.chain,
-      hops,
-      minAmount,
-      direction,
-    });
-  };
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
@@ -169,7 +150,7 @@ export const SearchBar = ({
               transition: 'all 0.18s var(--ease-apple)',
               marginRight: 6,
             }}
-            title="Configure hop depth, filter threshold & sample targets"
+            title="Configure hop depth & filter threshold"
           >
             <SlidersHorizontal size={11} />
             <span>{hops} {hops === 1 ? 'Hop' : 'Hops'}</span>
@@ -195,41 +176,7 @@ export const SearchBar = ({
                 animation: 'fadeIn 0.18s var(--ease-apple)',
               }}
             >
-              {/* Quick Sample Targets across 3 currencies */}
-              <div style={{ marginBottom: 12 }}>
-                <div style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>
-                  Quick Target Wallets (3 Currencies)
-                </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                  {sampleTargets.map((s) => (
-                    <button
-                      key={s.address}
-                      type="button"
-                      onClick={() => handlePickSample(s)}
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        padding: '5px 8px',
-                        borderRadius: 'var(--radius-xs)',
-                        background: 'var(--bg-tag)',
-                        border: '1px solid var(--border-subtle)',
-                        fontSize: 10.5,
-                        color: 'var(--text-primary)',
-                        cursor: 'pointer',
-                        textAlign: 'left',
-                        transition: 'background 0.15s ease',
-                      }}
-                    >
-                      <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
-                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.color }} />
-                        {s.label}
-                      </span>
-                      <span style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--accent-primary)' }}>LOAD</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+
 
               {/* Hop Depth Selection */}
               <div style={{ marginBottom: 12 }}>

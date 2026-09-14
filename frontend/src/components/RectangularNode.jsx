@@ -36,14 +36,15 @@ const formatCurrencyValue = (val, asset = 'ETH') => {
   return `${num.toFixed(num < 0.01 ? 4 : 2)} ${cleanAsset}`;
 };
 
-export const RectangularNode = ({ data, selected }) => {
+export const RectangularNode = ({ id, data, selected }) => {
   const [copied, setCopied] = useState(false);
   const [isExpanding, setIsExpanding] = useState(false);
 
-  const fullAddr = data.fullAddress || data.address || data.label || '';
-  const shortAddr = fullAddr.length > 10 
+  // Guarantee resolution of full untruncated address
+  const fullAddr = data?.fullAddress || data?.address || (id && !id.includes('...') ? id : '') || '';
+  const shortAddr = fullAddr && fullAddr.length > 10 
     ? `${fullAddr.slice(0, 5)}...${fullAddr.slice(-4)}` 
-    : fullAddr;
+    : (fullAddr || data?.label || 'Unknown');
 
   const currMeta = getCurrencyMeta(data.asset, data.chain, fullAddr);
   const asset = currMeta.symbol;
@@ -139,10 +140,22 @@ export const RectangularNode = ({ data, selected }) => {
     e.stopPropagation();
     if (isExpanding) return;
 
-    if (data.onTrack) {
+    if (data?.onTrack) {
       setIsExpanding(true);
-      // Pass done callback to stop spinner
-      data.onTrack(data, () => {
+      // Safety fallback: guaranteed reset after 10s to eliminate stuck loading state
+      const safetyTimer = setTimeout(() => {
+        setIsExpanding(false);
+      }, 10000);
+
+      const payload = {
+        ...data,
+        id: id || fullAddr,
+        address: fullAddr,
+        fullAddress: fullAddr,
+      };
+
+      data.onTrack(payload, () => {
+        clearTimeout(safetyTimer);
         setIsExpanding(false);
       });
     }
@@ -150,8 +163,15 @@ export const RectangularNode = ({ data, selected }) => {
 
   const handleOpenDetail = (e) => {
     if (e) e.stopPropagation();
-    if (data.onOpen) {
-      data.onOpen({ ...data, asset, currencyMeta: currMeta });
+    if (data?.onOpen) {
+      data.onOpen({
+        ...data,
+        id: id || fullAddr,
+        address: fullAddr,
+        fullAddress: fullAddr,
+        asset,
+        currencyMeta: currMeta,
+      });
     }
   };
 

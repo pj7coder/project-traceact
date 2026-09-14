@@ -249,6 +249,6 @@ TraceACT implements a resilient 3-layer cascade:
 ## 💡 Quick Tips for the SIH Jury Presentation
 
 1. **Start with the Impact:** *"Respected jury, in crypto crime, time is money. In the first 60 minutes, stolen crypto moves through 3 hops into an exchange. If police don't freeze it in that window, the money is gone forever. TraceACT automates this in 3 seconds."*
-2. **Show, Don't Just Tell:** Use the **SIH 2026 Reference Demo Button** in the search bar. It instantly showcases a realistic 10 ETH theft split into CoinDCX, Binance, and an unknown cluster.
+2. **Show, Don't Just Tell:** Trace an authentic target wallet address live on the canvas. It instantly showcases the multi-hop fund flow split into VASPs and counterparties with real on-chain transaction data.
 3. **Highlight Legal Compliance:** Emphasize that your report isn't just pretty charts — it generates the **actual Section 91 CrPC notice** with Section 65B BSA cryptographic certificates that an IO (Investigating Officer) can sign and send immediately.
 4. **Be Confident on AI:** State clearly: *"We do NOT use AI to guess wallet ownership; our attribution is 100% deterministic and court-admissible. We use AI only for narrative synthesis."*

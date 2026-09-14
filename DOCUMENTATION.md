@@ -659,7 +659,7 @@ The TraceACT frontend is structured as a single-page forensic investigation suit
 - **Hop Depth Slider:** Interactively selects BFS traversal depth from 1 to 5 hops.
 - **Direction Toggle:** Filters fund flow direction (`both`, `outgoing` funds, `incoming` funds).
 - **Min Value Filter:** Real-time filter eliminating dust transactions below a threshold.
-- **Quick Preset Buttons:** One-click presets for Vitalik Buterin, Binance Hot Wallet, Ethereum Foundation, and the **SIH 2026 Demo Scenario**.
+- **Forensic Filter Controls:** Configures traversal hop depth (1–5 hops), minimum transfer value filter, and directional fund flow.
 
 ### 11.2 Tab 1: Interactive Forensic Graph Canvas (`GraphView.jsx`)
 - Built with `@xyflow/react` (React Flow).

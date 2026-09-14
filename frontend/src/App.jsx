@@ -13,7 +13,6 @@ import {
   traceWalletFunds,
   evaluateHeuristics,
   runUnifiedInvestigation,
-  getDemoInvestigation,
 } from './api/client';
 import { Shield, AlertCircle, CheckCircle2, Loader2, AlertTriangle } from 'lucide-react';
 
@@ -133,135 +132,87 @@ export function App() {
         setGraphEdges(finalEdges);
       }
 
-      // If demo target address and live node returned only 1 node, load full demo scenario
-      if (address.toLowerCase() === '0x71c836489b990038848971201991802901238910' && finalNodes.length <= 1) {
-        try {
-          const demoDossier = await getDemoInvestigation();
-          setInvestigationDossier(demoDossier);
-          finalNodes = demoDossier.attribution?.graph?.nodes || [];
-          finalEdges = demoDossier.attribution?.graph?.edges || [];
-          setRiskAssessment({
-            suspicionScore: 92,
-            riskLevel: 'CRITICAL',
-            riskClassification: 'CRITICAL',
-            triggeredRules: [
-              {
-                ruleId: 'P1_KNOWN_VASP_DESTINATION',
-                priority: 1,
-                title: 'High-Value Deposit into Verified VASP (CoinDCX)',
-                severity: 'ACTIONABLE',
-                weight: 52,
-                description: '5.2000 ETH transited into CoinDCX deposit router.',
-                evidence: ['Direct 1-hop deposit to CoinDCX omnibus wallet', 'Reg No: FIU-IND/2023/VASP/0012'],
-              },
-              {
-                ruleId: 'P6_RAPID_PEELING',
-                priority: 2,
-                title: 'Peeling Chain and Outbound Fragmentation',
-                severity: 'HIGH',
-                weight: 25,
-                description: 'Funds fragmented across 3 separate branches within 20 minutes.',
-                evidence: ['Binance feeder branch (2.1000 ETH)', 'Cluster UC-42 feeder branch (1.4000 ETH)'],
-              },
-              {
-                ruleId: 'P8_UNVERIFIED_CLUSTER',
-                priority: 3,
-                title: 'Consolidation at Suspected Custodial Service Cluster',
-                severity: 'MEDIUM',
-                weight: 15,
-                description: 'Funds forwarded into Cluster UC-2026-0042 pooling wallet.',
-                evidence: ['27 interconnected addresses pooling volume'],
-              },
-            ],
-            heuristicsBreakdown: {
-              baseScore: 92,
-              normalizedScore: 92,
-              sensitivityMultiplier: 1.0,
-              mixerBooster: false,
-              vaspDampener: false,
-              hasCriticalTrigger: true,
-            },
-            recommendation: 'IMMEDIATE ACTION: Serve Section 91 CrPC notice to CoinDCX Nodal Officer to freeze 5.2000 ETH.',
-          });
-        } catch (demoErr) {
-          console.warn('Demo fallback notice:', demoErr);
-        }
-      } else {
-        // Multi-hop BFS tracing across specified depth
-        try {
-          const traceRes = await traceWalletFunds({
-            chain,
-            address,
-            maxDepth: searchHops,
-            direction: searchDir,
-            minimumTransferValue: searchMin,
-          });
+      // Multi-hop BFS tracing across specified depth
+      try {
+        const traceRes = await traceWalletFunds({
+          chain,
+          address,
+          maxDepth: searchHops,
+          direction: searchDir,
+          minimumTransferValue: searchMin,
+        });
 
-          if (traceRes && traceRes.nodes && traceRes.nodes.length > 0) {
-            finalNodes = traceRes.nodes.map((tn) => ({
+        if (traceRes && traceRes.nodes && traceRes.nodes.length > 0) {
+          finalNodes = traceRes.nodes.map((tn) => ({
+            id: tn.address.toLowerCase(),
+            type: 'customWalletNode',
+            address: tn.address,
+            fullAddress: tn.address,
+            data: {
+              ...tn,
               id: tn.address.toLowerCase(),
-              type: 'customWalletNode',
-              data: {
-                ...tn,
-                fullAddress: tn.address,
-                label: `${tn.address.slice(0, 6)}...${tn.address.slice(-4)}`,
-                nodeType: tn.type || (tn.address.toLowerCase() === address.toLowerCase() ? 'investigated' : 'wallet'),
-                depth: tn.depth,
-                asset: detectedAsset,
-              },
-            }));
+              address: tn.address,
+              fullAddress: tn.address,
+              label: `${tn.address.slice(0, 6)}...${tn.address.slice(-4)}`,
+              nodeType: tn.type || (tn.address.toLowerCase() === address.toLowerCase() ? 'investigated' : 'wallet'),
+              depth: tn.depth,
+              asset: detectedAsset,
+              balance: tn.balanceEth || tn.balance || '0',
+              totalAmount: tn.totalReceivedFromParent || tn.totalSent || tn.totalAmount || '0',
+              transactionCount: tn.transactionCount || 1,
+            },
+          }));
 
-            finalEdges = (traceRes.edges || []).map((te, idx) => ({
-              id: `e-${te.source}-${te.target}-${idx}`,
-              source: te.source.toLowerCase(),
-              target: te.target.toLowerCase(),
-              totalValue: te.totalValue,
-              label: `${parseFloat(te.totalValue || '0').toFixed(3)} ${detectedAsset}`,
-              data: {
-                transactionCount: te.transactionCount,
-                totalTransferred: te.totalValue,
-                asset: detectedAsset,
-                hopDepth: te.hopDepth,
-              },
-              animated: false,
-            }));
-          }
-        } catch (traceErr) {
-          console.warn('Trace funds notice, using 1-hop:', traceErr);
+          finalEdges = (traceRes.edges || []).map((te, idx) => ({
+            id: `e-${te.source}-${te.target}-${idx}`,
+            source: te.source.toLowerCase(),
+            target: te.target.toLowerCase(),
+            totalValue: te.totalValue,
+            label: `${parseFloat(te.totalValue || '0').toFixed(3)} ${detectedAsset}`,
+            data: {
+              transactionCount: te.transactionCount,
+              totalTransferred: te.totalValue,
+              asset: detectedAsset,
+              hopDepth: te.hopDepth,
+            },
+            animated: false,
+          }));
         }
+      } catch (traceErr) {
+        console.warn('Trace funds notice, using 1-hop:', traceErr);
+      }
 
-        // Suspicion Points evaluation
-        try {
-          const heuristicRes = await evaluateHeuristics({
-            chain,
-            address,
-            multihopNodes: finalNodes.map((n) => n.data || n),
-          });
-          if (heuristicRes && heuristicRes.riskAssessment) {
-            setRiskAssessment(heuristicRes.riskAssessment);
-          }
-        } catch (heurErr) {
-          setRiskAssessment({
-            suspicionScore: analyzeRes.wallet?.riskScore || 15,
-            riskLevel: analyzeRes.wallet?.riskLevel || 'LOW',
-            riskClassification: analyzeRes.wallet?.riskLevel || 'LOW',
-            triggeredRules: [],
-          });
+      // Suspicion Points evaluation
+      try {
+        const heuristicRes = await evaluateHeuristics({
+          chain,
+          address,
+          multihopNodes: finalNodes.map((n) => n.data || n),
+        });
+        if (heuristicRes && heuristicRes.riskAssessment) {
+          setRiskAssessment(heuristicRes.riskAssessment);
         }
+      } catch (heurErr) {
+        setRiskAssessment({
+          suspicionScore: analyzeRes.wallet?.riskScore || 15,
+          riskLevel: analyzeRes.wallet?.riskLevel || 'LOW',
+          riskClassification: analyzeRes.wallet?.riskLevel || 'LOW',
+          triggeredRules: [],
+        });
+      }
 
-        // Investigation playbook & dossier
-        try {
-          const dossierRes = await runUnifiedInvestigation({
-            chain,
-            address,
-            maxDepth: searchHops,
-            minimumTransferValue: searchMin,
-            direction: searchDir,
-          });
-          setInvestigationDossier(dossierRes);
-        } catch (dossierErr) {
-          console.warn('Dossier notice:', dossierErr);
-        }
+      // Investigation playbook & dossier
+      try {
+        const dossierRes = await runUnifiedInvestigation({
+          chain,
+          address,
+          maxDepth: searchHops,
+          minimumTransferValue: searchMin,
+          direction: searchDir,
+        });
+        setInvestigationDossier(dossierRes);
+      } catch (dossierErr) {
+        console.warn('Dossier notice:', dossierErr);
       }
 
       setGraphNodes(finalNodes);
@@ -278,8 +229,12 @@ export function App() {
   // Node branch tracking / expansion (Expands 2 HOPS on pressing the node's search icon)
   const handleTrackNode = useCallback(
     async (nodeData, onDone) => {
-      const targetAddr = nodeData.fullAddress || nodeData.address || nodeData.label;
+      // Safely resolve the target address (ensure not truncated)
+      const rawAddr = nodeData?.fullAddress || nodeData?.address || nodeData?.id || '';
+      const targetAddr = rawAddr && !rawAddr.includes('...') ? rawAddr : '';
       if (!targetAddr) {
+        console.error('Invalid or truncated address for branch expansion:', rawAddr);
+        showToast('Invalid wallet address for branch expansion.');
         if (onDone) onDone();
         return;
       }
@@ -308,13 +263,16 @@ export function App() {
               const cleanAddr = tn.address.toLowerCase();
               if (cleanAddr !== targetAddr.toLowerCase()) {
                 newDiscoveredNodes.push({
+                  id: cleanAddr,
                   address: tn.address,
+                  fullAddress: tn.address,
                   depth: parentDepth + (tn.depth || 1),
                   type: tn.type || 'wallet',
                   chain: nodeChain,
                   riskScore: tn.riskScore || 15,
                   riskLevel: tn.riskLevel || 'LOW',
-                  totalAmount: tn.totalSent || tn.totalReceivedFromParent || '0',
+                  balance: tn.balanceEth || tn.balance || '0',
+                  totalAmount: tn.totalSent || tn.totalReceivedFromParent || tn.totalAmount || '0',
                   transactionCount: tn.transactionCount || 1,
                   tags: tn.tags || [],
                 });
@@ -339,22 +297,25 @@ export function App() {
             const parentDepth = nodeData.depth || 1;
             subRes.connectedWallets.slice(0, 6).forEach((cw) => {
               newDiscoveredNodes.push({
+                id: cw.address.toLowerCase(),
                 address: cw.address,
+                fullAddress: cw.address,
                 depth: parentDepth + 1,
                 type: 'wallet',
                 chain: nodeChain,
                 riskScore: cw.riskScore || 15,
                 riskLevel: cw.riskLevel || 'LOW',
-                totalAmount: cw.totalAmount,
-                transactionCount: cw.transactionCount,
+                balance: cw.balance || '0',
+                totalAmount: cw.totalAmount || '0',
+                transactionCount: cw.transactionCount || 1,
                 tags: cw.tags || [],
               });
               newDiscoveredEdges.push({
                 source: targetAddr.toLowerCase(),
                 target: cw.address.toLowerCase(),
-                totalValue: cw.totalAmount,
+                totalValue: cw.totalAmount || '0',
                 asset: nodeAsset,
-                transactionCount: cw.transactionCount,
+                transactionCount: cw.transactionCount || 1,
                 hopDepth: parentDepth + 1,
               });
             });
@@ -382,14 +343,18 @@ export function App() {
 
           // Append new 2-hop nodes
           newDiscoveredNodes.forEach((tn) => {
-            const id = tn.address.toLowerCase();
+            const id = (tn.address || tn.id).toLowerCase();
             if (!existingIds.has(id)) {
               existingIds.add(id);
               mergedNodes.push({
                 id,
                 type: 'customWalletNode',
+                address: tn.address,
+                fullAddress: tn.address,
                 data: {
                   ...tn,
+                  id,
+                  address: tn.address,
                   fullAddress: tn.address,
                   label: `${tn.address.slice(0, 5)}...${tn.address.slice(-4)}`,
                   nodeType: tn.type || 'wallet',

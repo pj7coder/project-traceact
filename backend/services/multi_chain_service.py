@@ -155,11 +155,8 @@ class MultiChainService:
         except Exception as e:
             logger.warning(f"Live Bitcoin API query failed for {clean_addr}: {e}. Initializing authentic fallback.")
 
-        # If live API returned 0 txs or failed, generate authentic sandbox transactions for demo
-        if not txs:
-            txs = self._generate_bitcoin_sandbox_transactions(clean_addr)
-            balance_btc = "1.4820"
-            balance_sats = "148200000"
+        # Only authentic transactions returned
+        pass
 
         overview = WalletOverview(
             address=clean_addr,
@@ -368,12 +365,8 @@ class MultiChainService:
             except Exception as e:
                 logger.warning(f"Live TronGrid query failed for {clean_addr}: {e}. Initializing sandbox fallback.")
 
-        # 3. Resilient Sandbox Fallback if offline, unindexed, or mock address
-        if not txs:
-            txs = self._generate_tron_sandbox_transactions(clean_addr)
-            if balance_trx == "0":
-                balance_trx = "12450.5"
-                balance_sun = "12450500000"
+        # Only authentic transactions returned
+        pass
 
         overview = WalletOverview(
             address=clean_addr,
@@ -450,10 +443,8 @@ class MultiChainService:
         except Exception as e:
             logger.warning(f"Live Solana query failed for {clean_addr}: {e}. Initializing sandbox fallback.")
 
-        if not txs:
-            txs = self._generate_solana_sandbox_transactions(clean_addr)
-            balance_sol = "34.12"
-            balance_lamports = "34120000000"
+        # Only authentic transactions returned
+        pass
 
         overview = WalletOverview(
             address=clean_addr,
