@@ -16,8 +16,11 @@ export const SearchBar = ({
 }) => {
   const [address, setAddress] = useState(initialAddress);
   const [detectedChain, setDetectedChain] = useState(null); // null when empty
+  const [selectedChain, setSelectedChain] = useState(null); // null means Auto Detect, or 'ethereum' | 'bitcoin' | 'tron'
   const [showFilterDropdown, setShowFilterDropdown] = useState(false);
+  const [showCurrencyDropdown, setShowCurrencyDropdown] = useState(false);
   const filterRef = useRef(null);
+  const currencyRef = useRef(null);
 
   useEffect(() => {
     if (initialAddress) {
@@ -25,11 +28,16 @@ export const SearchBar = ({
     }
   }, [initialAddress]);
 
-  // Fast auto-detection based on address format (only when address is present)
+  // Fast auto-detection based on address format (only when address is present and not manually overridden)
   useEffect(() => {
+    if (selectedChain && selectedChain !== 'auto') {
+      setDetectedChain(selectedChain);
+      return;
+    }
+
     const trimmed = address.trim();
     if (!trimmed) {
-      setDetectedChain(null); // Do not show Ethereum by default when empty!
+      setDetectedChain(null);
       return;
     }
 
@@ -44,32 +52,59 @@ export const SearchBar = ({
     } else {
       setDetectedChain('ethereum');
     }
-  }, [address]);
+  }, [address, selectedChain]);
 
-  // Close dropdown on click outside
+  // Close dropdowns on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (filterRef.current && !filterRef.current.contains(e.target)) {
         setShowFilterDropdown(false);
+      }
+      if (currencyRef.current && !currencyRef.current.contains(e.target)) {
+        setShowCurrencyDropdown(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const sampleTargets = [
+    { label: 'Vitalik (ETH)', address: '0xd8dA6BF26964aF9D7eEd9e03E53415D37aA96045', chain: 'ethereum', symbol: 'ETH', color: '#0071e3' },
+    { label: 'Binance (BTC)', address: '1NDyJtNTjmwk5xPNhjgAMu4HDHigtobu1s', chain: 'bitcoin', symbol: 'BTC', color: '#f7931a' },
+    { label: 'USDT Tron (TRX)', address: 'TR7NHqjeKQxGTCi8q8ZY4pL8otSzgjLj6t', chain: 'tron', symbol: 'TRX', color: '#eb0029' },
+  ];
+
+  const handlePickSample = (sample) => {
+    setAddress(sample.address);
+    setSelectedChain(sample.chain);
+    setDetectedChain(sample.chain);
+    setShowFilterDropdown(false);
+    setShowCurrencyDropdown(false);
+    onSearch({
+      address: sample.address,
+      chain: sample.chain,
+      hops,
+      minAmount,
+      direction,
+    });
+  };
+
   const handleSubmit = async (e) => {
     e?.preventDefault();
     const clean = address.trim();
     if (!clean) return;
 
-    let chainToUse = detectedChain || 'ethereum';
-    try {
-      const res = await detectChain(clean);
-      if (res && res.detectedChain) {
-        chainToUse = res.detectedChain;
-        setDetectedChain(res.detectedChain);
-      }
-    } catch {}
+    let chainToUse = selectedChain && selectedChain !== 'auto' ? selectedChain : detectedChain;
+    if (!chainToUse) {
+      try {
+        const res = await detectChain(clean);
+        if (res && (res.detectedChain || res.chain)) {
+          chainToUse = res.detectedChain || res.chain;
+          setDetectedChain(chainToUse);
+        }
+      } catch {}
+    }
+    chainToUse = chainToUse || 'ethereum';
 
     onSearch({
       address: clean,
@@ -83,10 +118,13 @@ export const SearchBar = ({
   const handleClear = () => {
     setAddress('');
     setDetectedChain(null);
+    setSelectedChain(null);
   };
 
+  const activeChain = selectedChain && selectedChain !== 'auto' ? selectedChain : detectedChain;
+
   const getCurrencySymbol = () => {
-    switch (detectedChain) {
+    switch (activeChain) {
       case 'bitcoin': return 'BTC';
       case 'tron': return 'TRX';
       case 'solana': return 'SOL';
@@ -131,7 +169,7 @@ export const SearchBar = ({
               transition: 'all 0.18s var(--ease-apple)',
               marginRight: 6,
             }}
-            title="Configure hop depth and transaction limit"
+            title="Configure hop depth, filter threshold & sample targets"
           >
             <SlidersHorizontal size={11} />
             <span>{hops} {hops === 1 ? 'Hop' : 'Hops'}</span>
@@ -145,7 +183,7 @@ export const SearchBar = ({
                 position: 'absolute',
                 top: 'calc(100% + 8px)',
                 left: 0,
-                width: 260,
+                width: 270,
                 background: 'var(--bg-card)',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-subtle)',
@@ -157,6 +195,42 @@ export const SearchBar = ({
                 animation: 'fadeIn 0.18s var(--ease-apple)',
               }}
             >
+              {/* Quick Sample Targets across 3 currencies */}
+              <div style={{ marginBottom: 12 }}>
+                <div style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 6 }}>
+                  Quick Target Wallets (3 Currencies)
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {sampleTargets.map((s) => (
+                    <button
+                      key={s.address}
+                      type="button"
+                      onClick={() => handlePickSample(s)}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        padding: '5px 8px',
+                        borderRadius: 'var(--radius-xs)',
+                        background: 'var(--bg-tag)',
+                        border: '1px solid var(--border-subtle)',
+                        fontSize: 10.5,
+                        color: 'var(--text-primary)',
+                        cursor: 'pointer',
+                        textAlign: 'left',
+                        transition: 'background 0.15s ease',
+                      }}
+                    >
+                      <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontWeight: 500 }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', background: s.color }} />
+                        {s.label}
+                      </span>
+                      <span style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--accent-primary)' }}>LOAD</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               {/* Hop Depth Selection */}
               <div style={{ marginBottom: 12 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 10.5, marginBottom: 5 }}>
@@ -272,7 +346,7 @@ export const SearchBar = ({
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
-          placeholder="Enter blockchain wallet address..."
+          placeholder="Enter ETH, BTC, or TRX wallet address..."
           style={{
             flex: 1,
             background: 'transparent',
@@ -303,9 +377,11 @@ export const SearchBar = ({
           </button>
         )}
 
-        {/* Detected Chain Badge (Only displayed when address is entered or detected) */}
-        {detectedChain ? (
-          <div
+        {/* Interactive Currency / Chain Selector Dropdown */}
+        <div ref={currencyRef} style={{ position: 'relative' }}>
+          <button
+            type="button"
+            onClick={() => setShowCurrencyDropdown((prev) => !prev)}
             style={{
               fontSize: 10,
               fontWeight: 600,
@@ -319,39 +395,99 @@ export const SearchBar = ({
               display: 'flex',
               alignItems: 'center',
               gap: 4,
+              border: '1px solid var(--border-subtle)',
+              cursor: 'pointer',
             }}
-            title="Auto-detected Blockchain Network"
+            title="Click to select or change cryptocurrency network"
           >
             <span
               style={{
-                width: 5,
-                height: 5,
+                width: 6,
+                height: 6,
                 borderRadius: '50%',
                 background:
-                  detectedChain === 'bitcoin'
+                  activeChain === 'bitcoin'
                     ? '#f7931a'
-                    : detectedChain === 'tron'
+                    : activeChain === 'tron'
                     ? '#eb0029'
-                    : detectedChain === 'solana'
+                    : activeChain === 'solana'
                     ? '#14f195'
-                    : '#0071e3',
+                    : activeChain === 'ethereum'
+                    ? '#0071e3'
+                    : '#8e8e93',
               }}
             />
-            {detectedChain}
-          </div>
-        ) : (
-          <div
-            style={{
-              fontSize: 10,
-              color: 'var(--text-tertiary)',
-              padding: '3px 6px',
-              marginRight: 6,
-              fontWeight: 500,
-            }}
-          >
-            Auto Detect
-          </div>
-        )}
+            <span>
+              {activeChain ? (activeChain === 'bitcoin' ? 'BTC' : activeChain === 'tron' ? 'TRX' : activeChain === 'solana' ? 'SOL' : 'ETH') : 'Auto Detect'}
+            </span>
+            <ChevronDown size={10} />
+          </button>
+
+          {showCurrencyDropdown && (
+            <div
+              style={{
+                position: 'absolute',
+                top: 'calc(100% + 8px)',
+                right: 0,
+                width: 175,
+                background: 'var(--bg-card)',
+                borderRadius: 'var(--radius-sm)',
+                border: '1px solid var(--border-subtle)',
+                boxShadow: 'var(--shadow-lg)',
+                padding: '6px',
+                zIndex: 100,
+                backdropFilter: 'var(--blur-standard)',
+                WebkitBackdropFilter: 'var(--blur-standard)',
+                animation: 'fadeIn 0.18s var(--ease-apple)',
+              }}
+            >
+              <div style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--text-tertiary)', textTransform: 'uppercase', padding: '4px 6px', letterSpacing: '0.04em' }}>
+                Select Currency
+              </div>
+
+              {[
+                { id: 'auto', name: 'Auto Detect', symbol: 'AUTO', color: '#8e8e93' },
+                { id: 'ethereum', name: 'Ethereum', symbol: 'ETH', color: '#0071e3' },
+                { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC', color: '#f7931a' },
+                { id: 'tron', name: 'TRON', symbol: 'TRX', color: '#eb0029' },
+              ].map((item) => {
+                const isCurrent = (!selectedChain && item.id === 'auto') || selectedChain === item.id;
+                return (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => {
+                      setSelectedChain(item.id === 'auto' ? null : item.id);
+                      if (item.id !== 'auto') setDetectedChain(item.id);
+                      setShowCurrencyDropdown(false);
+                    }}
+                    style={{
+                      width: '100%',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '5px 8px',
+                      borderRadius: 'var(--radius-xs)',
+                      background: isCurrent ? 'var(--accent-soft)' : 'transparent',
+                      border: 'none',
+                      color: isCurrent ? 'var(--accent-primary)' : 'var(--text-primary)',
+                      fontSize: 11,
+                      fontWeight: isCurrent ? 600 : 500,
+                      cursor: 'pointer',
+                      textAlign: 'left',
+                    }}
+                  >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ width: 6, height: 6, borderRadius: '50%', background: item.color }} />
+                      <span>{item.name}</span>
+                    </div>
+                    <span style={{ fontSize: 9.5, fontWeight: 700, color: 'var(--text-tertiary)' }}>{item.symbol}</span>
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
 
         {/* Submit Trace Button */}
         <button

@@ -552,7 +552,7 @@ class MultiHopTracingEngine:
                     node_tags.append("Regulated VASP")
                     risk_lvl = "LOW"
                     # Distinct low risk score for VASP based on address hash (8 to 13)
-                    addr_seed = int(node.address[-2:], 16) if len(node.address) >= 2 else 0
+                    addr_seed = sum(ord(c) for c in node.address[-4:]) if node.address else 0
                     r_score = min(13, max(7, 8 + (addr_seed % 6)))
                 elif any(m in ent_type for m in ("sanction", "ofac")):
                     node_color = "#ef4444"

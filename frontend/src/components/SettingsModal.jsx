@@ -42,7 +42,7 @@ export const SettingsModal = ({ isOpen, onClose, defaultHops, setDefaultHops, du
           </button>
         </div>
 
-        {/* Section 1: Appearance (Apple Light & Dark Theme) */}
+        {/* Section 1: Appearance (Light & Dark Theme) */}
         <div style={{ marginBottom: 20 }}>
           <div style={{ fontSize: 11, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: 8 }}>
             Appearance Theme
@@ -80,7 +80,7 @@ export const SettingsModal = ({ isOpen, onClose, defaultHops, setDefaultHops, du
               }}
             >
               <Sun size={15} />
-              Apple Light
+              Light Theme
             </button>
             <button
               type="button"
@@ -104,7 +104,7 @@ export const SettingsModal = ({ isOpen, onClose, defaultHops, setDefaultHops, du
               }}
             >
               <Moon size={15} />
-              Apple Dark
+              Dark Theme
             </button>
           </div>
         </div>

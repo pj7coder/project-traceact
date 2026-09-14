@@ -97,7 +97,7 @@ class GraphExpansionService:
                     if entity.is_vasp() or any(v in ent_type for v in ("centralized_exchange", "vasp", "custodial")):
                         node_color = "#f59e0b"
                         risk_level = "LOW"
-                        addr_seed = int(peer_key[-2:], 16) if len(peer_key) >= 2 else 0
+                        addr_seed = sum(ord(c) for c in peer_key[-4:]) if peer_key else 0
                         risk_score = min(13, max(7, 8 + (addr_seed % 6)))
                     elif any(m in ent_type for m in ("sanction", "ofac")):
                         node_color = "#ef4444"

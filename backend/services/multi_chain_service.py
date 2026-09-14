@@ -30,7 +30,7 @@ class MultiChainService:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) SAHYOG-Attribution-Engine/1.0",
             "Accept": "application/json",
         }
-        self.timeout = settings.API_TIMEOUT_SECONDS
+        self.timeout = min(float(getattr(settings, "API_TIMEOUT_SECONDS", 5.0)), 5.0)
 
     # -------------------------------------------------------------
     # 1. Automated Chain Detection
