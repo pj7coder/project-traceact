@@ -5,6 +5,7 @@ import { WalletOverviewCard } from './components/WalletOverviewCard';
 import { GraphView } from './components/GraphView';
 import { TransactionList } from './components/TransactionList';
 import { SuspicionPointsView } from './components/SuspicionPointsView';
+import { NearestVaspView } from './components/NearestVaspView';
 import { InvestigationGuideView } from './components/InvestigationGuideView';
 import { ForensicReportView } from './components/ForensicReportView';
 import { SettingsModal } from './components/SettingsModal';
@@ -660,9 +661,17 @@ export function App() {
             <SuspicionPointsView
               riskAssessment={riskAssessment}
               wallet={analysisData?.wallet}
+            />
+          )}
+
+          {/* Tab 3: Nearest VASP and Exchange View */}
+          {activeTab === 'vasp' && (
+            <NearestVaspView
               investigationData={investigationDossier}
               analysisData={analysisData}
               graphData={{ nodes: graphNodes, edges: graphEdges }}
+              wallet={analysisData?.wallet}
+              riskAssessment={riskAssessment}
               currentChain={currentChain}
               currentAsset={currentAsset}
             />

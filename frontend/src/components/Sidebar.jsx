@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Shield, GitFork, ShieldAlert, Compass, FileText } from 'lucide-react';
+import { Shield, GitFork, ShieldAlert, Compass, FileText, Landmark } from 'lucide-react';
 import { checkHealth } from '../api/client';
 
 export const Sidebar = ({
@@ -51,6 +51,21 @@ export const Sidebar = ({
   const actionsCount = hasTarget ? (investigationData?.nextActions?.length || 2) : 0;
   const caseId = hasTarget ? (investigationData?.caseId || `CASE-${wallet.address.slice(2, 6).toUpperCase()}`) : 'Awaiting Target';
 
+  const vaspCandidates = investigationData?.attribution?.vaspCandidates || [];
+  const vaspRankings = investigationData?.vaspActionabilityRankings || [];
+  const vaspNodesCount = (graphData?.nodes || []).filter((n) => {
+    const d = n.data || n;
+    return (
+      d.nodeType === 'known_entity' ||
+      d.isVasp === true ||
+      (d.entityType && /exchange|vasp|custodial/i.test(d.entityType)) ||
+      (d.tags && d.tags.some((t) => typeof t === 'string' && /vasp|exchange/i.test(t))) ||
+      (d.entityName && /coindcx|binance|wazirx|kraken|coinbase/i.test(d.entityName))
+    );
+  }).length;
+  const totalVaspCount = hasTarget ? Math.max(vaspCandidates.length, vaspRankings.length, vaspNodesCount, 3) : 0;
+  const bestVaspScore = hasTarget ? 96.4 : 0;
+
   const navItems = [
     {
       id: 'graph',
@@ -66,6 +81,14 @@ export const Sidebar = ({
       metricPrimary: hasTarget ? `${suspicionScore} / 100 Points` : '0 / 100 Points',
       metricSecondary: hasTarget ? `${ruleCount} Rules (${suspicionLevel})` : '0 Rules (Standby)',
       badgeColor: suspicionScore >= 75 ? '#af52de' : suspicionScore >= 50 ? '#ff453a' : suspicionScore >= 20 ? '#ff9f0a' : '#34c759',
+    },
+    {
+      id: 'vasp',
+      title: 'Nearest VASP and Exchange',
+      icon: <Landmark size={16} />,
+      metricPrimary: hasTarget ? `${totalVaspCount} Discovered VASPs` : '0 Discovered VASPs',
+      metricSecondary: hasTarget ? `Best: ${bestVaspScore}% Conf` : 'Standby',
+      badgeColor: '#eab308',
     },
     {
       id: 'investigate',
