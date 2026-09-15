@@ -230,6 +230,8 @@ class WalletService:
         risk_res = rule_engine.evaluate_wallet(overview, txs, connected_wallets)
         overview.riskScore = risk_res["suspicionScore"]
         overview.riskLevel = risk_res["riskLevel"]
+        overview.riskAssessment = risk_res
+        overview.triggeredRules = risk_res.get("triggeredRules", [])
 
         # 3. Compile tags (Historical + Risk tags)
         tags = list(hist_res.get("tags", []))

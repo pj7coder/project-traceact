@@ -105,6 +105,7 @@ async def analyze_wallet(request: AnalyzeWalletRequest) -> WalletAnalysisRespons
             transactions=transactions,
             connectedWallets=connected_wallets,
             graph=graph_data,
+            riskAssessment=overview.riskAssessment or rule_engine.evaluate_wallet(overview, transactions, connected_wallets),
             metadata={
                 "chain": chain_val,
                 "targetAddress": normalized_address,

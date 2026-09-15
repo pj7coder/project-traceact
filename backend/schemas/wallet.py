@@ -62,6 +62,8 @@ class WalletOverview(BaseModel):
     lastSeen: Optional[str] = None
     riskScore: Optional[int] = 0
     riskLevel: Optional[str] = "LOW"
+    riskAssessment: Optional[Dict[str, Any]] = None
+    triggeredRules: List[Dict[str, Any]] = Field(default_factory=list)
     tags: List[str] = Field(default_factory=list)
     globalSearchCount: Optional[int] = 1
     appearanceCountInGraphs: Optional[int] = 0
@@ -162,6 +164,7 @@ class WalletAnalysisResponse(BaseModel):
     transactions: List[NormalizedTransaction]
     connectedWallets: List[ConnectedWallet]
     graph: GraphData
+    riskAssessment: Optional[Dict[str, Any]] = None
     metadata: Dict[str, Any] = Field(default_factory=dict)
 
 

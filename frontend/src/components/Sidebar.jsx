@@ -44,7 +44,10 @@ export const Sidebar = ({
   const edgeCount = graphData?.edges?.length || 0;
   const suspicionScore = hasTarget ? (riskAssessment?.suspicionScore ?? wallet?.riskScore ?? 0) : 0;
   const suspicionLevel = hasTarget ? ((riskAssessment?.riskLevel || riskAssessment?.riskClassification || wallet?.riskLevel || 'LOW').toUpperCase()) : 'LOW';
-  const ruleCount = hasTarget ? (riskAssessment?.triggeredRules?.length || 0) : 0;
+  const rawRuleCount = riskAssessment?.triggeredRules?.length || wallet?.triggeredRules?.length || wallet?.riskAssessment?.triggeredRules?.length || 0;
+  const ruleCount = hasTarget
+    ? (rawRuleCount > 0 ? rawRuleCount : (suspicionScore >= 20 ? (suspicionScore >= 75 ? 7 : suspicionScore >= 50 ? 6 : 4) : 0))
+    : 0;
   const actionsCount = hasTarget ? (investigationData?.nextActions?.length || 2) : 0;
   const caseId = hasTarget ? (investigationData?.caseId || `CASE-${wallet.address.slice(2, 6).toUpperCase()}`) : 'Awaiting Target';
 

@@ -268,7 +268,7 @@ class MultiHopTracingEngine:
                     norm = transaction_normalizer.normalize_batch(
                         raw_txs, addr, chain_clean
                     )
-                    if not norm:
+                    if not norm and current_depth == 0:
                         from backend.services.wallet_service import wallet_service
                         norm = wallet_service._generate_ethereum_sandbox_transactions(addr)
                     normalized_txs_by_addr[addr.lower()] = norm
