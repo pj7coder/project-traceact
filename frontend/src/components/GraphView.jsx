@@ -920,15 +920,15 @@ const GraphInner = ({
   }, [initialNodes, initialEdges, rootAddress, targetAsset, layoutMode]);
 
   const nodePosMap = useMemo(() => {
-    return new Map(layoutedNodes.map((n) => [n.id.toLowerCase(), n.position]));
+    return new Map(layoutedNodes.map((n) => [String(n?.id || '').toLowerCase(), n.position]));
   }, [layoutedNodes]);
 
   // 2. Build base edge definitions with clean 90-degree orthogonal handles
   const baseEdges = useMemo(() => {
     const rawEdges = initialEdges || [];
     return rawEdges.map((e, idx) => {
-      const srcId = (e.source || '').toLowerCase();
-      const tgtId = (e.target || '').toLowerCase();
+      const srcId = String(e?.source || '').toLowerCase();
+      const tgtId = String(e?.target || '').toLowerCase();
       const pSrc = nodePosMap.get(srcId) || { x: 0, y: 0 };
       const pTgt = nodePosMap.get(tgtId) || { x: 0, y: 0 };
 
@@ -1038,7 +1038,7 @@ const GraphInner = ({
     }
 
     const enhancedNodes = layoutedNodes.map((n) => {
-      const isNodeSelected = selectedNodeId && n.id.toLowerCase() === selectedNodeId;
+      const isNodeSelected = selectedNodeId && String(n?.id || '').toLowerCase() === selectedNodeId;
       return {
         ...n,
         type: n.type || 'customWalletNode',
@@ -1070,8 +1070,8 @@ const GraphInner = ({
     }
 
     const styledEdges = baseEdges.map((e) => {
-      const srcId = e.source.toLowerCase();
-      const tgtId = e.target.toLowerCase();
+      const srcId = String(e?.source || '').toLowerCase();
+      const tgtId = String(e?.target || '').toLowerCase();
 
       const isIncomingToSelected = selectedNodeId && tgtId === selectedNodeId;
       const isOutgoingFromSelected = selectedNodeId && srcId === selectedNodeId;
@@ -1161,7 +1161,7 @@ const GraphInner = ({
   // Handle single-click to select node
   const handleNodeClick = useCallback((event, node) => {
     setSelectedNodeId((prev) => {
-      const clickedId = node.id.toLowerCase();
+      const clickedId = String(node?.id || '').toLowerCase();
       return prev === clickedId ? null : clickedId;
     });
   }, []);
@@ -1187,7 +1187,7 @@ const GraphInner = ({
 
   const selectedNodeLabel = useMemo(() => {
     if (!selectedNodeId) return '';
-    const n = nodes.find((node) => node.id.toLowerCase() === selectedNodeId);
+    const n = nodes.find((node) => String(node?.id || '').toLowerCase() === selectedNodeId);
     if (!n) return selectedNodeId;
     const name = n.data?.entityName || n.data?.name || n.data?.label || selectedNodeId;
     return name.length > 18 ? `${name.slice(0, 8)}...${name.slice(-4)}` : name;

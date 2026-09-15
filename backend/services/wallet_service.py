@@ -437,7 +437,55 @@ class WalletService:
                 ),
             ]
 
-        # Multi-branch primary transaction topology
+        # If tracing from uniswap router
+        if clean == uniswap_eth.lower():
+            dex_sink = "0xd8da6bf26964af9d7eed9e03e53415d37aa96045"
+            return [
+                NormalizedTransaction(
+                    txHash="0x33445566778899aabbccddeeff00112233445566778899aabbccddeeff001122",
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=dex_sink,
+                    value="1.2000",
+                    valueWei="1200000000000000000",
+                    valueRaw="1200000000000000000",
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - 5000, tz=timezone.utc).isoformat(),
+                    blockNumber=20745600,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0025",
+                    feeWei="2500000000000000",
+                    feeRaw="2500000000000000",
+                    txType="dex_swap",
+                )
+            ]
+
+        # If tracing directly from known VASP sink endpoints
+        if clean in (coindcx_eth.lower(), binance_eth.lower(), wazirx_eth.lower(), kraken_eth.lower()):
+            custodial_cold_storage = "0x00000000219ab540356cbb839cbe05303d7705fa"
+            return [
+                NormalizedTransaction(
+                    txHash="0x112233445566778899aabbccddeeff00112233445566778899aabbccddeeff00",
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=custodial_cold_storage,
+                    value="15.0000",
+                    valueWei="15000000000000000000",
+                    valueRaw="15000000000000000000",
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - 3600, tz=timezone.utc).isoformat(),
+                    blockNumber=20746000,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0015",
+                    feeWei="1500000000000000",
+                    feeRaw="1500000000000000",
+                    txType="custodial_sweep",
+                )
+            ]
+
+        # Multi-branch primary transaction topology for root address
         return [
             # 1. Incoming Master Stash Inflow
             NormalizedTransaction(
@@ -628,6 +676,101 @@ class WalletService:
                 feeWei="3100000000000000",
                 feeRaw="3100000000000000",
                 txType="contract_call",
+            ),
+            # 11. Multi-hop Downstream (Hop 1 -> Hop 2): Intermediary 1 -> Binance
+            NormalizedTransaction(
+                txHash="0x8f12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676bb",
+                chain="ethereum",
+                fromAddress=intermediary_1,
+                toAddress=binance_eth,
+                value="2.8500",
+                valueWei="2850000000000000000",
+                valueRaw="2850000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 14400, tz=timezone.utc).isoformat(),
+                blockNumber=20744000,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0019",
+                feeWei="1900000000000000",
+                feeRaw="1900000000000000",
+                txType="native_transfer",
+            ),
+            # 12. Multi-hop Downstream (Hop 1 -> Hop 2): Intermediary 1 -> WazirX
+            NormalizedTransaction(
+                txHash="0x7f23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9779aa",
+                chain="ethereum",
+                fromAddress=intermediary_1,
+                toAddress=wazirx_eth,
+                value="1.4500",
+                valueWei="1450000000000000000",
+                valueRaw="1450000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 10200, tz=timezone.utc).isoformat(),
+                blockNumber=20744500,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0017",
+                feeWei="1700000000000000",
+                feeRaw="1700000000000000",
+                txType="native_transfer",
+            ),
+            # 13. Multi-hop Downstream (Hop 1 -> Hop 2): Intermediary 2 -> Kraken
+            NormalizedTransaction(
+                txHash="0x6a12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676cc",
+                chain="ethereum",
+                fromAddress=intermediary_2,
+                toAddress=kraken_eth,
+                value="1.9500",
+                valueWei="1950000000000000000",
+                valueRaw="1950000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 18000, tz=timezone.utc).isoformat(),
+                blockNumber=20743200,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0016",
+                feeWei="1600000000000000",
+                feeRaw="1600000000000000",
+                txType="native_transfer",
+            ),
+            # 14. Multi-hop Downstream (Hop 1 -> Hop 2): Intermediary 2 -> CoinDCX
+            NormalizedTransaction(
+                txHash="0x5b23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9779dd",
+                chain="ethereum",
+                fromAddress=intermediary_2,
+                toAddress=coindcx_eth,
+                value="1.1000",
+                valueWei="1100000000000000000",
+                valueRaw="1100000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 12000, tz=timezone.utc).isoformat(),
+                blockNumber=20744100,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0018",
+                feeWei="1800000000000000",
+                feeRaw="1800000000000000",
+                txType="native_transfer",
+            ),
+            # 15. Multi-hop Upstream (Hop -2 -> Hop -1): Whale Mixer -> Inflow Stash
+            NormalizedTransaction(
+                txHash="0x00a12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676ee",
+                chain="ethereum",
+                fromAddress="0xd4b008a27e5e70977654db202fde0b88d405369c",
+                toAddress=inflow_stash,
+                value="25.0000",
+                valueWei="25000000000000000000",
+                valueRaw="25000000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 259200, tz=timezone.utc).isoformat(),
+                blockNumber=20720000,
+                status="confirmed",
+                direction=TransactionDirection.INCOMING,
+                fee="0.0045",
+                feeWei="4500000000000000",
+                feeRaw="4500000000000000",
+                txType="native_transfer",
             ),
         ]
 

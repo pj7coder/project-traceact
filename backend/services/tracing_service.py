@@ -186,6 +186,7 @@ class MultiHopTracingEngine:
 
         current_depth = 0
         limit_explanation: Optional[str] = None
+        is_sandbox_trace = False
 
         while current_level_queue and current_depth < max_depth:
             # Check node safeguard
@@ -268,9 +269,11 @@ class MultiHopTracingEngine:
                     norm = transaction_normalizer.normalize_batch(
                         raw_txs, addr, chain_clean
                     )
-                    if not norm and current_depth == 0:
+                    if not norm and (current_depth == 0 or is_sandbox_trace):
                         from backend.services.wallet_service import wallet_service
                         norm = wallet_service._generate_ethereum_sandbox_transactions(addr)
+                        if current_depth == 0 and norm:
+                            is_sandbox_trace = True
                     normalized_txs_by_addr[addr.lower()] = norm
 
             next_level_queue: List[Tuple[str, int, List[str], List[FundPathStep]]] = []

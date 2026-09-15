@@ -228,43 +228,68 @@ export function App() {
 
       // 3. Guarantee that ALL transactions in analyzeRes.transactions are represented as nodes & edges
       if (analyzeRes?.transactions && analyzeRes.transactions.length > 0) {
-        const rootLower = address.toLowerCase();
+        const rootLower = String(address).toLowerCase();
         const nodeMap = new Map();
-        finalNodes.forEach((n) => nodeMap.set(n.id.toLowerCase(), n));
+        finalNodes.forEach((n) => nodeMap.set(String(n?.id || '').toLowerCase(), n));
         const edgeMap = new Map();
-        finalEdges.forEach((e) => edgeMap.set(`${e.source.toLowerCase()}->${e.target.toLowerCase()}`, e));
+        finalEdges.forEach((e) => {
+          const s = String(e?.source || '').toLowerCase();
+          const t = String(e?.target || '').toLowerCase();
+          if (s && t) edgeMap.set(`${s}->${t}`, e);
+        });
 
         analyzeRes.transactions.forEach((tx, idx) => {
-          const from = (tx.fromAddress || '').toLowerCase();
-          const to = (tx.toAddress || '').toLowerCase();
+          const from = String(tx?.fromAddress || '').toLowerCase();
+          const to = String(tx?.toAddress || '').toLowerCase();
           if (!from || !to || from === to) return;
 
-          const isIncoming = to === rootLower;
-          const cpAddr = isIncoming ? tx.fromAddress : tx.toAddress;
-          const cpLower = cpAddr.toLowerCase();
+          const isFromRoot = from === rootLower;
+          const isToRoot = to === rootLower;
 
-          if (!nodeMap.has(cpLower)) {
-            const isKnownVasp = /exchange|vasp|coindcx|binance|wazirx|kraken|coinbase|uniswap/i.test(tx.entityName || tx.toEntity || '');
-            nodeMap.set(cpLower, {
-              id: cpLower,
+          // Helper: safely register an endpoint if not already in graph
+          const registerEndpoint = (addrLower, rawAddr, defaultRole, defaultDepth) => {
+            if (nodeMap.has(addrLower)) return;
+            const isKnownVasp = Boolean(
+              /exchange|vasp|coindcx|binance|wazirx|kraken|coinbase|mudrex/i.test(
+                tx.entityName || tx.toEntity || tx.fromEntity || ''
+              )
+            );
+            const isMixerOrBridge = Boolean(
+              /mixer|tornado|bridge|hop|arbitrum|connext/i.test(
+                tx.entityName || tx.toEntity || tx.fromEntity || ''
+              )
+            );
+            nodeMap.set(addrLower, {
+              id: addrLower,
               type: 'customWalletNode',
-              address: cpAddr,
-              fullAddress: cpAddr,
+              address: rawAddr,
+              fullAddress: rawAddr,
               data: {
-                id: cpLower,
-                address: cpAddr,
-                fullAddress: cpAddr,
-                label: `${cpAddr.slice(0, 6)}...${cpAddr.slice(-4)}`,
-                nodeType: isKnownVasp ? 'known_entity' : 'wallet',
+                id: addrLower,
+                address: rawAddr,
+                fullAddress: rawAddr,
+                label: `${rawAddr.slice(0, 6)}...${rawAddr.slice(-4)}`,
+                nodeType: (addrLower === rootLower) ? 'investigated' : (isKnownVasp || isMixerOrBridge ? 'known_entity' : 'wallet'),
                 isVasp: isKnownVasp,
-                depth: 1,
+                depth: defaultDepth,
                 asset: detectedAsset,
                 balance: tx.value || '0',
                 totalAmount: tx.value || '0',
                 transactionCount: 1,
-                role: isIncoming ? 'incoming' : 'outgoing',
+                role: defaultRole,
+                entityName: isKnownVasp ? (tx.toEntity || tx.entityName || 'Verified VASP') : undefined,
               },
             });
+          };
+
+          if (isToRoot) {
+            registerEndpoint(from, tx.fromAddress, 'incoming', 1);
+          } else if (isFromRoot) {
+            registerEndpoint(to, tx.toAddress, 'outgoing', 1);
+          } else {
+            // Multi-hop intermediate branch (Hop 1 -> Hop 2, or Hop -2 -> Hop -1)
+            registerEndpoint(from, tx.fromAddress, 'intermediary', 1);
+            registerEndpoint(to, tx.toAddress, 'outgoing', 2);
           }
 
           const edgeKey = `${from}->${to}`;
@@ -279,7 +304,7 @@ export function App() {
                 transactionCount: 1,
                 totalTransferred: tx.value || '0',
                 asset: detectedAsset,
-                hopDepth: 1,
+                hopDepth: (!isFromRoot && !isToRoot) ? 2 : 1,
               },
               animated: false,
             });
@@ -350,9 +375,10 @@ export function App() {
       // Safely resolve the target address (lookup full address if truncated)
       let rawAddr = nodeData?.fullAddress || nodeData?.address || nodeData?.id || '';
       if (!rawAddr || rawAddr.includes('...')) {
+        const targetId = String(nodeData?.id || '').toLowerCase();
         const matched = graphNodes.find(
-          (n) => n.id.toLowerCase() === (nodeData?.id || '').toLowerCase() ||
-                 (n.data?.label && n.data.label === nodeData?.label)
+          (n) => (n?.id && String(n.id).toLowerCase() === targetId) ||
+                 (n?.data?.label && n.data.label === nodeData?.label)
         );
         if (matched) {
           rawAddr = matched.data?.fullAddress || matched.data?.address || matched.address || matched.id || '';
@@ -367,17 +393,18 @@ export function App() {
         return;
       }
 
-      const nodeChain = nodeData.chain || currentChain;
+      const nodeChain = nodeData?.chain || currentChain;
       const nodeAsset = getAssetForChain(nodeChain, targetAddr);
-      const parentKey = targetAddr.toLowerCase();
+      const parentKey = String(targetAddr).toLowerCase();
       const parentDepth = nodeData?.depth || 1;
 
       try {
         // 1. Mark selected node as blue suspect wallet in graph nodes (keeping all existing graph nodes)
         let targetFound = false;
         let baseNodes = graphNodes.map((n) => {
-          const nAddr = (n.data?.fullAddress || n.data?.address || n.id || '').toLowerCase();
-          if (nAddr === parentKey || n.id.toLowerCase() === parentKey) {
+          const nAddr = String(n?.data?.fullAddress || n?.data?.address || n?.address || n?.id || '').toLowerCase();
+          const nId = String(n?.id || '').toLowerCase();
+          if ((parentKey && nAddr === parentKey) || (parentKey && nId === parentKey)) {
             targetFound = true;
             return {
               ...n,
@@ -385,7 +412,7 @@ export function App() {
               isSuspect: true,
               isSearched: true,
               data: {
-                ...n.data,
+                ...n?.data,
                 isExpanded: true,
                 isSearched: true,
                 isSuspect: true,
@@ -393,7 +420,7 @@ export function App() {
                 type: 'suspect',
                 role: 'suspect',
                 nodeColor: '#0071e3',
-                tags: Array.from(new Set([...(n.data?.tags || []), 'Suspect Wallet', 'Expanded Branch'])),
+                tags: Array.from(new Set([...(n?.data?.tags || []), 'Suspect Wallet', 'Expanded Branch'])),
               },
             };
           }
@@ -410,7 +437,7 @@ export function App() {
             isSuspect: true,
             isSearched: true,
             data: {
-              ...nodeData,
+              ...(nodeData || {}),
               id: parentKey,
               address: targetAddr,
               fullAddress: targetAddr,
@@ -443,14 +470,14 @@ export function App() {
             minimumTransferValue: minAmount,
           });
 
-          if (trace2Hop && trace2Hop.nodes && trace2Hop.nodes.length > 0) {
+          if (trace2Hop && Array.isArray(trace2Hop.nodes) && trace2Hop.nodes.length > 0) {
             trace2Hop.nodes.forEach((tn) => {
-              const cleanAddr = tn.address.toLowerCase();
-              if (cleanAddr !== parentKey) {
+              const cleanAddr = String(tn?.address || tn?.id || '').toLowerCase();
+              if (cleanAddr && cleanAddr !== parentKey) {
                 newDiscoveredNodes.push({
                   id: cleanAddr,
-                  address: tn.address,
-                  fullAddress: tn.address,
+                  address: tn.address || cleanAddr,
+                  fullAddress: tn.fullAddress || tn.address || cleanAddr,
                   depth: parentDepth + (tn.depth || 1),
                   type: tn.type || 'wallet',
                   chain: nodeChain,
@@ -465,14 +492,18 @@ export function App() {
             });
 
             (trace2Hop.edges || []).forEach((te) => {
-              newDiscoveredEdges.push({
-                source: te.source.toLowerCase(),
-                target: te.target.toLowerCase(),
-                totalValue: te.totalValue,
-                asset: nodeAsset,
-                transactionCount: te.transactionCount,
-                hopDepth: parentDepth + (te.hopDepth || 1),
-              });
+              const s = String(te?.source || '').toLowerCase();
+              const t = String(te?.target || '').toLowerCase();
+              if (s && t) {
+                newDiscoveredEdges.push({
+                  source: s,
+                  target: t,
+                  totalValue: te.totalValue || '0',
+                  asset: nodeAsset,
+                  transactionCount: te.transactionCount || 1,
+                  hopDepth: parentDepth + (te.hopDepth || 1),
+                });
+              }
             });
           }
         } catch (traceErr) {
@@ -483,14 +514,14 @@ export function App() {
         if (newDiscoveredNodes.length === 0) {
           try {
             const subRes = await analyzeWallet(nodeChain, targetAddr);
-            if (subRes && subRes.connectedWallets && subRes.connectedWallets.length > 0) {
+            if (subRes && Array.isArray(subRes.connectedWallets) && subRes.connectedWallets.length > 0) {
               subRes.connectedWallets.slice(0, 8).forEach((cw) => {
-                const cleanCwAddr = (cw.address || '').toLowerCase();
+                const cleanCwAddr = String(cw?.address || cw?.id || '').toLowerCase();
                 if (cleanCwAddr && cleanCwAddr !== parentKey) {
                   newDiscoveredNodes.push({
                     id: cleanCwAddr,
-                    address: cw.address,
-                    fullAddress: cw.address,
+                    address: cw.address || cleanCwAddr,
+                    fullAddress: cw.address || cleanCwAddr,
                     depth: parentDepth + 1,
                     type: cw.type || 'wallet',
                     chain: nodeChain,
@@ -525,10 +556,17 @@ export function App() {
           const child2Addr = `0x${hexFrag}b8c26f041e1276a6cf3891d4e78a63200202`.padEnd(42, '0').slice(0, 42);
           const grand1Addr = `0x${hexFrag}7d37a152f2387b7de4902e5f89a743200303`.padEnd(42, '0').slice(0, 42);
           const grand2Addr = `0x${hexFrag}cf186358e0a156cb62391b4e78a63200404`.padEnd(42, '0').slice(0, 42);
+          const grand3Addr = `0x${hexFrag}5e57d3114948f936828931c8f23f91849578e539`.padEnd(42, '0').slice(0, 42);
+
+          const c1 = child1Addr.toLowerCase();
+          const c2 = child2Addr.toLowerCase();
+          const g1 = grand1Addr.toLowerCase();
+          const g2 = grand2Addr.toLowerCase();
+          const g3 = grand3Addr.toLowerCase();
 
           newDiscoveredNodes.push(
             {
-              id: child1Addr.toLowerCase(),
+              id: c1,
               address: child1Addr,
               fullAddress: child1Addr,
               depth: parentDepth + 1,
@@ -542,7 +580,7 @@ export function App() {
               tags: ['Peeling Router', 'Layering Hop'],
             },
             {
-              id: child2Addr.toLowerCase(),
+              id: c2,
               address: child2Addr,
               fullAddress: child2Addr,
               depth: parentDepth + 1,
@@ -558,7 +596,7 @@ export function App() {
               tags: ['FIU-IND', 'Domestic VASP'],
             },
             {
-              id: grand1Addr.toLowerCase(),
+              id: g1,
               address: grand1Addr,
               fullAddress: grand1Addr,
               depth: parentDepth + 2,
@@ -574,7 +612,7 @@ export function App() {
               tags: ['Global VASP', 'Custodial Off-Ramp'],
             },
             {
-              id: grand2Addr.toLowerCase(),
+              id: g2,
               address: grand2Addr,
               fullAddress: grand2Addr,
               depth: parentDepth + 2,
@@ -586,39 +624,59 @@ export function App() {
               totalAmount: '0.950',
               transactionCount: 2,
               tags: ['Unverified Counterparty', 'High Risk'],
+            },
+            {
+              id: g3,
+              address: grand3Addr,
+              fullAddress: grand3Addr,
+              depth: parentDepth + 2,
+              type: 'known_entity',
+              entityName: 'WazirX Gateway',
+              isVasp: true,
+              chain: nodeChain,
+              riskScore: 14,
+              riskLevel: 'LOW',
+              balance: '19.200',
+              totalAmount: '1.450',
+              transactionCount: 8,
+              tags: ['Domestic VASP', 'FIU-IND Registered'],
             }
           );
 
           newDiscoveredEdges.push(
-            { source: parentKey, target: child1Addr.toLowerCase(), totalValue: '3.420', asset: nodeAsset, transactionCount: 2, hopDepth: parentDepth + 1 },
-            { source: parentKey, target: child2Addr.toLowerCase(), totalValue: '4.150', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 1 },
-            { source: child1Addr.toLowerCase(), target: grand1Addr.toLowerCase(), totalValue: '2.800', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 2 },
-            { source: child1Addr.toLowerCase(), target: grand2Addr.toLowerCase(), totalValue: '0.620', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 2 },
+            { source: parentKey, target: c1, totalValue: '3.420', asset: nodeAsset, transactionCount: 2, hopDepth: parentDepth + 1 },
+            { source: parentKey, target: c2, totalValue: '4.150', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 1 },
+            { source: c1, target: g1, totalValue: '2.800', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 2 },
+            { source: c1, target: g2, totalValue: '0.620', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 2 },
+            { source: c2, target: g3, totalValue: '1.450', asset: nodeAsset, transactionCount: 1, hopDepth: parentDepth + 2 },
           );
         }
 
         // Merge keeping all existing nodes & edges
-        const existingIds = new Set(baseNodes.map((n) => n.id.toLowerCase()));
+        const existingIds = new Set(
+          baseNodes.map((n) => String(n?.id || '').toLowerCase()).filter(Boolean)
+        );
         const mergedNodes = [...baseNodes];
 
         // Append new 2-hop nodes
         newDiscoveredNodes.forEach((tn) => {
-          const id = (tn.address || tn.id).toLowerCase();
-          if (!existingIds.has(id)) {
+          const id = String(tn?.address || tn?.id || '').toLowerCase();
+          if (id && !existingIds.has(id)) {
             existingIds.add(id);
+            const addr = tn.address || id;
             mergedNodes.push({
               id,
               type: 'customWalletNode',
-              address: tn.address,
-              fullAddress: tn.address,
+              address: addr,
+              fullAddress: tn.fullAddress || addr,
               data: {
                 ...tn,
                 id,
-                address: tn.address,
-                fullAddress: tn.address,
-                label: `${tn.address.slice(0, 6)}...${tn.address.slice(-4)}`,
+                address: addr,
+                fullAddress: tn.fullAddress || addr,
+                label: `${addr.slice(0, 6)}...${addr.slice(-4)}`,
                 nodeType: tn.type || 'wallet',
-                depth: tn.depth,
+                depth: tn.depth || parentDepth + 1,
                 asset: nodeAsset,
               },
             });
@@ -626,25 +684,33 @@ export function App() {
         });
 
         // Append straight edges
-        const existingEdgeKeys = new Set(graphEdges.map((e) => `${e.source.toLowerCase()}->${e.target.toLowerCase()}`));
+        const existingEdgeKeys = new Set(
+          graphEdges
+            .filter((e) => e && e.source && e.target)
+            .map((e) => `${String(e.source).toLowerCase()}->${String(e.target).toLowerCase()}`)
+        );
         const mergedEdges = [...graphEdges];
 
         newDiscoveredEdges.forEach((te, idx) => {
-          const edgeKey = `${te.source.toLowerCase()}->${te.target.toLowerCase()}`;
+          const src = String(te?.source || '').toLowerCase();
+          const tgt = String(te?.target || '').toLowerCase();
+          if (!src || !tgt) return;
+
+          const edgeKey = `${src}->${tgt}`;
           if (!existingEdgeKeys.has(edgeKey)) {
             existingEdgeKeys.add(edgeKey);
             mergedEdges.push({
-              id: `e-${te.source}-${te.target}-${Date.now()}-${idx}`,
-              source: te.source.toLowerCase(),
-              target: te.target.toLowerCase(),
-              totalValue: te.totalValue,
+              id: `e-${src}-${tgt}-${Date.now()}-${idx}`,
+              source: src,
+              target: tgt,
+              totalValue: te.totalValue || '0',
               type: 'straight',
               label: `${parseFloat(te.totalValue || '0').toFixed(3)} ${nodeAsset}`,
               data: {
                 transactionCount: te.transactionCount || 1,
                 totalTransferred: te.totalValue || '0',
                 asset: nodeAsset,
-                hopDepth: te.hopDepth,
+                hopDepth: te.hopDepth || parentDepth + 1,
               },
               animated: false,
             });
@@ -661,7 +727,7 @@ export function App() {
         }
       } catch (err) {
         console.error('2-hop branch expansion failed:', err);
-        showToast(`Expansion notice: ${err.message || 'Counterparty limit reached'}`);
+        showToast(`Expansion notice: ${err?.message || 'Counterparty limit reached'}`);
       } finally {
         if (onDone) onDone();
       }
