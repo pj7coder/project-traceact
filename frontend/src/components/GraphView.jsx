@@ -21,6 +21,8 @@ import {
   Orbit,
   LayoutGrid,
   Workflow,
+  ChevronDown,
+  Check,
   Map as MapIcon,
 } from 'lucide-react';
 import { RectangularNode } from './RectangularNode';
@@ -887,6 +889,8 @@ const GraphInner = ({
   onInvestigateAddress,
 }) => {
   const [layoutMode, setLayoutMode] = useState('bilateral'); // 'bilateral' | 'waterfall' | 'radial' | 'matrix'
+  const [isLayoutDropdownOpen, setIsLayoutDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
   const [showMinimap, setShowMinimap] = useState(false);
   const [nodes, setNodes, onNodesChange] = useNodesState([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
@@ -895,6 +899,45 @@ const GraphInner = ({
   const [inspectNode, setInspectNode] = useState(null);
   const containerRef = useRef(null);
   const { zoomIn, zoomOut, fitView } = useReactFlow();
+
+  const layoutOptions = useMemo(() => [
+    {
+      id: 'bilateral',
+      label: 'Bilateral Flow',
+      icon: GitFork,
+      description: 'Left (Inflow) · Center (Target) · Right (Outflow)',
+    },
+    {
+      id: 'waterfall',
+      label: 'Vertical Cascade',
+      icon: Workflow,
+      description: 'Top-to-Bottom financial waterfall cascade',
+    },
+    {
+      id: 'radial',
+      label: 'Radial Orbit',
+      icon: Orbit,
+      description: 'Concentric hop rings radiating from root',
+    },
+    {
+      id: 'matrix',
+      label: 'Entity Lanes',
+      icon: LayoutGrid,
+      description: 'Categorical swimlanes separating VASPs and peers',
+    },
+  ], []);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsLayoutDropdownOpen(false);
+      }
+    };
+    if (isLayoutDropdownOpen) {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [isLayoutDropdownOpen]);
 
   const handleOpenNode = useCallback((nodeData) => {
     setInspectNode(nodeData);
@@ -1227,56 +1270,74 @@ const GraphInner = ({
       className={`react-flow-container ${isFullscreen ? 'fullscreen' : ''}`}
       style={{ height: isFullscreen ? '100vh' : 490 }}
     >
-      {/* Top Left: 4 Graph Visual Layout Pattern Switcher */}
+      {/* Top Left: Graph Visual Layout Dropdown */}
       <div
+        ref={dropdownRef}
+        className="graph-layout-dropdown"
         style={{
           position: 'absolute',
           top: 10,
           left: 12,
-          zIndex: 10,
+          zIndex: 25,
         }}
       >
-        <div className="graph-layout-picker">
-          <button
-            type="button"
-            className={`layout-pill-btn ${layoutMode === 'bilateral' ? 'active' : ''}`}
-            onClick={() => setLayoutMode('bilateral')}
-            title="Bilateral Flow: Left (Inflow) · Center (Target) · Right (Outflow) with 90° orthogonal edges"
-          >
-            <GitFork size={11} />
-            <span>Bilateral Flow</span>
-          </button>
+        {(() => {
+          const activeOpt = layoutOptions.find((o) => o.id === layoutMode) || layoutOptions[0];
+          const ActiveIcon = activeOpt.icon;
+          return (
+            <>
+              <button
+                type="button"
+                className="layout-dropdown-trigger"
+                onClick={() => setIsLayoutDropdownOpen((prev) => !prev)}
+                title="Select Graph Layout View"
+                aria-expanded={isLayoutDropdownOpen}
+              >
+                <ActiveIcon size={12} style={{ color: 'var(--accent-primary)' }} />
+                <span>{activeOpt.label}</span>
+                <ChevronDown
+                  size={12}
+                  style={{
+                    transition: 'transform 0.18s ease',
+                    transform: isLayoutDropdownOpen ? 'rotate(180deg)' : 'rotate(0deg)',
+                    color: 'var(--text-tertiary)',
+                  }}
+                />
+              </button>
 
-          <button
-            type="button"
-            className={`layout-pill-btn ${layoutMode === 'waterfall' ? 'active' : ''}`}
-            onClick={() => setLayoutMode('waterfall')}
-            title="Vertical Cascade: Top (Inflow) · Center (Target) · Bottom (Outflow) waterfall cascade"
-          >
-            <Workflow size={11} />
-            <span>Vertical Cascade</span>
-          </button>
-
-          <button
-            type="button"
-            className={`layout-pill-btn ${layoutMode === 'radial' ? 'active' : ''}`}
-            onClick={() => setLayoutMode('radial')}
-            title="Radial Orbit: Concentric Hop 1 and Hop 2 rings radiating from Target Root"
-          >
-            <Orbit size={11} />
-            <span>Radial Orbit</span>
-          </button>
-
-          <button
-            type="button"
-            className={`layout-pill-btn ${layoutMode === 'matrix' ? 'active' : ''}`}
-            onClick={() => setLayoutMode('matrix')}
-            title="Entity Lanes: Categorical lanes separating Intermediaries, Target, and Verified VASPs"
-          >
-            <LayoutGrid size={11} />
-            <span>Entity Lanes</span>
-          </button>
-        </div>
+              {isLayoutDropdownOpen && (
+                <div className="layout-dropdown-menu">
+                  <div className="layout-dropdown-header">Graph Layout</div>
+                  {layoutOptions.map((opt) => {
+                    const Icon = opt.icon;
+                    const isSelected = layoutMode === opt.id;
+                    return (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        className={`layout-dropdown-item ${isSelected ? 'active' : ''}`}
+                        onClick={() => {
+                          setLayoutMode(opt.id);
+                          setIsLayoutDropdownOpen(false);
+                        }}
+                        title={opt.description}
+                      >
+                        <div className="layout-item-left">
+                          <Icon size={13} className="layout-item-icon" />
+                          <div className="layout-item-text">
+                            <span className="layout-item-title">{opt.label}</span>
+                            <span className="layout-item-desc">{opt.description}</span>
+                          </div>
+                        </div>
+                        {isSelected && <Check size={13} className="layout-item-check" />}
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </>
+          );
+        })()}
       </div>
 
       {/* Top Right: Status Legend & View Controls */}
