@@ -167,6 +167,7 @@ html, body, #root {
 
 /* Top Bar */
 .top-header {
+  position: relative;
   height: 52px;
   min-height: 52px;
   padding: 0 20px;
@@ -177,7 +178,7 @@ html, body, #root {
   backdrop-filter: var(--blur-standard);
   -webkit-backdrop-filter: var(--blur-standard);
   border-bottom: 1px solid var(--border-subtle);
-  z-index: 15;
+  z-index: 100;
   transition: background 0.3s var(--ease-apple), border-color 0.3s var(--ease-apple);
 }
 
@@ -370,7 +371,7 @@ html, body, #root {
   border-radius: 10px;
   padding: 5px;
   box-shadow: var(--shadow-lg), 0 8px 24px rgba(0, 0, 0, 0.22);
-  z-index: 100;
+  z-index: 20;
   animation: fadeIn 0.15s ease-out;
 }
 

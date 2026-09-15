@@ -1278,7 +1278,7 @@ const GraphInner = ({
           position: 'absolute',
           top: 10,
           left: 12,
-          zIndex: 25,
+          zIndex: 10,
         }}
       >
         {(() => {

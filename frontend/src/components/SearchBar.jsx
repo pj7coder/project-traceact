@@ -141,7 +141,7 @@ export const SearchBar = ({
         }}
       >
         {/* Filter Option Button (Left to the search icon) */}
-        <div ref={filterRef} style={{ position: 'relative' }}>
+        <div ref={filterRef} style={{ position: 'relative', zIndex: 110 }}>
           <button
             type="button"
             onClick={() => setShowFilterDropdown((prev) => !prev)}
@@ -178,9 +178,9 @@ export const SearchBar = ({
                 background: 'var(--bg-card)',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--shadow-lg)',
+                boxShadow: 'var(--shadow-lg), 0 12px 32px rgba(0, 0, 0, 0.28)',
                 padding: '14px',
-                zIndex: 100,
+                zIndex: 1000,
                 backdropFilter: 'var(--blur-standard)',
                 WebkitBackdropFilter: 'var(--blur-standard)',
                 animation: 'fadeIn 0.18s var(--ease-apple)',
@@ -335,7 +335,7 @@ export const SearchBar = ({
         )}
 
         {/* Interactive Currency / Chain Selector Dropdown */}
-        <div ref={currencyRef} style={{ position: 'relative' }}>
+        <div ref={currencyRef} style={{ position: 'relative', zIndex: 110 }}>
           <button
             type="button"
             onClick={() => setShowCurrencyDropdown((prev) => !prev)}
@@ -390,9 +390,9 @@ export const SearchBar = ({
                 background: 'var(--bg-card)',
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--shadow-lg)',
+                boxShadow: 'var(--shadow-lg), 0 12px 32px rgba(0, 0, 0, 0.28)',
                 padding: '6px',
-                zIndex: 100,
+                zIndex: 1000,
                 backdropFilter: 'var(--blur-standard)',
                 WebkitBackdropFilter: 'var(--blur-standard)',
                 animation: 'fadeIn 0.18s var(--ease-apple)',
