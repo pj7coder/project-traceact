@@ -102,7 +102,10 @@ function prepareNodesAndAdjacency(rawNodes, rawEdges, rootAddress) {
  * Common Helper: Resolve bounding-box collisions to mathematically guarantee zero overlap.
  */
 function resolveCollisions(nodesList) {
+  const MIN_DX = CARD_W + 18; // 238px: horizontal clearance boundary
+  const MIN_DY = CARD_H + 28; // 103px: vertical clearance boundary
   for (let pass = 0; pass < 8; pass++) {
+    let hadCollision = false;
     for (let i = 0; i < nodesList.length; i++) {
       for (let j = i + 1; j < nodesList.length; j++) {
         const A = nodesList[i];
@@ -110,8 +113,9 @@ function resolveCollisions(nodesList) {
         const dx = Math.abs(A.position.x - B.position.x);
         const dy = Math.abs(A.position.y - B.position.y);
 
-        if (dx < CARD_W + 45 && dy < CARD_H + 40) {
-          const overlapY = CARD_H + 40 - dy;
+        if (dx < MIN_DX && dy < MIN_DY) {
+          hadCollision = true;
+          const overlapY = MIN_DY - dy;
           if (A.position.y <= B.position.y) {
             A.position.y -= overlapY / 2;
             B.position.y += overlapY / 2;
@@ -122,6 +126,7 @@ function resolveCollisions(nodesList) {
         }
       }
     }
+    if (!hadCollision) break;
   }
 }
 
@@ -235,21 +240,19 @@ function buildNodeData(node, overrides = {}) {
 }
 
 /**
- * Layout 1: Bilateral Forensic Flow (Horizontal Multi-Branch Tree).
- * - Target Root at Center (0, 0).
- * - Incoming senders branch recursively on Left (Hop 1, Hop 2, Hop 3, ...).
- * - Outgoing recipients branch recursively on Right (Hop 1, Hop 2, Hop 3, ...).
- * - Reingold-Tilford tidy tree spacing: each parent is centered among its children.
- * - Sibling subtrees never collide and are cleanly separated.
+ * Layout 1 (Default): Staggered Multi-Branch Bilateral Tree.
+ * - Senders fan in gracefully on the Left (Hop -1, Hop -2, ...).
+ * - Recipients branch out dynamically on the Right (Hop 1, Hop 2, ...).
+ * - Sibling nodes at the same hop are intelligently staggered across alternating horizontal
+ *   tiers so they NEVER stack in a monolithic vertical tower on top of each other.
+ * - Parent nodes are centered across their child branches.
+ * - Smooth 2D spatial distribution provides visual balance and instant forensic clarity.
  */
 function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
   const { nodeMap, rootNode, rootId, outEdges, inEdges } = prepareNodesAndAdjacency(rawNodes, rawEdges, rootAddress);
   if (!rootNode) return [];
 
-  const H_STEP = 380;
   const assigned = new Set([rootId]);
-
-  // Tree maps: parentId -> [childNode1, childNode2, ...]
   const outChildrenMap = new Map();
   const inChildrenMap = new Map();
 
@@ -330,7 +333,10 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
     },
   ];
 
-  // 4. Recursive Multi-Branch Tree Layout
+  // 4. Staggered Multi-Branch Tree Layout Engine
+  const BASE_H_STEP = 350;   // Base horizontal distance per hop
+  const STAGGER_X = 260;     // Horizontal tier offset for siblings (eliminates vertical stacking)
+
   const layoutTreeSide = (childrenMap, isLeft) => {
     const rootChildren = childrenMap.get(rootId) || [];
     if (rootChildren.length === 0) return;
@@ -354,32 +360,54 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
     };
 
     const totalLeaves = rootChildren.reduce((acc, c) => acc + getLeafCount(c.id), 0);
-    const startY = -((totalLeaves - 1) * MIN_V_GAP) / 2;
+    const SLOT_V_GAP = totalLeaves <= 4 ? 140 : totalLeaves <= 8 ? 120 : 105;
+    const startY = -((totalLeaves - 1) * SLOT_V_GAP) / 2;
 
-    const layoutBranch = (node, hop, startSlot) => {
+    const layoutBranch = (node, hop, startSlot, parentX = 0, siblingIdx = 0, siblingTotal = 1) => {
       const ch = childrenMap.get(node.id) || [];
-      const leaves = getLeafCount(node.id);
       let nodeY;
 
-      if (ch.length === 0) {
-        nodeY = startY + startSlot * MIN_V_GAP;
+      // Compute X with intelligent tier staggering
+      let colX;
+      if (hop === 1) {
+        // At Hop 1: Stagger siblings across two alternating horizontal columns
+        // Sibling 0: Tier 1A (350px), Sibling 1: Tier 1B (610px), Sibling 2: Tier 1A (350px), ...
+        const isStaggered = siblingTotal > 2 && (siblingIdx % 2 === 1);
+        const effectiveX = isStaggered ? (BASE_H_STEP + STAGGER_X) : BASE_H_STEP;
+        colX = isLeft ? -effectiveX : effectiveX;
       } else {
+        // At Hop 2+: Branch further outward from parent position
+        const forwardStep = BASE_H_STEP;
+        colX = parentX + (isLeft ? -forwardStep : forwardStep);
+      }
+
+      if (ch.length === 0) {
+        // Leaf node: assigned to its discrete vertical slot
+        nodeY = startY + startSlot * SLOT_V_GAP;
+      } else {
+        // Parent node: layout children first, then center parent between them
         let currentSubSlot = startSlot;
         const childYs = [];
-        ch.forEach((child) => {
+        ch.forEach((child, cIdx) => {
           const childLeaves = getLeafCount(child.id);
-          const cY = layoutBranch(child, hop + 1, currentSubSlot);
+          const cY = layoutBranch(
+            child,
+            hop + 1,
+            currentSubSlot,
+            colX,
+            cIdx,
+            ch.length
+          );
           childYs.push(cY);
           currentSubSlot += childLeaves;
         });
         nodeY = (childYs[0] + childYs[childYs.length - 1]) / 2;
       }
 
-      const colX = isLeft ? -hop * H_STEP : hop * H_STEP;
       resultNodes.push({
         ...node,
         id: node.id,
-        position: { x: colX, y: nodeY },
+        position: { x: Math.round(colX), y: Math.round(nodeY) },
         data: buildNodeData(node, {
           depth: hop,
           asset: targetAsset,
@@ -391,9 +419,9 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
     };
 
     let currentSlot = 0;
-    rootChildren.forEach((child) => {
+    rootChildren.forEach((child, idx) => {
       const leaves = getLeafCount(child.id);
-      layoutBranch(child, 1, currentSlot);
+      layoutBranch(child, 1, currentSlot, 0, idx, rootChildren.length);
       currentSlot += leaves;
     });
   };
