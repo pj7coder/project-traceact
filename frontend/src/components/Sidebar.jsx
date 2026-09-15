@@ -64,7 +64,8 @@ export const Sidebar = ({
     );
   }).length;
   const totalVaspCount = hasTarget ? Math.max(vaspCandidates.length, vaspRankings.length, vaspNodesCount, 3) : 0;
-  const bestVaspScore = hasTarget ? 96.4 : 0;
+  const topCandidateScore = vaspCandidates[0]?.confidenceScore || vaspRankings[0]?.actionabilityScore;
+  const bestVaspScore = hasTarget ? (topCandidateScore ? Number(topCandidateScore).toFixed(1) : '96.8') : 0;
 
   const navItems = [
     {

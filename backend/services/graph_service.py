@@ -81,7 +81,7 @@ class GraphService:
         nodes.append(center_node)
 
         # 2. Place Connected Nodes in a Radial Layout
-        max_graph_nodes = 30
+        max_graph_nodes = 60
         display_wallets = connected_wallets[:max_graph_nodes]
         num_display = len(display_wallets)
 

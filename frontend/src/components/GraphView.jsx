@@ -178,17 +178,48 @@ function buildNodeData(node, overrides = {}) {
       ...(overrides.tags || []),
     ])
   );
+  const isSuspect = Boolean(
+    overrides.isSuspect ||
+    innerData.isSuspect ||
+    node.isSuspect ||
+    overrides.nodeType === 'suspect' ||
+    innerData.nodeType === 'suspect' ||
+    node.nodeType === 'suspect' ||
+    overrides.role === 'suspect' ||
+    innerData.role === 'suspect' ||
+    node.role === 'suspect' ||
+    (innerData.tags && innerData.tags.some((t) => typeof t === 'string' && /suspect/i.test(t))) ||
+    (node.tags && node.tags.some((t) => typeof t === 'string' && /suspect/i.test(t)))
+  );
+
+  const isSearched = Boolean(
+    isSuspect ||
+    overrides.isSearched ||
+    innerData.isSearched ||
+    node.isSearched ||
+    overrides.isTarget ||
+    innerData.isTarget ||
+    node.isTarget
+  );
+
+  const nodeType = isSuspect ? 'suspect' : (overrides.nodeType || innerData.nodeType || node.nodeType || 'wallet');
+
+  // Strip nested data to avoid data.data.data accumulation
+  const cleanNode = { ...node };
+  delete cleanNode.data;
+  const cleanInner = { ...innerData };
+  delete cleanInner.data;
 
   return {
-    ...node,
-    ...innerData,
+    ...cleanNode,
+    ...cleanInner,
     ...overrides,
     id: node.id,
     address: fullAddr,
     fullAddress: fullAddr,
     label:
       fullAddr && fullAddr.length > 10
-        ? `${fullAddr.slice(0, 5)}...${fullAddr.slice(-4)}`
+        ? `${fullAddr.slice(0, 6)}...${fullAddr.slice(-4)}`
         : fullAddr || 'Unknown',
     balance,
     totalAmount,
@@ -196,16 +227,20 @@ function buildNodeData(node, overrides = {}) {
     txCount: transactionCount,
     riskScore,
     riskLevel,
+    isSuspect,
+    isSearched,
+    nodeType,
     tags,
   };
 }
 
 /**
- * Layout 1: Bilateral Forensic Flow (Horizontal).
- * - Target at center (0, 0).
- * - Incoming senders on Left (Hop 1 at -380px, Hop 2 at -760px).
- * - Outgoing recipients on Right (Hop 1 at +380px, Hop 2 at +760px).
- * - Strict 90-degree orthogonal step edges, aligned sibling branches.
+ * Layout 1: Bilateral Forensic Flow (Horizontal Multi-Branch Tree).
+ * - Target Root at Center (0, 0).
+ * - Incoming senders branch recursively on Left (Hop 1, Hop 2, Hop 3, ...).
+ * - Outgoing recipients branch recursively on Right (Hop 1, Hop 2, Hop 3, ...).
+ * - Reingold-Tilford tidy tree spacing: each parent is centered among its children.
+ * - Sibling subtrees never collide and are cleanly separated.
  */
 function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
   const { nodeMap, rootNode, rootId, outEdges, inEdges } = prepareNodesAndAdjacency(rawNodes, rawEdges, rootAddress);
@@ -213,76 +248,70 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
 
   const H_STEP = 380;
   const assigned = new Set([rootId]);
-  const outgoingByDepth = new Map();
-  const parentOf = new Map();
 
+  // Tree maps: parentId -> [childNode1, childNode2, ...]
+  const outChildrenMap = new Map();
+  const inChildrenMap = new Map();
+
+  // 1. BFS tree for Outgoing side (Right)
   let currentHop = 1;
-  let currentSources = [rootId];
-
-  while (currentSources.length > 0 && currentHop <= 6) {
-    const nextTargets = [];
-    const hopNodes = [];
-    for (const src of currentSources) {
-      const edges = outEdges.get(src) || [];
+  let currentParents = [rootId];
+  while (currentParents.length > 0 && currentHop <= 8) {
+    const nextParents = [];
+    for (const parent of currentParents) {
+      const edges = outEdges.get(parent) || [];
+      const children = [];
       for (const { target } of edges) {
         if (!assigned.has(target) && nodeMap.has(target)) {
           assigned.add(target);
-          nextTargets.push(target);
-          parentOf.set(target, src);
-          hopNodes.push(nodeMap.get(target));
+          nextParents.push(target);
+          children.push(nodeMap.get(target));
         }
       }
+      if (children.length > 0) {
+        outChildrenMap.set(parent, children);
+      }
     }
-    if (hopNodes.length > 0) {
-      outgoingByDepth.set(currentHop, hopNodes);
-      currentSources = nextTargets;
-      currentHop++;
-    } else {
-      break;
-    }
+    currentParents = nextParents;
+    currentHop++;
   }
 
-  const incomingByDepth = new Map();
-  const childOf = new Map();
-
+  // 2. BFS tree for Incoming side (Left)
   currentHop = 1;
   let currentTargets = [rootId];
-
-  while (currentTargets.length > 0 && currentHop <= 6) {
-    const nextSources = [];
-    const hopNodes = [];
+  while (currentTargets.length > 0 && currentHop <= 8) {
+    const nextTargets = [];
     for (const tgt of currentTargets) {
       const edges = inEdges.get(tgt) || [];
+      const senders = [];
       for (const { source } of edges) {
         if (!assigned.has(source) && nodeMap.has(source)) {
           assigned.add(source);
-          nextSources.push(source);
-          childOf.set(source, tgt);
-          hopNodes.push(nodeMap.get(source));
+          nextTargets.push(source);
+          senders.push(nodeMap.get(source));
         }
       }
+      if (senders.length > 0) {
+        inChildrenMap.set(tgt, senders);
+      }
     }
-    if (hopNodes.length > 0) {
-      incomingByDepth.set(currentHop, hopNodes);
-      currentTargets = nextSources;
-      currentHop++;
-    } else {
-      break;
-    }
+    currentTargets = nextTargets;
+    currentHop++;
   }
 
+  // 3. Assign any disconnected or non-tree nodes to incoming/outgoing root branches
   for (const [key, node] of nodeMap.entries()) {
     if (!assigned.has(key)) {
       assigned.add(key);
-      const role = node.data?.role || node.role;
-      if (role === 'incoming') {
-        const list = incomingByDepth.get(1) || [];
-        list.push(node);
-        incomingByDepth.set(1, list);
+      const isInc = (node.data?.role || node.role || '').toLowerCase() === 'incoming';
+      if (isInc) {
+        const rootIn = inChildrenMap.get(rootId) || [];
+        rootIn.push(node);
+        inChildrenMap.set(rootId, rootIn);
       } else {
-        const list = outgoingByDepth.get(1) || [];
-        list.push(node);
-        outgoingByDepth.set(1, list);
+        const rootOut = outChildrenMap.get(rootId) || [];
+        rootOut.push(node);
+        outChildrenMap.set(rootId, rootOut);
       }
     }
   }
@@ -301,138 +330,78 @@ function computeBilateralLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
     },
   ];
 
-  const layoutSide = (depthMap, isLeft) => {
-    const depths = Array.from(depthMap.keys()).sort((a, b) => a - b);
-    if (depths.length === 0) return;
+  // 4. Recursive Multi-Branch Tree Layout
+  const layoutTreeSide = (childrenMap, isLeft) => {
+    const rootChildren = childrenMap.get(rootId) || [];
+    if (rootChildren.length === 0) return;
 
-    const hop1Nodes = depthMap.get(1) || [];
-    const hop2Nodes = depthMap.get(2) || [];
-    const hop1Children = new Map();
-    hop1Nodes.forEach((n) => hop1Children.set(n.id, []));
-
-    hop2Nodes.forEach((n2) => {
-      const p = isLeft ? childOf.get(n2.id) : parentOf.get(n2.id);
-      if (p && hop1Children.has(p)) {
-        hop1Children.get(p).push(n2);
-      } else if (hop1Nodes.length > 0) {
-        hop1Children.get(hop1Nodes[0].id).push(n2);
+    // Helper: calculate leaf slots of any subtree
+    const leafCountMemo = new Map();
+    const getLeafCount = (nodeId) => {
+      if (leafCountMemo.has(nodeId)) return leafCountMemo.get(nodeId);
+      const ch = childrenMap.get(nodeId) || [];
+      if (ch.length === 0) {
+        leafCountMemo.set(nodeId, 1);
+        return 1;
       }
-    });
+      let sum = 0;
+      for (const c of ch) {
+        sum += getLeafCount(c.id);
+      }
+      const count = Math.max(1, sum);
+      leafCountMemo.set(nodeId, count);
+      return count;
+    };
 
-    let totalSlots = 0;
-    const branchSlots = [];
-    hop1Nodes.forEach((h1) => {
-      const children = hop1Children.get(h1.id) || [];
-      const slots = Math.max(1, children.length);
-      branchSlots.push({ node: h1, children, slots });
-      totalSlots += slots;
-    });
+    const totalLeaves = rootChildren.reduce((acc, c) => acc + getLeafCount(c.id), 0);
+    const startY = -((totalLeaves - 1) * MIN_V_GAP) / 2;
+
+    const layoutBranch = (node, hop, startSlot) => {
+      const ch = childrenMap.get(node.id) || [];
+      const leaves = getLeafCount(node.id);
+      let nodeY;
+
+      if (ch.length === 0) {
+        nodeY = startY + startSlot * MIN_V_GAP;
+      } else {
+        let currentSubSlot = startSlot;
+        const childYs = [];
+        ch.forEach((child) => {
+          const childLeaves = getLeafCount(child.id);
+          const cY = layoutBranch(child, hop + 1, currentSubSlot);
+          childYs.push(cY);
+          currentSubSlot += childLeaves;
+        });
+        nodeY = (childYs[0] + childYs[childYs.length - 1]) / 2;
+      }
+
+      const colX = isLeft ? -hop * H_STEP : hop * H_STEP;
+      resultNodes.push({
+        ...node,
+        id: node.id,
+        position: { x: colX, y: nodeY },
+        data: buildNodeData(node, {
+          depth: hop,
+          asset: targetAsset,
+          role: isLeft ? 'incoming' : 'outgoing',
+        }),
+      });
+
+      return nodeY;
+    };
 
     let currentSlot = 0;
-    const startY = -((totalSlots - 1) * MIN_V_GAP) / 2;
-
-    branchSlots.forEach(({ node: h1, children, slots }) => {
-      const branchCenterY = startY + (currentSlot + (slots - 1) / 2) * MIN_V_GAP;
-      const col1X = isLeft ? -H_STEP : H_STEP;
-
-      resultNodes.push({
-        ...h1,
-        id: h1.id,
-        position: { x: col1X, y: branchCenterY },
-        data: buildNodeData(h1, {
-          depth: 1,
-          asset: targetAsset,
-          role: isLeft ? 'incoming' : 'outgoing',
-        }),
-      });
-
-      const col2X = isLeft ? -2 * H_STEP : 2 * H_STEP;
-
-      if (children.length === 1) {
-        resultNodes.push({
-          ...children[0],
-          id: children[0].id,
-          position: { x: col2X, y: branchCenterY },
-          data: buildNodeData(children[0], {
-            depth: 2,
-            asset: targetAsset,
-            role: isLeft ? 'incoming' : 'outgoing',
-          }),
-        });
-      } else if (children.length > 1) {
-        children.forEach((c, cIdx) => {
-          const childY = startY + (currentSlot + cIdx) * MIN_V_GAP;
-          resultNodes.push({
-            ...c,
-            id: c.id,
-            position: { x: col2X, y: childY },
-            data: buildNodeData(c, {
-              depth: 2,
-              asset: targetAsset,
-              role: isLeft ? 'incoming' : 'outgoing',
-            }),
-          });
-        });
-      }
-
-      currentSlot += slots;
+    rootChildren.forEach((child) => {
+      const leaves = getLeafCount(child.id);
+      layoutBranch(child, 1, currentSlot);
+      currentSlot += leaves;
     });
-
-    depths
-      .filter((d) => d > 2)
-      .forEach((d) => {
-        const list = depthMap.get(d) || [];
-        const colX = isLeft ? -d * H_STEP : d * H_STEP;
-        const count = list.length;
-        list.forEach((node, idx) => {
-          const y = (idx - (count - 1) / 2) * MIN_V_GAP;
-          resultNodes.push({
-            ...node,
-            id: node.id,
-            position: { x: colX, y },
-            data: buildNodeData(node, {
-              depth: d,
-              asset: targetAsset,
-              role: isLeft ? 'incoming' : 'outgoing',
-            }),
-          });
-        });
-      });
   };
 
-  layoutSide(outgoingByDepth, false);
-  layoutSide(incomingByDepth, true);
-
-  // Preserve any remaining unassigned nodes from nodeMap (e.g. multi-hop expansion or non-tree counterparties)
-  const assignedSet = new Set(resultNodes.map((n) => n.id));
-  const unassigned = [];
-  nodeMap.forEach((n, k) => {
-    if (!assignedSet.has(k)) {
-      unassigned.push(n);
-    }
-  });
-
-  if (unassigned.length > 0) {
-    unassigned.forEach((uNode, uIdx) => {
-      const depth = uNode.data?.depth || uNode.depth || 1;
-      const isLeft = (uNode.data?.role || uNode.role || '').toLowerCase() === 'incoming' || uIdx % 2 === 1;
-      const colX = isLeft ? -depth * H_STEP : depth * H_STEP;
-      const y = (uIdx - (unassigned.length - 1) / 2) * MIN_V_GAP;
-      resultNodes.push({
-        ...uNode,
-        id: uNode.id,
-        position: { x: colX, y },
-        data: buildNodeData(uNode, {
-          depth,
-          asset: targetAsset,
-          role: isLeft ? 'incoming' : 'outgoing',
-        }),
-      });
-    });
-  }
+  layoutTreeSide(outChildrenMap, false); // Right side: Outgoing multi-branches
+  layoutTreeSide(inChildrenMap, true);   // Left side: Incoming multi-branches
 
   resolveCollisions(resultNodes);
-
   return resultNodes;
 }
 
@@ -1084,7 +1053,14 @@ const GraphInner = ({
     });
 
     setNodes(enhancedNodes);
-  }, [layoutedNodes, selectedNodeId, targetAsset, handleOpenNode, handleTrackNode, setNodes]);
+    // Smoothly auto-fit multi-branch graph so all transactions are framed
+    const fitTimer = setTimeout(() => {
+      try {
+        fitView({ padding: 0.16, duration: 350 });
+      } catch (e) {}
+    }, 80);
+    return () => clearTimeout(fitTimer);
+  }, [layoutedNodes, selectedNodeId, targetAsset, handleOpenNode, handleTrackNode, setNodes, fitView]);
 
   // 4. Dynamically style edges: Green for Inflow, Red for Outflow relative to selected node
   useEffect(() => {
@@ -1442,7 +1418,8 @@ const GraphInner = ({
         onPaneClick={handlePaneClick}
         nodeTypes={nodeTypes}
         fitView
-        minZoom={0.08}
+        fitViewOptions={{ padding: 0.16 }}
+        minZoom={0.04}
         maxZoom={2.5}
         attributionPosition="bottom-left"
       >

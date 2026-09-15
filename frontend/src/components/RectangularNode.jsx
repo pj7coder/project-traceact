@@ -92,7 +92,12 @@ export const RectangularNode = ({ id, data, selected }) => {
   let glowStyle = 'none';
   let themeColor = '#34c759';
 
-  if (isVasp) {
+  if (isSuspect) {
+    nodeBg = 'linear-gradient(145deg, rgba(0, 113, 227, 0.24) 0%, rgba(0, 113, 227, 0.1) 100%)';
+    borderStyle = '2px solid #0071e3';
+    glowStyle = '0 0 14px rgba(0, 113, 227, 0.45)';
+    themeColor = '#0071e3';
+  } else if (isVasp) {
     nodeBg = 'linear-gradient(145deg, rgba(234, 179, 8, 0.22) 0%, rgba(202, 138, 4, 0.12) 100%)';
     borderStyle = '1.5px solid #eab308';
     glowStyle = '0 0 10px rgba(234, 179, 8, 0.25)';
@@ -113,7 +118,9 @@ export const RectangularNode = ({ id, data, selected }) => {
     themeColor = riskScore >= 75 ? '#af52de' : riskScore >= 50 ? '#ff453a' : riskScore >= 20 ? '#ff9f0a' : '#34c759';
   }
 
-  const title = data.entityName || data.name || (isSuspect && data.depth !== 0 ? 'Suspect Wallet' : isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr);
+  const title = (isSuspect && data.depth !== 0)
+    ? 'Suspect Wallet'
+    : (data.entityName || data.name || (isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr));
   
   // Robust Volume Calculation: fallback across all possible keys so volume is never 0
   let balanceRaw = data.balance ?? data.balanceEth ?? data.totalTransferred ?? data.totalAmount ?? data.totalVolume ?? '0';
@@ -154,24 +161,27 @@ export const RectangularNode = ({ id, data, selected }) => {
     e.stopPropagation();
     if (isExpanding) return;
 
+    setIsExpanding(true);
+    const safetyTimer = setTimeout(() => {
+      setIsExpanding(false);
+    }, 10000);
+
+    const targetAddress = fullAddr || data?.address || id || '';
+    const payload = {
+      ...data,
+      id: id || targetAddress,
+      address: targetAddress,
+      fullAddress: targetAddress,
+    };
+
     if (data?.onTrack) {
-      setIsExpanding(true);
-      // Safety fallback: guaranteed reset after 10s to eliminate stuck loading state
-      const safetyTimer = setTimeout(() => {
-        setIsExpanding(false);
-      }, 10000);
-
-      const payload = {
-        ...data,
-        id: id || fullAddr,
-        address: fullAddr,
-        fullAddress: fullAddr,
-      };
-
       data.onTrack(payload, () => {
         clearTimeout(safetyTimer);
         setIsExpanding(false);
       });
+    } else {
+      clearTimeout(safetyTimer);
+      setIsExpanding(false);
     }
   };
 

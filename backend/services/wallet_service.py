@@ -323,24 +323,31 @@ class WalletService:
 
     @staticmethod
     def _generate_ethereum_sandbox_transactions(address: str) -> List[NormalizedTransaction]:
-        """Realistic Ethereum forensic transaction series connecting to CoinDCX, Binance, and Intermediary Peeling router."""
+        """Comprehensive multi-branch Ethereum forensic transaction series connecting to multiple VASPs, mixers, and multi-hop peeling routers."""
         now = time.time()
         coindcx_eth = "0x6cc5f688a315f3dc28a7781717a9a798a59fda7b"
         binance_eth = "0x28c6c06298d514db089934071355e5743bf21d60"
-        intermediary_eth = "0x429671ac868fa2f78ea23e2002e2c2bf12f20485"
+        wazirx_eth = "0x5e57d3114948f936828931c8f23f91849578e539"
+        kraken_eth = "0x2910543af39aba0cd09dbb2d50200b3e800a63d2"
+        uniswap_eth = "0xe592427a0aece92de3edee1f18e0157c05861564"
+        intermediary_1 = "0x429671ac868fa2f78ea23e2002e2c2bf12f20485"
+        intermediary_2 = "0x742d35cc6634c0532925a3b844bc454e4438f44e"
+        inflow_stash = "0x55d398326f99059ff775485246999027b3197955"
+        inflow_otc = "0x388c818ca8b9251b393131c08a736a67ccb19297"
+        inflow_bridge = "0x220866b1a2219f40e72f5c628b65d54268ca3a9d"
         clean = address.lower().strip()
 
-        # If tracing from the intermediary node itself (Hop 2 / multi-hop expansion)
-        if clean == intermediary_eth.lower():
+        # If tracing from intermediary_1 (Hop 2 / multi-hop expansion)
+        if clean == intermediary_1.lower():
             return [
                 NormalizedTransaction(
                     txHash="0x8f12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676bb",
                     chain="ethereum",
                     fromAddress=clean,
                     toAddress=binance_eth,
-                    value="4.5000",
-                    valueWei="4500000000000000000",
-                    valueRaw="4500000000000000000",
+                    value="2.8500",
+                    valueWei="2850000000000000000",
+                    valueRaw="2850000000000000000",
                     asset="ETH",
                     timestamp=datetime.fromtimestamp(now - 14400, tz=timezone.utc).isoformat(),
                     blockNumber=20744000,
@@ -352,13 +359,31 @@ class WalletService:
                     txType="native_transfer",
                 ),
                 NormalizedTransaction(
+                    txHash="0x7f23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9779aa",
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=wazirx_eth,
+                    value="1.4500",
+                    valueWei="1450000000000000000",
+                    valueRaw="1450000000000000000",
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - 10200, tz=timezone.utc).isoformat(),
+                    blockNumber=20744500,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0017",
+                    feeWei="1700000000000000",
+                    feeRaw="1700000000000000",
+                    txType="native_transfer",
+                ),
+                NormalizedTransaction(
                     txHash="0x9e23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9778cc",
                     chain="ethereum",
-                    fromAddress="0x55d398326f99059ff775485246999027b3197955",
+                    fromAddress=inflow_stash,
                     toAddress=clean,
-                    value="8.2000",
-                    valueWei="8200000000000000000",
-                    valueRaw="8200000000000000000",
+                    value="5.2000",
+                    valueWei="5200000000000000000",
+                    valueRaw="5200000000000000000",
                     asset="ETH",
                     timestamp=datetime.fromtimestamp(now - 172800, tz=timezone.utc).isoformat(),
                     blockNumber=20731000,
@@ -371,7 +396,107 @@ class WalletService:
                 ),
             ]
 
+        # If tracing from intermediary_2
+        if clean == intermediary_2.lower():
+            return [
+                NormalizedTransaction(
+                    txHash="0x6a12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676cc",
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=kraken_eth,
+                    value="1.9500",
+                    valueWei="1950000000000000000",
+                    valueRaw="1950000000000000000",
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - 18000, tz=timezone.utc).isoformat(),
+                    blockNumber=20743200,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0016",
+                    feeWei="1600000000000000",
+                    feeRaw="1600000000000000",
+                    txType="native_transfer",
+                ),
+                NormalizedTransaction(
+                    txHash="0x5b23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9779dd",
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=coindcx_eth,
+                    value="1.1000",
+                    valueWei="1100000000000000000",
+                    valueRaw="1100000000000000000",
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - 12000, tz=timezone.utc).isoformat(),
+                    blockNumber=20744100,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0018",
+                    feeWei="1800000000000000",
+                    feeRaw="1800000000000000",
+                    txType="native_transfer",
+                ),
+            ]
+
+        # Multi-branch primary transaction topology
         return [
+            # 1. Incoming Master Stash Inflow
+            NormalizedTransaction(
+                txHash="0x9e23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9778cc",
+                chain="ethereum",
+                fromAddress=inflow_stash,
+                toAddress=clean,
+                value="12.4000",
+                valueWei="12400000000000000000",
+                valueRaw="12400000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 172800, tz=timezone.utc).isoformat(),
+                blockNumber=20731000,
+                status="confirmed",
+                direction=TransactionDirection.INCOMING,
+                fee="0.0028",
+                feeWei="2800000000000000",
+                feeRaw="2800000000000000",
+                txType="native_transfer",
+            ),
+            # 2. Incoming OTC P2P Feeder
+            NormalizedTransaction(
+                txHash="0x98b8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba9676bb",
+                chain="ethereum",
+                fromAddress=inflow_otc,
+                toAddress=clean,
+                value="4.8500",
+                valueWei="4850000000000000000",
+                valueRaw="4850000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 129600, tz=timezone.utc).isoformat(),
+                blockNumber=20735000,
+                status="confirmed",
+                direction=TransactionDirection.INCOMING,
+                fee="0.0024",
+                feeWei="2400000000000000",
+                feeRaw="2400000000000000",
+                txType="native_transfer",
+            ),
+            # 3. Incoming Layer-2 Liquidity Bridge
+            NormalizedTransaction(
+                txHash="0x44c8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba9676ee",
+                chain="ethereum",
+                fromAddress=inflow_bridge,
+                toAddress=clean,
+                value="6.2000",
+                valueWei="6200000000000000000",
+                valueRaw="6200000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 86400, tz=timezone.utc).isoformat(),
+                blockNumber=20738900,
+                status="confirmed",
+                direction=TransactionDirection.INCOMING,
+                fee="0.0035",
+                feeWei="3500000000000000",
+                feeRaw="3500000000000000",
+                txType="native_transfer",
+            ),
+            # 4. Outflow Branch 1: Direct VASP CoinDCX (FIU-IND Domestic Reporting Entity)
             NormalizedTransaction(
                 txHash="0x12389cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9676aa",
                 chain="ethereum",
@@ -390,32 +515,15 @@ class WalletService:
                 feeRaw="2100000000000000",
                 txType="native_transfer",
             ),
-            NormalizedTransaction(
-                txHash="0x98b8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba9676bb",
-                chain="ethereum",
-                fromAddress=intermediary_eth,
-                toAddress=clean,
-                value="6.4200",
-                valueWei="6420000000000000000",
-                valueRaw="6420000000000000000",
-                asset="ETH",
-                timestamp=datetime.fromtimestamp(now - 86400, tz=timezone.utc).isoformat(),
-                blockNumber=20738900,
-                status="confirmed",
-                direction=TransactionDirection.INCOMING,
-                fee="0.0035",
-                feeWei="3500000000000000",
-                feeRaw="3500000000000000",
-                txType="native_transfer",
-            ),
+            # 5. Outflow Branch 2: Direct Global VASP Binance Hot Wallet
             NormalizedTransaction(
                 txHash="0xb589c7d37a152f2387b7de4902e5f89a74312052f65d7131695399e1cb0787cc",
                 chain="ethereum",
                 fromAddress=clean,
                 toAddress=binance_eth,
-                value="1.8500",
-                valueWei="1850000000000000000",
-                valueRaw="1850000000000000000",
+                value="2.8500",
+                valueWei="2850000000000000000",
+                valueRaw="2850000000000000000",
                 asset="ETH",
                 timestamp=datetime.fromtimestamp(now - 43200, tz=timezone.utc).isoformat(),
                 blockNumber=20741200,
@@ -425,6 +533,101 @@ class WalletService:
                 feeWei="1800000000000000",
                 feeRaw="1800000000000000",
                 txType="native_transfer",
+            ),
+            # 6. Outflow Branch 3: Peeling Chain Router 1 (Multi-hop Intermediary)
+            NormalizedTransaction(
+                txHash="0x33b8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba9676dd",
+                chain="ethereum",
+                fromAddress=clean,
+                toAddress=intermediary_1,
+                value="4.5000",
+                valueWei="4500000000000000000",
+                valueRaw="4500000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 50400, tz=timezone.utc).isoformat(),
+                blockNumber=20740500,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0022",
+                feeWei="2200000000000000",
+                feeRaw="2200000000000000",
+                txType="peeling_chain",
+            ),
+            # 7. Outflow Branch 4: Layering Router 2 (Multi-hop Intermediary)
+            NormalizedTransaction(
+                txHash="0x77d8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba9676ff",
+                chain="ethereum",
+                fromAddress=clean,
+                toAddress=intermediary_2,
+                value="3.1000",
+                valueWei="3100000000000000000",
+                valueRaw="3100000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 64800, tz=timezone.utc).isoformat(),
+                blockNumber=20739800,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0019",
+                feeWei="1900000000000000",
+                feeRaw="1900000000000000",
+                txType="peeling_chain",
+            ),
+            # 8. Outflow Branch 5: Direct Domestic VASP WazirX (FIU-IND Registered)
+            NormalizedTransaction(
+                txHash="0x88e8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba967611",
+                chain="ethereum",
+                fromAddress=clean,
+                toAddress=wazirx_eth,
+                value="1.7500",
+                valueWei="1750000000000000000",
+                valueRaw="1750000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 28800, tz=timezone.utc).isoformat(),
+                blockNumber=20742500,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0017",
+                feeWei="1700000000000000",
+                feeRaw="1700000000000000",
+                txType="native_transfer",
+            ),
+            # 9. Outflow Branch 6: Kraken Custodial Gateway
+            NormalizedTransaction(
+                txHash="0x99f8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba967622",
+                chain="ethereum",
+                fromAddress=clean,
+                toAddress=kraken_eth,
+                value="2.1500",
+                valueWei="2150000000000000000",
+                valueRaw="2150000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 36000, tz=timezone.utc).isoformat(),
+                blockNumber=20741800,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0020",
+                feeWei="2000000000000000",
+                feeRaw="2000000000000000",
+                txType="native_transfer",
+            ),
+            # 10. Outflow Branch 7: Uniswap V3 Decentralized Swapping Router
+            NormalizedTransaction(
+                txHash="0xaaf8c26f041e1276a6cf3891d4e78a6320141e54c6020584288d0ba967633",
+                chain="ethereum",
+                fromAddress=clean,
+                toAddress=uniswap_eth,
+                value="1.2000",
+                valueWei="1200000000000000000",
+                valueRaw="1200000000000000000",
+                asset="ETH",
+                timestamp=datetime.fromtimestamp(now - 7200, tz=timezone.utc).isoformat(),
+                blockNumber=20745500,
+                status="confirmed",
+                direction=TransactionDirection.OUTGOING,
+                fee="0.0031",
+                feeWei="3100000000000000",
+                feeRaw="3100000000000000",
+                txType="contract_call",
             ),
         ]
 
