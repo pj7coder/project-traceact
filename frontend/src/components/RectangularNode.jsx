@@ -50,13 +50,27 @@ export const RectangularNode = ({ id, data, selected }) => {
   const asset = currMeta.symbol;
 
   // Determine Node Role & Tagging
-  const isSearched = data.nodeType === 'investigated' || data.isTarget || data.depth === 0 || data.role === 'investigated';
+  const isSuspect = Boolean(
+    data.isSuspect ||
+    data.nodeType === 'suspect' ||
+    data.type === 'suspect' ||
+    data.role === 'suspect' ||
+    (data.tags && data.tags.some((t) => typeof t === 'string' && /suspect/i.test(t)))
+  );
+
+  const isSearched =
+    isSuspect ||
+    data.isSearched ||
+    data.nodeType === 'investigated' ||
+    data.isTarget ||
+    data.depth === 0 ||
+    data.role === 'investigated';
   
   const isVasp = !isSearched && Boolean(
     data.nodeType === 'known_entity' ||
     data.isVasp === true ||
     (data.entityType && /exchange|vasp|custodial/i.test(data.entityType)) ||
-    (data.tags && data.tags.some(t => /vasp|exchange|coindcx|binance|wazirx|kraken|coinbase|bybit|kucoin/i.test(t))) ||
+    (data.tags && data.tags.some((t) => typeof t === 'string' && /vasp|exchange|coindcx|binance|wazirx|kraken|coinbase|bybit|kucoin/i.test(t))) ||
     (data.entityName && /exchange|vasp|coindcx|binance|wazirx|kraken|coinbase|bybit|kucoin/i.test(data.entityName))
   );
 
@@ -70,7 +84,7 @@ export const RectangularNode = ({ id, data, selected }) => {
 
   // Whole Node Coloring (For Tagging Only, Not for Suspicion):
   // - VASP: Whole node has gold background (#eab308)
-  // - Target Root: Whole node has blue background (#0071e3)
+  // - Target Root / Suspect Wallet: Whole node has blue background (#0071e3)
   // - Cross-Case Tagged: Whole node has forensic purple background (#af52de)
   // - Standard Peers: Clean card background (suspicion stays on risk badge)
   let nodeBg = 'var(--bg-card)';
@@ -99,7 +113,7 @@ export const RectangularNode = ({ id, data, selected }) => {
     themeColor = riskScore >= 75 ? '#af52de' : riskScore >= 50 ? '#ff453a' : riskScore >= 20 ? '#ff9f0a' : '#34c759';
   }
 
-  const title = data.entityName || data.name || (isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr);
+  const title = data.entityName || data.name || (isSuspect && data.depth !== 0 ? 'Suspect Wallet' : isSearched ? 'Target Wallet' : isVasp ? 'Verified VASP' : shortAddr);
   
   // Robust Volume Calculation: fallback across all possible keys so volume is never 0
   let balanceRaw = data.balance ?? data.balanceEth ?? data.totalTransferred ?? data.totalAmount ?? data.totalVolume ?? '0';
@@ -316,7 +330,7 @@ export const RectangularNode = ({ id, data, selected }) => {
         <div style={{ display: 'flex', alignItems: 'center', gap: 3 }}>
           {isSearched ? (
             <span className="apple-badge" style={{ background: 'rgba(0, 113, 227, 0.16)', color: '#0071e3', fontWeight: 600 }}>
-              Target Root
+              {isSuspect && data.depth !== 0 ? 'Suspect Wallet' : 'Target Root'}
             </span>
           ) : isVasp ? (
             <span className="apple-badge" style={{ background: 'rgba(234, 179, 8, 0.22)', color: '#b45309', display: 'inline-flex', alignItems: 'center', gap: 3, fontWeight: 700 }}>

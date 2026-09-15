@@ -578,3 +578,11 @@ html, body, #root {
     page-break-after: auto;
   }
 }
+
+/* Suspicion Points & Nearest VASPs Responsive Grid */
+@media (max-width: 1140px) {
+  .suspicion-layout-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+

@@ -296,8 +296,62 @@ export function App() {
 
       const nodeChain = nodeData.chain || currentChain;
       const nodeAsset = getAssetForChain(nodeChain, targetAddr);
+      const parentKey = targetAddr.toLowerCase();
+      const parentDepth = nodeData?.depth || 1;
 
       try {
+        // 1. Mark selected node as blue suspect wallet in graph nodes (keeping all existing graph nodes)
+        let targetFound = false;
+        let baseNodes = graphNodes.map((n) => {
+          if (n.id.toLowerCase() === parentKey) {
+            targetFound = true;
+            return {
+              ...n,
+              type: 'customWalletNode',
+              data: {
+                ...n.data,
+                isExpanded: true,
+                isSearched: true,
+                isSuspect: true,
+                nodeType: 'suspect',
+                type: 'suspect',
+                role: 'suspect',
+                nodeColor: '#0071e3',
+                tags: Array.from(new Set([...(n.data?.tags || []), 'Suspect Wallet', 'Expanded Ref'])),
+              },
+            };
+          }
+          return n;
+        });
+
+        // If target node was not already in graphNodes, add it as a blue suspect node
+        if (!targetFound) {
+          baseNodes.push({
+            id: parentKey,
+            type: 'customWalletNode',
+            address: targetAddr,
+            fullAddress: targetAddr,
+            data: {
+              ...nodeData,
+              id: parentKey,
+              address: targetAddr,
+              fullAddress: targetAddr,
+              label: `${targetAddr.slice(0, 5)}...${targetAddr.slice(-4)}`,
+              nodeType: 'suspect',
+              type: 'suspect',
+              role: 'suspect',
+              isSearched: true,
+              isSuspect: true,
+              isExpanded: true,
+              chain: nodeChain,
+              asset: nodeAsset,
+              depth: parentDepth,
+              nodeColor: '#0071e3',
+              tags: ['Suspect Wallet', 'Investigated Target'],
+            },
+          });
+        }
+
         // Execute 2-hop expansion from target node as reference
         let newDiscoveredNodes = [];
         let newDiscoveredEdges = [];
@@ -312,11 +366,9 @@ export function App() {
           });
 
           if (trace2Hop && trace2Hop.nodes && trace2Hop.nodes.length > 0) {
-            const parentDepth = nodeData.depth || 1;
-
             trace2Hop.nodes.forEach((tn) => {
               const cleanAddr = tn.address.toLowerCase();
-              if (cleanAddr !== targetAddr.toLowerCase()) {
+              if (cleanAddr !== parentKey) {
                 newDiscoveredNodes.push({
                   id: cleanAddr,
                   address: tn.address,
@@ -334,122 +386,119 @@ export function App() {
               }
             });
 
-            trace2Hop.edges.forEach((te) => {
+            (trace2Hop.edges || []).forEach((te) => {
               newDiscoveredEdges.push({
                 source: te.source.toLowerCase(),
                 target: te.target.toLowerCase(),
                 totalValue: te.totalValue,
                 asset: nodeAsset,
                 transactionCount: te.transactionCount,
-                hopDepth: (nodeData.depth || 1) + (te.hopDepth || 1),
+                hopDepth: parentDepth + (te.hopDepth || 1),
               });
             });
           }
         } catch (traceErr) {
-          console.warn('Trace 2-hop API notice, fetching direct counterparties:', traceErr);
-          const subRes = await analyzeWallet(nodeChain, targetAddr);
-          if (subRes && subRes.connectedWallets) {
-            const parentDepth = nodeData.depth || 1;
-            subRes.connectedWallets.slice(0, 6).forEach((cw) => {
-              newDiscoveredNodes.push({
-                id: cw.address.toLowerCase(),
-                address: cw.address,
-                fullAddress: cw.address,
-                depth: parentDepth + 1,
-                type: 'wallet',
-                chain: nodeChain,
-                riskScore: cw.riskScore || 15,
-                riskLevel: cw.riskLevel || 'LOW',
-                balance: cw.balance || '0',
-                totalAmount: cw.totalAmount || '0',
-                transactionCount: cw.transactionCount || 1,
-                tags: cw.tags || [],
+          console.warn('Trace 2-hop API notice, attempting counterparty query:', traceErr);
+        }
+
+        // If trace returned no counterparties, query direct connected wallets
+        if (newDiscoveredNodes.length === 0) {
+          try {
+            const subRes = await analyzeWallet(nodeChain, targetAddr);
+            if (subRes && subRes.connectedWallets && subRes.connectedWallets.length > 0) {
+              subRes.connectedWallets.slice(0, 8).forEach((cw) => {
+                const cleanCwAddr = (cw.address || '').toLowerCase();
+                if (cleanCwAddr && cleanCwAddr !== parentKey) {
+                  newDiscoveredNodes.push({
+                    id: cleanCwAddr,
+                    address: cw.address,
+                    fullAddress: cw.address,
+                    depth: parentDepth + 1,
+                    type: cw.type || 'wallet',
+                    chain: nodeChain,
+                    riskScore: cw.riskScore || 15,
+                    riskLevel: cw.riskLevel || 'LOW',
+                    balance: cw.balance || '0',
+                    totalAmount: cw.totalAmount || '0',
+                    transactionCount: cw.transactionCount || 1,
+                    tags: cw.tags || [],
+                  });
+                  newDiscoveredEdges.push({
+                    source: parentKey,
+                    target: cleanCwAddr,
+                    totalValue: cw.totalAmount || '0',
+                    asset: nodeAsset,
+                    transactionCount: cw.transactionCount || 1,
+                    hopDepth: parentDepth + 1,
+                  });
+                }
               });
-              newDiscoveredEdges.push({
-                source: targetAddr.toLowerCase(),
-                target: cw.address.toLowerCase(),
-                totalValue: cw.totalAmount || '0',
-                asset: nodeAsset,
-                transactionCount: cw.transactionCount || 1,
-                hopDepth: parentDepth + 1,
-              });
-            });
+            }
+          } catch (analyzeErr) {
+            console.warn('Analyze counterparties notice:', analyzeErr);
           }
         }
 
-        if (newDiscoveredNodes.length > 0) {
-          const existingIds = new Set(graphNodes.map((n) => n.id.toLowerCase()));
-          const parentKey = targetAddr.toLowerCase();
+        // Merge keeping all existing nodes & edges
+        const existingIds = new Set(baseNodes.map((n) => n.id.toLowerCase()));
+        const mergedNodes = [...baseNodes];
 
-          // Mark parent as expanded target
-          const mergedNodes = graphNodes.map((n) => {
-            if (n.id.toLowerCase() === parentKey) {
-              return {
-                ...n,
-                data: {
-                  ...n.data,
-                  isExpanded: true,
-                  tags: Array.from(new Set([...(n.data?.tags || []), 'Expanded Ref'])),
-                },
-              };
-            }
-            return n;
-          });
-
-          // Append new 2-hop nodes
-          newDiscoveredNodes.forEach((tn) => {
-            const id = (tn.address || tn.id).toLowerCase();
-            if (!existingIds.has(id)) {
-              existingIds.add(id);
-              mergedNodes.push({
+        // Append new 2-hop nodes
+        newDiscoveredNodes.forEach((tn) => {
+          const id = (tn.address || tn.id).toLowerCase();
+          if (!existingIds.has(id)) {
+            existingIds.add(id);
+            mergedNodes.push({
+              id,
+              type: 'customWalletNode',
+              address: tn.address,
+              fullAddress: tn.address,
+              data: {
+                ...tn,
                 id,
-                type: 'customWalletNode',
                 address: tn.address,
                 fullAddress: tn.address,
-                data: {
-                  ...tn,
-                  id,
-                  address: tn.address,
-                  fullAddress: tn.address,
-                  label: `${tn.address.slice(0, 5)}...${tn.address.slice(-4)}`,
-                  nodeType: tn.type || 'wallet',
-                  depth: tn.depth,
-                  asset: nodeAsset,
-                },
-              });
-            }
-          });
+                label: `${tn.address.slice(0, 5)}...${tn.address.slice(-4)}`,
+                nodeType: tn.type || 'wallet',
+                depth: tn.depth,
+                asset: nodeAsset,
+              },
+            });
+          }
+        });
 
-          // Append straight edges
-          const existingEdgeKeys = new Set(graphEdges.map((e) => `${e.source}->${e.target}`));
-          const mergedEdges = [...graphEdges];
+        // Append straight edges
+        const existingEdgeKeys = new Set(graphEdges.map((e) => `${e.source.toLowerCase()}->${e.target.toLowerCase()}`));
+        const mergedEdges = [...graphEdges];
 
-          newDiscoveredEdges.forEach((te, idx) => {
-            const edgeKey = `${te.source.toLowerCase()}->${te.target.toLowerCase()}`;
-            if (!existingEdgeKeys.has(edgeKey)) {
-              existingEdgeKeys.add(edgeKey);
-              mergedEdges.push({
-                id: `e-${te.source}-${te.target}-${idx}`,
-                source: te.source.toLowerCase(),
-                target: te.target.toLowerCase(),
-                totalValue: te.totalValue,
-                type: 'straight',
-                data: {
-                  transactionCount: te.transactionCount || 1,
-                  totalTransferred: te.totalValue || '0',
-                  asset: nodeAsset,
-                  hopDepth: te.hopDepth,
-                },
-                animated: false,
-              });
-            }
-          });
+        newDiscoveredEdges.forEach((te, idx) => {
+          const edgeKey = `${te.source.toLowerCase()}->${te.target.toLowerCase()}`;
+          if (!existingEdgeKeys.has(edgeKey)) {
+            existingEdgeKeys.add(edgeKey);
+            mergedEdges.push({
+              id: `e-${te.source}-${te.target}-${Date.now()}-${idx}`,
+              source: te.source.toLowerCase(),
+              target: te.target.toLowerCase(),
+              totalValue: te.totalValue,
+              type: 'straight',
+              data: {
+                transactionCount: te.transactionCount || 1,
+                totalTransferred: te.totalValue || '0',
+                asset: nodeAsset,
+                hopDepth: te.hopDepth,
+              },
+              animated: false,
+            });
+          }
+        });
 
-          setGraphNodes(mergedNodes);
-          setGraphEdges(mergedEdges);
-          showToast(`Expanded 2 hops from ${targetAddr.slice(0, 6)}... (+${newDiscoveredNodes.length} nodes).`);
+        setGraphNodes(mergedNodes);
+        setGraphEdges(mergedEdges);
+
+        if (newDiscoveredNodes.length > 0) {
+          showToast(`Expanded 2 hops & marked ${targetAddr.slice(0, 6)}... as Suspect Wallet (+${newDiscoveredNodes.length} nodes).`);
         } else {
-          showToast(`No additional 2-hop counterparties found.`);
+          showToast(`Marked ${targetAddr.slice(0, 6)}... as Suspect Wallet (all graph preserved).`);
         }
       } catch (err) {
         console.error('2-hop branch expansion failed:', err);
@@ -611,6 +660,11 @@ export function App() {
             <SuspicionPointsView
               riskAssessment={riskAssessment}
               wallet={analysisData?.wallet}
+              investigationData={investigationDossier}
+              analysisData={analysisData}
+              graphData={{ nodes: graphNodes, edges: graphEdges }}
+              currentChain={currentChain}
+              currentAsset={currentAsset}
             />
           )}
 
