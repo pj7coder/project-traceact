@@ -2,6 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Search, X, Loader2, SlidersHorizontal, Settings, ChevronDown } from 'lucide-react';
 import { detectChain } from '../api/client';
 
+export const isSupportedWalletAddress = (addr) => {
+  if (!addr || typeof addr !== 'string') return false;
+  const clean = addr.trim();
+
+  // 1. Ethereum / EVM: 0x followed by 40 hex characters (length 42)
+  const ethRegex = /^0x[a-fA-F0-9]{40}$/;
+  if (ethRegex.test(clean)) return true;
+
+  // 2. Bitcoin: Bech32/Taproot (bc1...) or Legacy/P2SH (1... or 3...)
+  const btcBech32Regex = /^(bc1[a-z0-9]{39,59}|bc1p[a-z0-9]{58})$/i;
+  const btcBase58Regex = /^[13][a-km-zA-HJ-NP-Z1-9]{25,34}$/;
+  if (btcBech32Regex.test(clean) || btcBase58Regex.test(clean)) return true;
+
+  // 3. Tron (TRC-20 / TRX): Starts with T, length 34
+  const tronRegex = /^T[a-zA-HJ-NP-Z0-9]{33}$/;
+  if (tronRegex.test(clean)) return true;
+
+  return false;
+};
+
 export const SearchBar = ({
   onSearch,
   onClear,
@@ -50,8 +70,6 @@ export const SearchBar = ({
       setDetectedChain('tron');
     } else if (trimmed.startsWith('1') || trimmed.startsWith('3') || trimmed.startsWith('bc1')) {
       setDetectedChain('bitcoin');
-    } else if (trimmed.length >= 32 && trimmed.length <= 44 && !trimmed.startsWith('0x')) {
-      setDetectedChain('solana');
     } else {
       setDetectedChain('ethereum');
     }
@@ -71,12 +89,30 @@ export const SearchBar = ({
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const handlePaste = (e) => {
+    const pastedText = e.clipboardData?.getData('text') || '';
+    const clean = pastedText.trim();
+    if (!clean) return;
 
+    if (!isSupportedWalletAddress(clean)) {
+      e.preventDefault();
+      alert('not supported');
+      return;
+    }
+
+    e.preventDefault();
+    setAddress(clean);
+  };
 
   const handleSubmit = async (e) => {
     e?.preventDefault();
     const clean = address.trim();
     if (!clean) return;
+
+    if (!isSupportedWalletAddress(clean)) {
+      alert('not supported');
+      return;
+    }
 
     let chainToUse = selectedChain && selectedChain !== 'auto' ? selectedChain : detectedChain;
     if (!chainToUse) {
@@ -118,7 +154,6 @@ export const SearchBar = ({
     switch (activeChain) {
       case 'bitcoin': return 'BTC';
       case 'tron': return 'TRX';
-      case 'solana': return 'SOL';
       default: return 'ETH';
     }
   };
@@ -303,6 +338,7 @@ export const SearchBar = ({
           type="text"
           value={address}
           onChange={(e) => setAddress(e.target.value)}
+          onPaste={handlePaste}
           placeholder="Enter ETH, BTC, or TRX wallet address..."
           style={{
             flex: 1,
@@ -367,15 +403,13 @@ export const SearchBar = ({
                     ? '#f7931a'
                     : activeChain === 'tron'
                     ? '#eb0029'
-                    : activeChain === 'solana'
-                    ? '#14f195'
                     : activeChain === 'ethereum'
                     ? '#0071e3'
                     : '#8e8e93',
               }}
             />
             <span>
-              {activeChain ? (activeChain === 'bitcoin' ? 'BTC' : activeChain === 'tron' ? 'TRX' : activeChain === 'solana' ? 'SOL' : 'ETH') : 'Auto Detect'}
+              {activeChain ? (activeChain === 'bitcoin' ? 'BTC' : activeChain === 'tron' ? 'TRX' : 'ETH') : 'Auto Detect'}
             </span>
             <ChevronDown size={10} />
           </button>
