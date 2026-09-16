@@ -80,19 +80,59 @@ class GraphService:
         )
         nodes.append(center_node)
 
-        # 2. Place Connected Nodes in a Radial Layout
+        # 2. Place Connected Nodes in an Organic Transaction-Driven Flow Layout
+        # Senders (incoming) flow in from the Left; Recipients (outgoing) branch out to the Right.
+        # Radial distance is inversely modulated by transaction volume (higher volume = closer corridor).
         max_graph_nodes = 60
         display_wallets = connected_wallets[:max_graph_nodes]
-        num_display = len(display_wallets)
 
-        radius = max(260.0, min(420.0, 160.0 + num_display * 8.0))
+        inflows = [w for w in display_wallets if getattr(w.direction, "value", str(w.direction)).lower() == "incoming"]
+        outflows = [w for w in display_wallets if getattr(w.direction, "value", str(w.direction)).lower() == "outgoing"]
+        mutuals = [w for w in display_wallets if w not in inflows and w not in outflows]
 
-        for idx, wallet in enumerate(display_wallets):
-            angle = (2 * math.pi * idx) / max(num_display, 1)
-            angle += -math.pi / 2
+        positions_map: Dict[str, Tuple[float, float]] = {}
 
-            pos_x = 400.0 + radius * math.cos(angle)
-            pos_y = 300.0 + radius * math.sin(angle)
+        # Place Upstream Inflow Senders on Left (X < 400)
+        num_in = len(inflows)
+        in_v_gap = max(90.0, min(150.0, 520.0 / max(num_in, 1)))
+        for idx, wallet in enumerate(inflows):
+            try:
+                amt = float(str(wallet.totalAmount or 1.0))
+            except Exception:
+                amt = 1.0
+            dist_x = max(260.0, min(380.0, 340.0 - math.log1p(amt) * 14.0))
+            y_offset = (idx - (num_in - 1) / 2.0) * in_v_gap
+            pos_x = 400.0 - dist_x
+            pos_y = 300.0 + y_offset
+            positions_map[wallet.address.lower()] = (pos_x, pos_y)
+
+        # Place Downstream Outflow Recipients on Right (X > 400)
+        num_out = len(outflows)
+        out_v_gap = max(90.0, min(150.0, 520.0 / max(num_out, 1)))
+        for idx, wallet in enumerate(outflows):
+            try:
+                amt = float(str(wallet.totalAmount or 1.0))
+            except Exception:
+                amt = 1.0
+            dist_x = max(260.0, min(380.0, 340.0 - math.log1p(amt) * 14.0))
+            y_offset = (idx - (num_out - 1) / 2.0) * out_v_gap
+            pos_x = 400.0 + dist_x
+            pos_y = 300.0 + y_offset
+            positions_map[wallet.address.lower()] = (pos_x, pos_y)
+
+        # Place Mutual / Bidirectional Counterparties in Top / Bottom Transition Zones
+        num_mut = len(mutuals)
+        for idx, wallet in enumerate(mutuals):
+            is_top = (idx % 2 == 0)
+            sign_y = -1.0 if is_top else 1.0
+            h_offset = (idx // 2 - (num_mut // 2) / 2.0) * 160.0
+            pos_x = 400.0 + h_offset
+            pos_y = 300.0 + sign_y * 270.0
+            positions_map[wallet.address.lower()] = (pos_x, pos_y)
+
+        for wallet in display_wallets:
+            w_key = wallet.address.lower()
+            pos_x, pos_y = positions_map.get(w_key, (400.0 + 300.0, 300.0))
 
             # Node color & entity lookup
             ent = entity_service.get_entity(wallet.address)

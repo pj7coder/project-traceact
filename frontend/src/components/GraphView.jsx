@@ -24,6 +24,7 @@ import {
   ChevronDown,
   Check,
   Map as MapIcon,
+  Network,
 } from 'lucide-react';
 import { RectangularNode } from './RectangularNode';
 import { NodeDetailModal } from './NodeDetailModal';
@@ -242,7 +243,232 @@ function buildNodeData(node, overrides = {}) {
 }
 
 /**
- * Layout 1 (Default): Staggered Multi-Branch Bilateral Tree.
+ * Layout 0 (Primary Default): Organic Transaction Flow Layout.
+ * - Entirely driven by ACTUAL TRANSACTIONS without rigid grids or predefined templates.
+ * - Senders flow in naturally from the Left / Upstream quadrant along their transaction paths.
+ * - Recipients expand naturally into the Right / Downstream quadrant.
+ * - Distances and positions are weighted by actual transfer volume and inter-counterparty edges.
+ * - Organic force-relaxation prevents overlaps and groups counterparties by real transaction affinity.
+ */
+function computeTransactionFlowLayout(rawNodes, rawEdges, rootAddress, targetAsset) {
+  const { nodeMap, rootNode, rootId, outEdges, inEdges } = prepareNodesAndAdjacency(rawNodes, rawEdges, rootAddress);
+  if (!rootNode) return [];
+
+  // Calculate volume transfer weights for each edge
+  const edgeWeights = new Map();
+  (rawEdges || []).forEach((e) => {
+    const s = String(e?.source || '').toLowerCase();
+    const t = String(e?.target || '').toLowerCase();
+    const val = parseFloat(String(e.data?.totalTransferred || e.totalValue || e.data?.totalValue || e.amount || '1.0'));
+    const safeVal = isNaN(val) || val <= 0 ? 1.0 : val;
+    const key = `${s}->${t}`;
+    edgeWeights.set(key, safeVal);
+  });
+
+  // Directed topological distance & flow role assignment
+  const depthMap = new Map();
+  const roleMap = new Map();
+  depthMap.set(rootId, 0);
+  roleMap.set(rootId, 'investigated');
+
+  // BFS Outgoing (Downstream recipients)
+  const queueOut = [{ id: rootId, d: 0 }];
+  const visitedOut = new Set([rootId]);
+  while (queueOut.length > 0) {
+    const { id, d } = queueOut.shift();
+    const nextEdges = outEdges.get(id) || [];
+    for (const { target } of nextEdges) {
+      if (!visitedOut.has(target) && nodeMap.has(target)) {
+        visitedOut.add(target);
+        const nextD = d + 1;
+        depthMap.set(target, nextD);
+        roleMap.set(target, 'outgoing');
+        queueOut.push({ id: target, d: nextD });
+      }
+    }
+  }
+
+  // BFS Incoming (Upstream senders)
+  const queueIn = [{ id: rootId, d: 0 }];
+  const visitedIn = new Set([rootId]);
+  while (queueIn.length > 0) {
+    const { id, d } = queueIn.shift();
+    const prevEdges = inEdges.get(id) || [];
+    for (const { source } of prevEdges) {
+      if (!visitedIn.has(source) && nodeMap.has(source)) {
+        visitedIn.add(source);
+        const prevD = d - 1;
+        if (!depthMap.has(source) || Math.abs(prevD) < Math.abs(depthMap.get(source))) {
+          depthMap.set(source, prevD);
+          roleMap.set(source, 'incoming');
+        }
+        queueIn.push({ id: source, d: prevD });
+      }
+    }
+  }
+
+  // Unassigned nodes fallback
+  for (const [key, node] of nodeMap.entries()) {
+    if (!depthMap.has(key)) {
+      const isInc = (node.data?.role || node.role || '').toLowerCase() === 'incoming';
+      depthMap.set(key, isInc ? -1 : 1);
+      roleMap.set(key, isInc ? 'incoming' : 'outgoing');
+    }
+  }
+
+  // Group nodes by depth
+  const nodesByDepth = new Map();
+  for (const [key, node] of nodeMap.entries()) {
+    const d = depthMap.get(key) || 0;
+    if (!nodesByDepth.has(d)) nodesByDepth.set(d, []);
+    nodesByDepth.get(d).push(node);
+  }
+
+  // Initial organic positioning based on transaction volume and hop depth
+  const positions = new Map();
+  positions.set(rootId, { x: 0, y: 0 });
+
+  // Distribute nodes level by level
+  const sortedDepths = Array.from(nodesByDepth.keys()).sort((a, b) => a - b);
+
+  sortedDepths.forEach((d) => {
+    if (d === 0) return;
+    const levelNodes = nodesByDepth.get(d);
+    const count = levelNodes.length;
+    const isUpstream = d < 0;
+    const hopMagnitude = Math.abs(d);
+
+    const baseStepX = 330;
+    const directionSign = isUpstream ? -1 : 1;
+
+    levelNodes.forEach((node, idx) => {
+      let maxConnectedVal = 0;
+      (rawEdges || []).forEach((e) => {
+        const s = String(e?.source || '').toLowerCase();
+        const t = String(e?.target || '').toLowerCase();
+        if (s === node.id || t === node.id) {
+          const w = edgeWeights.get(`${s}->${t}`) || 1.0;
+          if (w > maxConnectedVal) maxConnectedVal = w;
+        }
+      });
+
+      const volCompression = Math.min(60, Math.log1p(maxConnectedVal) * 12);
+      const posX = directionSign * (hopMagnitude * baseStepX - volCompression + (idx % 2 === 1 ? 40 : -20));
+
+      const verticalSpan = Math.max(120, Math.min(170, 480 / Math.max(count, 1)));
+      const centerOffset = (idx - (count - 1) / 2);
+      const arcDisplacement = Math.cos((centerOffset / Math.max(count, 1)) * Math.PI) * 25;
+      const posY = centerOffset * verticalSpan + (isUpstream ? -arcDisplacement : arcDisplacement);
+
+      positions.set(node.id, { x: posX, y: posY });
+    });
+  });
+
+  // Force relaxation iterations for organic transaction flow
+  const posArray = Array.from(positions.entries()).map(([id, pos]) => ({
+    id,
+    x: pos.x,
+    y: pos.y,
+    fixed: id === rootId,
+    depth: depthMap.get(id) || 0,
+  }));
+
+  const posMapLocal = new Map(posArray.map((p) => [p.id, p]));
+
+  for (let iter = 0; iter < 28; iter++) {
+    // 1. Repulsion between all node pairs
+    for (let i = 0; i < posArray.length; i++) {
+      for (let j = i + 1; j < posArray.length; j++) {
+        const a = posArray[i];
+        const b = posArray[j];
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const minDist = 220;
+
+        if (dist < minDist) {
+          const force = (minDist - dist) / dist * 0.18;
+          const fx = dx * force;
+          const fy = dy * force;
+          if (!a.fixed) {
+            a.x -= fx;
+            a.y -= fy;
+          }
+          if (!b.fixed) {
+            b.x += fx;
+            b.y += fy;
+          }
+        }
+      }
+    }
+
+    // 2. Attraction along active transaction edges
+    (rawEdges || []).forEach((e) => {
+      const s = String(e?.source || '').toLowerCase();
+      const t = String(e?.target || '').toLowerCase();
+      const a = posMapLocal.get(s);
+      const b = posMapLocal.get(t);
+      if (a && b) {
+        const dx = b.x - a.x;
+        const dy = b.y - a.y;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        const desiredDist = 310;
+        const weight = Math.min(2.5, Math.max(0.8, Math.log1p(edgeWeights.get(`${s}->${t}`) || 1.0) * 0.4));
+        const force = ((dist - desiredDist) / dist) * 0.08 * weight;
+
+        const fx = dx * force;
+        const fy = dy * force;
+        if (!a.fixed) {
+          a.x += fx;
+          a.y += fy;
+        }
+        if (!b.fixed) {
+          b.x += fx;
+          b.y += fy;
+        }
+      }
+    });
+
+    // 3. Directional constraint: keep senders left, recipients right
+    posArray.forEach((p) => {
+      if (p.fixed) return;
+      if (p.depth < 0 && p.x > -150) {
+        p.x = -150 - Math.abs(p.depth) * 60;
+      } else if (p.depth > 0 && p.x < 150) {
+        p.x = 150 + p.depth * 60;
+      }
+    });
+  }
+
+  // Compile final result nodes
+  const resultNodes = [];
+  posArray.forEach((p) => {
+    const raw = nodeMap.get(p.id);
+    if (!raw) return;
+    const isRoot = p.id === rootId;
+    const depth = Math.abs(p.depth);
+    const role = roleMap.get(p.id) || (p.depth < 0 ? 'incoming' : 'outgoing');
+
+    resultNodes.push({
+      ...raw,
+      id: p.id,
+      position: { x: Math.round(p.x), y: Math.round(p.y) },
+      data: buildNodeData(raw, {
+        isTarget: isRoot,
+        nodeType: isRoot ? 'investigated' : undefined,
+        depth,
+        asset: targetAsset,
+        role: isRoot ? 'investigated' : role,
+      }),
+    });
+  });
+
+  resolveCollisions(resultNodes);
+  return resultNodes;
+}
+
+/**
+ * Layout 1: Staggered Multi-Branch Bilateral Tree.
  * - Senders fan in gracefully on the Left (Hop -1, Hop -2, ...).
  * - Recipients branch out dynamically on the Right (Hop 1, Hop 2, ...).
  * - Sibling nodes at the same hop are intelligently staggered across alternating horizontal
@@ -888,7 +1114,7 @@ const GraphInner = ({
   onTrackNode,
   onInvestigateAddress,
 }) => {
-  const [layoutMode, setLayoutMode] = useState('bilateral'); // 'bilateral' | 'waterfall' | 'radial' | 'matrix'
+  const [layoutMode, setLayoutMode] = useState('txflow'); // 'txflow' | 'bilateral' | 'waterfall' | 'radial' | 'matrix'
   const [isLayoutDropdownOpen, setIsLayoutDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
   const [showMinimap, setShowMinimap] = useState(false);
@@ -901,6 +1127,12 @@ const GraphInner = ({
   const { zoomIn, zoomOut, fitView } = useReactFlow();
 
   const layoutOptions = useMemo(() => [
+    {
+      id: 'txflow',
+      label: 'Transaction Flow',
+      icon: Network,
+      description: 'Organic layout driven strictly by transaction flows & transfer volumes',
+    },
     {
       id: 'bilateral',
       label: 'Bilateral Flow',
@@ -976,7 +1208,7 @@ const GraphInner = ({
     return `${totalTracedVolume.toFixed(2)} ${a}`;
   }, [totalTracedVolume, targetAsset]);
 
-  // 1. Calculate layout based on chosen pattern mode
+  // 1. Calculate layout based on chosen pattern mode (Default: Organic Transaction Flow)
   const layoutedNodes = useMemo(() => {
     if (layoutMode === 'waterfall') {
       return computeWaterfallLayout(initialNodes, initialEdges, rootAddress, targetAsset);
@@ -987,7 +1219,10 @@ const GraphInner = ({
     if (layoutMode === 'matrix') {
       return computeEntityLanesLayout(initialNodes, initialEdges, rootAddress, targetAsset);
     }
-    return computeBilateralLayout(initialNodes, initialEdges, rootAddress, targetAsset);
+    if (layoutMode === 'bilateral') {
+      return computeBilateralLayout(initialNodes, initialEdges, rootAddress, targetAsset);
+    }
+    return computeTransactionFlowLayout(initialNodes, initialEdges, rootAddress, targetAsset);
   }, [initialNodes, initialEdges, rootAddress, targetAsset, layoutMode]);
 
   const nodePosMap = useMemo(() => {
@@ -1037,28 +1272,42 @@ const GraphInner = ({
           }
         }
       } else {
-        // Bilateral & Matrix 90-degree handle geometry
-        if (pSrc.x <= pTgt.x) {
-          if (pTgt.y < pSrc.y - 30) {
-            sourceHandle = 'right-top';
-            targetHandle = 'left-bottom';
-          } else if (pTgt.y > pSrc.y + 30) {
-            sourceHandle = 'right-bottom';
-            targetHandle = 'left-top';
+        // Dynamic geometric handle selection (txflow, bilateral, matrix)
+        const dx = pTgt.x - pSrc.x;
+        const dy = pTgt.y - pSrc.y;
+
+        if (Math.abs(dx) >= Math.abs(dy) * 0.7) {
+          if (pSrc.x <= pTgt.x) {
+            if (pTgt.y < pSrc.y - 30) {
+              sourceHandle = 'right-top';
+              targetHandle = 'left-bottom';
+            } else if (pTgt.y > pSrc.y + 30) {
+              sourceHandle = 'right-bottom';
+              targetHandle = 'left-top';
+            } else {
+              sourceHandle = 'right';
+              targetHandle = 'left';
+            }
           } else {
-            sourceHandle = 'right';
-            targetHandle = 'left';
+            if (pTgt.y < pSrc.y - 30) {
+              sourceHandle = 'left-top-src';
+              targetHandle = 'right-bottom-tgt';
+            } else if (pTgt.y > pSrc.y + 30) {
+              sourceHandle = 'left-bottom-src';
+              targetHandle = 'right-top-tgt';
+            } else {
+              sourceHandle = 'left-src';
+              targetHandle = 'right-tgt';
+            }
           }
         } else {
-          if (pTgt.y < pSrc.y - 30) {
-            sourceHandle = 'left-top-src';
-            targetHandle = 'right-bottom-tgt';
-          } else if (pTgt.y > pSrc.y + 30) {
-            sourceHandle = 'left-bottom-src';
-            targetHandle = 'right-top-tgt';
+          // Primarily vertical relationship
+          if (pSrc.y <= pTgt.y) {
+            sourceHandle = 'bottom-src';
+            targetHandle = 'top';
           } else {
-            sourceHandle = 'left-src';
-            targetHandle = 'right-tgt';
+            sourceHandle = 'top-src';
+            targetHandle = 'bottom';
           }
         }
       }

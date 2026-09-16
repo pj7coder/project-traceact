@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 import time
 import logging
+import hashlib
 from decimal import Decimal
 from typing import List, Dict, Tuple, Any, Optional
 
@@ -200,8 +201,11 @@ class WalletService:
                 if not txs:
                     txs = self._generate_ethereum_sandbox_transactions(target_clean)
                     if balance_eth == "0":
-                        balance_eth = "5.8420"
-                        balance_wei = "5842000000000000000"
+                        in_sum = sum(Decimal(str(t.value or 0)) for t in txs if t.direction == TransactionDirection.INCOMING)
+                        out_sum = sum(Decimal(str(t.value or 0)) for t in txs if t.direction == TransactionDirection.OUTGOING)
+                        calc_bal = max(Decimal("0.05"), in_sum - out_sum + Decimal("0.85"))
+                        balance_eth = f"{calc_bal:.4f}"
+                        balance_wei = str(int(calc_bal * Decimal("1000000000000000000")))
 
             connected_wallets, in_count, out_count = self.analyze_connected_wallets(target_clean, txs)
 
@@ -485,8 +489,9 @@ class WalletService:
                 )
             ]
 
-        # Multi-branch primary transaction topology for root address
-        return [
+        # Multi-branch primary transaction topology for canonical SIH demo suspect
+        if clean == "0x71c836489b990038848971201991802901238910".lower():
+            return [
             # 1. Incoming Master Stash Inflow
             NormalizedTransaction(
                 txHash="0x9e23490cf186358e0a156cb62391b4e78a6320141e54c6020584288d0ba9778cc",
@@ -773,6 +778,107 @@ class WalletService:
                 txType="native_transfer",
             ),
         ]
+
+        # Procedural hash-derived authentic transaction generation for ANY other address
+        # Guarantees that every searched wallet has an entirely unique transaction topology,
+        # unique counterparties, unique values, and unique flow patterns with NO predefined format.
+        h = hashlib.sha256(clean.encode("utf-8")).digest()
+        seed = int.from_bytes(h[:8], "big")
+
+        known_vasps = [
+            ("0x28c6c06298d514db089934071355e5743bf21d60", "Binance Hot Wallet #8"),
+            ("0x6cc5f688a315f3dc28a7781717a9a798a59fda7b", "CoinDCX Gateway"),
+            ("0x2910543af39aba0cd09dbb2d50200b3e800a63d2", "Kraken Custody"),
+            ("0x5e57d3114948f936828931c8f23f91849578e539", "WazirX Domestic"),
+            ("0xe592427a0aece92de3edee1f18e0157c05861564", "Uniswap Router"),
+            ("0x00000000219ab540356cbb839cbe05303d7705fa", "ETH2 Deposit Contract"),
+            ("0xd8da6bf26964af9d7eed9e03e53415d37aa96045", "Vitalik Peering Cluster"),
+        ]
+
+        tx_count = 4 + (seed % 7)  # 4 to 10 transactions
+        in_count = 1 + ((seed >> 4) % 3)  # 1 to 3 incoming
+        out_count = max(1, tx_count - in_count)
+
+        gen_txs: List[NormalizedTransaction] = []
+
+        # 1. Generate Inflow Transactions (from distinct upstream counterparties)
+        for i in range(in_count):
+            cp_hash = hashlib.sha256(f"{clean}:in:{i}".encode("utf-8")).hexdigest()
+            if (h[i] % 3 == 0) and known_vasps:
+                vasp_addr, _ = known_vasps[h[i] % len(known_vasps)]
+                sender_addr = vasp_addr
+            else:
+                sender_addr = f"0x{cp_hash[:40]}"
+
+            raw_amt = 0.25 + ((int.from_bytes(h[i:i+2], "big") % 1400) / 100.0)
+            val_str = f"{raw_amt:.4f}"
+            wei_val = str(int(raw_amt * 1e18))
+            tx_h = f"0x{cp_hash}"
+            time_offset = 3600 * (48 + i * 24 + (h[i] % 12))
+            block_num = 20730000 + (seed % 10000) - (i * 1200)
+
+            gen_txs.append(
+                NormalizedTransaction(
+                    txHash=tx_h,
+                    chain="ethereum",
+                    fromAddress=sender_addr,
+                    toAddress=clean,
+                    value=val_str,
+                    valueWei=wei_val,
+                    valueRaw=wei_val,
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - time_offset, tz=timezone.utc).isoformat(),
+                    blockNumber=block_num,
+                    status="confirmed",
+                    direction=TransactionDirection.INCOMING,
+                    fee="0.0022",
+                    feeWei="2200000000000000",
+                    feeRaw="2200000000000000",
+                    txType="native_transfer",
+                )
+            )
+
+        # 2. Generate Outflow Transactions (to distinct downstream destinations)
+        for j in range(out_count):
+            idx_byte = (in_count + j) % len(h)
+            cp_hash = hashlib.sha256(f"{clean}:out:{j}".encode("utf-8")).hexdigest()
+            if (h[idx_byte] % 2 == 0) and known_vasps:
+                vasp_addr, _ = known_vasps[h[idx_byte] % len(known_vasps)]
+                recipient_addr = vasp_addr
+            else:
+                recipient_addr = f"0x{cp_hash[:40]}"
+
+            raw_amt = 0.15 + ((int.from_bytes(h[idx_byte:idx_byte+2], "big") % 1100) / 100.0)
+            val_str = f"{raw_amt:.4f}"
+            wei_val = str(int(raw_amt * 1e18))
+            tx_h = f"0x{cp_hash}"
+            time_offset = 3600 * (2 + j * 14 + (h[idx_byte] % 8))
+            block_num = 20740000 + (seed % 5000) + (j * 800)
+            tx_type = "peeling_chain" if (h[idx_byte] % 4 == 0) else "native_transfer"
+
+            gen_txs.append(
+                NormalizedTransaction(
+                    txHash=tx_h,
+                    chain="ethereum",
+                    fromAddress=clean,
+                    toAddress=recipient_addr,
+                    value=val_str,
+                    valueWei=wei_val,
+                    valueRaw=wei_val,
+                    asset="ETH",
+                    timestamp=datetime.fromtimestamp(now - time_offset, tz=timezone.utc).isoformat(),
+                    blockNumber=block_num,
+                    status="confirmed",
+                    direction=TransactionDirection.OUTGOING,
+                    fee="0.0018",
+                    feeWei="1800000000000000",
+                    feeRaw="1800000000000000",
+                    txType=tx_type,
+                )
+            )
+
+        gen_txs.sort(key=lambda t: t.timestamp or "", reverse=True)
+        return gen_txs
 
 
 wallet_service = WalletService()
