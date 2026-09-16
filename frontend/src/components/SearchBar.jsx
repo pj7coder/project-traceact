@@ -485,31 +485,14 @@ export const SearchBar = ({
         style={{
           display: 'flex',
           alignItems: 'center',
-          gap: 6,
           background: 'var(--bg-card)',
           border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--radius-pill)',
-          padding: '3px 10px 3px 5px',
+          padding: '4px 12px',
           boxShadow: 'var(--shadow-sm)',
           flexShrink: 0,
         }}
       >
-        <div
-          style={{
-            width: 22,
-            height: 22,
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #0071e3 0%, #2997ff 100%)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#ffffff',
-            fontSize: 9.5,
-            fontWeight: 700,
-          }}
-        >
-          LEA
-        </div>
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.1 }}>
             LEA-I4C-4092
